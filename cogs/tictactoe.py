@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import tictactoe
+# import tictactoe
 
 class TicTacToe(commands.Cog):
     def __init__(self, client):

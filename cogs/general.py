@@ -76,12 +76,19 @@ class general(commands.Cog):
     @commands.command()
     async def whoami(self, ctx):
         embed = discord.Embed(
-            title="You are " + str(ctx.author),
-            description="What a pog name",
+            title="You are " + str(ctx.author) + " :D",
+            description="What a pog name!!!",
             color=self.client.primary_colour
         )
-        embed.add_field(name="Created At",value=f'{ctx.author.created_at.strptime(data_string, format)}',inline=True)
+        role = "" #theres probably some way to optimise this...
+        for i in ctx.author.roles[::-1]:
+            if i.name != "@everyone":
+                role += f'{i.mention} '
+        embed.add_field(name="Roles", value=role, inline=True)
+        embed.add_field(name="Created On",value=f'{ctx.author.created_at.strftime("%A, %d %b %Y")} \n {ctx.author.created_at.strftime("%I:%M %p")}',inline=True)
+        embed.add_field(name="Joined On",value=f'{ctx.author.joined_at.strftime("%A, %d %b %Y")} \n {ctx.author.joined_at.strftime("%I:%M %p")}',inline=True)
         embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        
         await ctx.send(embed=embed)
     
     @commands.command()
