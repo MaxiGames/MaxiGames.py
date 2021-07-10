@@ -19,8 +19,6 @@ class Counting(commands.Cog):
             self.cooldown[doc.id] = {}
             for channel in self.data[doc.id]["countingChannels"]:
                 self.cooldown[doc.id][channel] = time.time()-5
-        print(self.data)
-        print(self.cooldown)
 
 
     @commands.Cog.listener()
