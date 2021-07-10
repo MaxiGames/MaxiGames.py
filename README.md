@@ -1,2 +1,27 @@
 # MaxGames
 Your one and only discord bot that includes all forms of mini games u will ever want. Have a suggestion for another? Open an issue!
+
+
+
+## Future Implementations
+### Commands
+- economy implementation??? (or no) sure
+- tictactoe
+- counting
+- typeracer
+- blackjack
+- fastword (greentea/blacktea?)
+- moreword (yellowtea)
+- longword (redtea)
+- highlow?
+- command for hourly work
+- snake and ladder
+- chess? wow so hard
+- uno?????
+- pictionary!
+- that telephone game?
+- google snake game with button
+- let me google that for you
+- guess the song
+- trivia!!!!!!
+- random guessing
