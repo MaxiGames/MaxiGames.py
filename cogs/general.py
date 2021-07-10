@@ -73,5 +73,19 @@ class general(commands.Cog):
             colour=self.client.primary_colour)
         await ctx.send(embed=embed)
 
+    @commands.command()
+    async def whoami(self, ctx):
+        embed = discord.Embed(
+            title="You are " + str(ctx.author),
+            description="What a pog name",
+            color=self.client.primary_colour
+        )
+        embed.add_field(name="Created At",value=f'{ctx.author.created_at.strptime(data_string, format)}',inline=True)
+        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=embed)
+    
+    @commands.command()
+    async def hallolong(self,ctx,num:int): await ctx.send(f'Hall{"o"*num}')
+
 def setup(client):
     client.add_cog(general(client))
