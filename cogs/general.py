@@ -93,6 +93,9 @@ class general(commands.Cog):
     
     @commands.command()
     async def hallolong(self,ctx,num:int): await ctx.send(f'Hall{"o"*num}')
-
+    
+    @commands.command()
+    async def servercount(self,ctx):
+        await ctx.send(str(len(self.bot.servers)))
 def setup(client):
     client.add_cog(general(client))
