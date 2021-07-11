@@ -93,7 +93,7 @@ class Counting(commands.Cog):
                     str(message.guild.id)).set(dict2)
 
     @check.is_admin()
-    @commands.command()
+    @commands.command(name="Add Channel")
     async def add_counting_channel(self, ctx, name: str = None):
         self.data = await self.initation.checkserver(ctx, self.data)
         if name == None:
@@ -119,7 +119,7 @@ class Counting(commands.Cog):
         await ctx.send(embed=embed)
 
     @check.is_admin()
-    @commands.command()
+    @commands.command(name="Remove Channel")
     async def remove_counting_channel(self, ctx, name: str = None):
         self.data = await self.initation.checkserver(ctx, self.data)
         if name == None:

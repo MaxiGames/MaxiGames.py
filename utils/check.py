@@ -19,6 +19,19 @@ def is_staff():
     
     return commands.check(predicate)
 
+def is_owner():
+    async def predicate(ctx):
+        doc_ref = db.collection(u'admin').document(u'{}'.format("authorised"))
+        doc = doc_ref.get()
+        people = doc.to_dict()
+        allowed = people["owner"]
+        if str(ctx.author.id) not in allowed:
+            raise commands.NotOwner()
+        else:
+            return True
+    
+    return commands.check(predicate)
+
 def is_banned():
     async def predicate(ctx):
         doc_ref = db.collection(u'admin').document(u'{}'.format("banned"))

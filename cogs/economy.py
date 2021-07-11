@@ -17,7 +17,7 @@ class Economy(commands.Cog):
     # Curb gambling addiction
     @check.is_banned()
     @cooldown(1, 5, BucketType.user)
-    @commands.command(aliases=["coinflip", "cf", "kymchi"])
+    @commands.command(name="Coinflip", aliases=["coinflip", "cf", "kymchi"])
     async def _coinflip(self, ctx, choice: str, amount: int = 1):
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(
@@ -41,11 +41,11 @@ class Economy(commands.Cog):
                 doc = doc_ref.get()
                 if doc.exists:
                     dict1 = doc.to_dict()
-                    dict1['money'] = -1000000
+                    dict1['money'] = -1
                     doc_ref.set(dict1)
                 embed = discord.Embed(
                     title="Amount gambled unacceptable",
-                    description="It appears that you have been attempting to exploit the system and this is very bad!!! Therefore, your balance will be set to negative 1 million.",
+                    description="It appears that you have been attempting to exploit the system and this is very bad!!! Therefore, your balance will be set to negative 1.",
                     color=self.client.primary_colour
                 )
                 embed.set_author(name=ctx.author.display_name,
@@ -88,8 +88,8 @@ class Economy(commands.Cog):
         else:
             await self.initation.initiate(ctx)
 
-    @commands.command(name="Gamble", description="Gamble all the money you want until you're happy. Remember, theres a jackpot :D", aliases=['g', 'gamble'], usage="gamble <amount>")
-    async def _gamble(self, ctx, amount: int = 1):
+    @commands.command(name="Gamble", description="Gamble all the money you want until you're happy. Remember, theres a jackpot :D", aliases=['g', 'gamble', 'gg'], usage="gamble <amount>")
+    async def _gamble(self, ctx, amount: int = 5):
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(
             u'{}'.format(str(ctx.author.id)))
@@ -112,41 +112,61 @@ class Economy(commands.Cog):
                 doc = doc_ref.get()
                 if doc.exists:
                     dict1 = doc.to_dict()
-                    dict1['money'] = -1000000
+                    dict1['money'] = -1
                     doc_ref.set(dict1)
                 embed = discord.Embed(
                     title="Amount gambled unacceptable",
-                    description="It appears that you have been attempting to exploit the system and this is very bad!!! Therefore, your balance will be set to negative 1 million.",
+                    description="It appears that you have been attempting to exploit the system and this is very bad!!! Therefore, your balance will be set to negative 1.",
                     color=self.client.primary_colour
                 )
                 embed.set_author(name=ctx.author.display_name,
                                  icon_url=ctx.author.avatar_url)
                 await ctx.reply(embed=embed)
                 return
-            dict1['money'] -= amount
-            embed = discord.Embed(
-                title="Gambling results",
-                description=f"Welp, you lost all the money you gambled, hopefully you realise that gambling is bad :",
-                colour=self.client.primary_colour
-            )
-            embed.set_author(name=ctx.author.display_name,
-                             icon_url=ctx.author.avatar_url)
-            chance = (math.log10(amount)-0.95) / \
-                (100+100*max(10, math.log2(amount)))
-            print(chance)
-            if random.randint(1, 100000) == 32938:
-                dict1['money'] += amount * 50000
+            #chance = (math.log10(amount)-0.95) / \
+                #(100+100*max(10, math.log2(amount)))
+            #print(chance)
+            botnum = random.randint(1,12)
+            yournum = random.randint(1,14)
+            if yournum >= 13:
+                yournum = random.randint(1,6)
+            if yournum > botnum:
+                dict1['money'] += amount
                 embed = discord.Embed(
                     title="Gambling results",
-                    description=f"Ok. You hit the jackpot of 1 in billion. Congratulations :D",
+                    description="Bot rolled: " + str(botnum) + "\nYou rolled: " + str(yournum) + 
+                    "\nYou won! Congrats. You now have " + str(dict1['money']) + " money",
                     colour=self.client.primary_colour
+                )
+                embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+                        
+
+                await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
+                doc_ref.set(dict1)
+            elif yournum == botnum:
+                dict1['money'] -= math.ceil(amount/2)
+                embed = discord.Embed(
+                    title="Gambling results",
+                    description="Bot rolled: " + str(botnum) + "\nYou rolled: " + str(yournum) + 
+                    "\nYou drawed and lost half of your bet.\nYou now have " + str(dict1['money']) + " money.",
+
+                    colour=0xffff00
                 )
                 embed.set_author(name=ctx.author.display_name,
                                  icon_url=ctx.author.avatar_url)
+                        
 
-            await ctx.reply(embed=embed)
-            dict1['money'] -= amount
-            doc_ref.set(dict1)
+                await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
+                doc_ref.set(dict1)
+            else:
+                dict1['money'] -= amount
+                embed = discord.Embed(
+                    title = "Gambling results",
+                    description="Bot rolled: " + str(botnum) + "\nYou rolled: " + str(yournum) + 
+                    "\nYou lost your whole bet.\nYou now have " + str(dict1['money']) + " money.",
+                    colour=0xff0000
+                )
+                await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
         else:
             await check.initiate(ctx)
 
@@ -183,6 +203,7 @@ class Economy(commands.Cog):
             await self.initation.initiate(ctx)
             # await ctx.send("Now you can start running currency commands :D")
 
+    @check.is_banned()
     @commands.command()
     async def bal(self, ctx):
         await self.initation.checkserver(ctx)
@@ -278,11 +299,11 @@ class Economy(commands.Cog):
         aliases=["sm", "setmoney", "setm"],
         hidden=True
     )
-    async def _setmoney(self, ctx, amount: int, name: str = None):
+    async def _setmoney(self, ctx, amount: int, name: discord.Member = None):
         if name == None:
             uid = str(ctx.author.id)
         else:
-            uid = name[3:-1]
+            uid = str(name.id)
 
         doc_ref = self.db.collection(u'users').document(u'{}'.format(uid))
         doc = doc_ref.get()
@@ -305,6 +326,16 @@ class Economy(commands.Cog):
             )
             await ctx.send(embed=embed)
 
+    @check.is_banned()
+    @commands.command(
+        name="Blackjack",
+        description="Real skill is required to be able to master this. That is, to say, no skill at all.",
+        usage="blackjack",
+        aliases=["bj"]
+    )
+    async def blackjack(self, ctx):
+        pass
+    
 
 def setup(client):
     client.add_cog(Economy(client))

@@ -1,6 +1,7 @@
 import discord
 import time
 from discord.ext import commands
+from discord_components import *
 
 
 class general(commands.Cog):
@@ -80,56 +81,88 @@ class general(commands.Cog):
             description="What a pog name!!!",
             color=self.client.primary_colour
         )
-        role = "" #theres probably some way to optimise this...
+        role = ""  # theres probably some way to optimise this...
         for i in ctx.author.roles[::-1]:
             if i.name != "@everyone":
                 role += f'{i.mention} '
         embed.add_field(name="Roles", value=role, inline=True)
-        embed.add_field(name="Created On",value=f'{ctx.author.created_at.strftime("%A, %d %b %Y")} \n {ctx.author.created_at.strftime("%I:%M %p")}',inline=True)
-        embed.add_field(name="Joined On",value=f'{ctx.author.joined_at.strftime("%A, %d %b %Y")} \n {ctx.author.joined_at.strftime("%I:%M %p")}',inline=True)
+        embed.add_field(
+            name="Created On", value=f'{ctx.author.created_at.strftime("%A, %d %b %Y")} \n {ctx.author.created_at.strftime("%I:%M %p")}', inline=True)
+        embed.add_field(
+            name="Joined On", value=f'{ctx.author.joined_at.strftime("%A, %d %b %Y")} \n {ctx.author.joined_at.strftime("%I:%M %p")}', inline=True)
         embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-        
-        await ctx.send(embed=embed)
-    
-    @commands.command()
-    async def hallolong(self,ctx,num:int): await ctx.send(f'Hall{"o"*num}')
-    
-    @commands.command()
-    async def servercount(self,ctx):
-        await ctx.send(str(len(self.bot.servers)))
-    @commands.command()
-    async def help(self,ctx,which:str):
-        if which == "general":
-            embed=discord.Embed(title = "A list of all the current commands!",
-            description = " ",color=0x12A366)
-        #this is initial help command. Soon i will push another version that has different categories and is less messy.
 
-            embed.add_field(name="help",value="Brings you to this page",inline=True)
-            embed.add_field(name="invite",value="Creates a link that lets you invite the bot to any server that you are an admin in.",inline=True)
-        
-            embed.add_field(name="official",value="Generates an invite to Stonks Bot and MaxiGames' official server!",inline=True)
-        elif which == "currency":
-            embed=discord.Embed(title="Currency commands",description="commands that are related to the bot's currency system.",color=self.client.primary_colour)
-            embed.add_field(name="initiate",value="Makes an account for you if you don't already have one.",inline=True)
-            embed.add_field(name="money",value="Gives you one money for using this command!",inline=True)
-            embed.add_field(name="h hallo",value="Hourly command that gives you some money for saying hallo",inline=True)
-            embed.add_field(name="bal",value="Shows you how much money you have!",inline=True) 
-        elif which == "fun":  
-            embed=discord.Embed(title="Fun commands",description="random commands which are for the user's enjoyment.",color=self.client.primary_colour)    
-            embed.add_field(name="hallolong",value="Prints out hallo with the number of letter o that you specify!",inline=True)
-            
-            embed.add_field(name="ns",value="prints out a descending right angled triangle of ^ characters of your specified size",inline=True)
-        elif which == "others":
-            embed=discord.Embed(title="Other commands",description="The other commands that do not fall into any of the other categories.",color=self.client.primary_colour)
-            embed.add_field(name="current",value="Returns the current date and time",inline=True)
-            embed.add_field(name="seconds",value="returns the number of seconds that have passed since 1 Jan 1970. No one knows what this date means.",inline=True)
-
-            embed.add_field(name="whoami",value="Gives you some personal information about yourself!",inline=True)
-        else:
-            embed=discord.Embed(title="Invalid category.",description="The categories are general, currency, fun and others",color=self.client.primary_colour)
-        
-        
-        
         await ctx.send(embed=embed)
+
+    @commands.command()
+    async def hallolong(self, ctx, num: int): await ctx.send(f'Hall{"o"*num}')
+
+    @commands.command()
+    async def servercount(self, ctx):
+        embed=discord.Embed(
+            title = "I'm in " + str(len(self.client.guilds)) + " servers",
+            description = "Invite the bot to your server today using the link from s!invite!",
+            color = 0xBB2277
+        )
+        await ctx.send(embed=embed)
+
+    @commands.command(name="help", description="Shows this help menu or information about a specific command if specified", usage="help")
+    async def hallohelp(self, ctx, command: str = None):
+        if command:
+            command = self.client.get_command(command.lower())
+            if not command:
+                await ctx.send(
+                    embed=discord.Embed(
+                        title="Non-existant command",
+                        description="This command cannot be found. Please make sure that everything is spelled correctly :D",
+                        colour=self.client.primary_colour
+                    )
+                )
+                return
+            embed = discord.Embed(
+                title=f'Command `{command.name}`',
+                description=command.description,
+                colour=self.client.primary_colour,
+            )
+            usage = "\n".join([ctx.prefix + x.strip() for x in command.usage.split('\n')])
+            embed.add_field(name="Usage", value=f"```{usage}```", inline=False)
+            if len(command.aliases) > 1:
+                embed.add_field(name="Aliases", value=f"`{'`, `'.join(command.aliases)}`")
+            elif len(command.aliases) > 0:
+                embed.add_field(name="Alias", value=f"`{command.aliases[0]}`")
+            await ctx.send(embed=embed)
+            return
+        pages = []
+        # page=discord.Embed(
+        #     title=""
+        # )
+
+        page = discord.Embed(
+            title="Commands!!!",
+            description="See all commmands that MaxiGame has to offer :D",
+            colour=self.client.primary_colour,
+        )
+        page.set_thumbnail(url=self.client.user.avatar_url)
+        page.set_thumbnail(url=self.client.user.avatar_url)
+        for _, cog_name in enumerate(self.client.cogs):
+            if cog_name in ["Owner", "Staff"]:
+                continue
+            cog = self.client.get_cog(cog_name)
+            cog_commands = cog.get_commands()
+            if len(cog_commands) == 0:
+                continue
+            cmds = "```\n"
+            for cmd in cog_commands:
+                if cmd.hidden is False:
+                    cmds += cmd.name + "\n"
+            cmds += "```"
+            page.add_field(name=cog_name, value=cmds)
+        pages.append(page)
+
+        # await ctx.send(embed=page)
+
+
+
+
 def setup(client):
     client.add_cog(general(client))

@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 import os
 from client import Client
-from start import keep_alive
+# from start import keep_alive
 import firebase_admin
 from firebase_admin import firestore
 from firebase_admin import credentials
@@ -22,11 +22,11 @@ for filename in os.listdir('./cogs'):
 
 @client.event
 async def on_ready():
-    await client.change_presence(status=discord.Status.online, activity=discord.Game('m!help'))
+    await client.change_presence(status=discord.Status.online, activity=discord.Game(name="m!help on " + str(len(client.guilds)) + " servers", type=0))
     print("We have logged in as {0.user}".format(client))
 
 with open('config.json', 'r') as file:
     data = json.load(file)
     client.run(data["tokenId"])
 
-keep_alive()
+# keep_alive()
