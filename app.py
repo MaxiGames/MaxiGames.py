@@ -22,7 +22,7 @@ for filename in os.listdir('./cogs'):
 
 @client.event
 async def on_ready():
-    await client.change_presence(status=discord.Status.online, activity=discord.Game('m!help in ' + str(len(client.servers))))
+    await client.change_presence(status=discord.Status.online, activity=discord.Game('m!help'))
     print("We have logged in as {0.user}".format(client))
 
 with open('config.json', 'r') as file:
