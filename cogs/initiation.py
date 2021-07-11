@@ -10,7 +10,7 @@ class Initiation (commands.Cog):
         self.client = client
         self.db = firestore.client()
 
-    @commands.command(aliases=["init", "Init", "Initiate"])
+
     async def initiate(self, ctx):
         self.doc_ref = self.db.collection(u'users').document(u'{}'.format(str(ctx.author.id)))
         self.doc_ref.set({
