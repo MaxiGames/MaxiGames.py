@@ -6,6 +6,8 @@ from firebase_admin import firestore
 from utils import check
 import random
 import math
+
+
 class Economy(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -15,10 +17,11 @@ class Economy(commands.Cog):
     # Curb gambling addiction
     @check.is_banned()
     @cooldown(1, 5, BucketType.user)
-    @commands.command(aliases = ["coinflip", "cf", "kymchi"])
-    async def _coinflip(self, ctx, choice: str, amount: int=1):
+    @commands.command(aliases=["coinflip", "cf", "kymchi"])
+    async def _coinflip(self, ctx, choice: str, amount: int = 1):
         await self.initation.checkserver(ctx)
-        doc_ref = self.db.collection(u'users').document(u'{}'.format(str(ctx.author.id)))
+        doc_ref = self.db.collection(u'users').document(
+            u'{}'.format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists:
             dict1 = doc.to_dict()
@@ -28,11 +31,13 @@ class Economy(commands.Cog):
                     description="The amount that you want to gamble is more than what you have in your bank.",
                     color=self.client.primary_colour
                 )
-                embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+                embed.set_author(name=ctx.author.display_name,
+                                 icon_url=ctx.author.avatar_url)
                 await ctx.reply(embed=embed)
                 return
             if amount <= 0:
-                doc_ref = self.db.collection(u'users').document(u'{}'.format(str(ctx.author.id)))
+                doc_ref = self.db.collection(u'users').document(
+                    u'{}'.format(str(ctx.author.id)))
                 doc = doc_ref.get()
                 if doc.exists:
                     dict1 = doc.to_dict()
@@ -43,9 +48,9 @@ class Economy(commands.Cog):
                     description="It appears that you have been attempting to exploit the system and this is very bad!!! Therefore, your balance will be set to negative 1 million.",
                     color=self.client.primary_colour
                 )
-                embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+                embed.set_author(name=ctx.author.display_name,
+                                 icon_url=ctx.author.avatar_url)
                 await ctx.reply(embed=embed)
-            
 
             side = 0
             if choice == "head" or choice == "heads":
@@ -54,15 +59,16 @@ class Economy(commands.Cog):
                 side = 1
             else:
                 raise discord.ext.commands.errors.MissingRequiredArgument
-            
-            result = (random.randint(0, 100)>=40)
+
+            result = (random.randint(0, 100) >= 40)
             if result:
                 embed = discord.Embed(
                     title="Coinflip results",
                     description=f"Welp, the coin flipped to **{'tails' if not side else 'heads'}**. You lost {amount} points to coinflipping :(",
                     colour=self.client.primary_colour
                 )
-                embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+                embed.set_author(name=ctx.author.display_name,
+                                 icon_url=ctx.author.avatar_url)
                 await ctx.reply(embed=embed)
                 dict1['money'] -= amount
                 # await ctx.send(f"Welp you lost {amount} points to coinflipping :(")
@@ -75,18 +81,18 @@ class Economy(commands.Cog):
                     description=f"Oh wow, the coin flipped to **{'tails' if side else 'heads'}**. You won {amount} points from the coin flip :O",
                     colour=self.client.primary_colour
                 )
-                embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+                embed.set_author(name=ctx.author.display_name,
+                                 icon_url=ctx.author.avatar_url)
                 await ctx.reply(embed=embed)
             doc_ref.set(dict1)
         else:
             await self.initation.initiate(ctx)
-            
-
 
     @commands.command(name="Gamble", description="Gamble all the money you want until you're happy. Remember, theres a jackpot :D", aliases=['g', 'gamble'], usage="gamble <amount>")
-    async def _gamble(self, ctx, amount: int=1):
+    async def _gamble(self, ctx, amount: int = 1):
         await self.initation.checkserver(ctx)
-        doc_ref = self.db.collection(u'users').document(u'{}'.format(str(ctx.author.id)))
+        doc_ref = self.db.collection(u'users').document(
+            u'{}'.format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists:
             dict1 = doc.to_dict()
@@ -96,11 +102,13 @@ class Economy(commands.Cog):
                     description="The amount that you want to gamble is more than what you have in your bank.",
                     color=self.client.primary_colour
                 )
-                embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+                embed.set_author(name=ctx.author.display_name,
+                                 icon_url=ctx.author.avatar_url)
                 await ctx.reply(embed=embed)
                 return
             if amount <= 0:
-                doc_ref = self.db.collection(u'users').document(u'{}'.format(str(ctx.author.id)))
+                doc_ref = self.db.collection(u'users').document(
+                    u'{}'.format(str(ctx.author.id)))
                 doc = doc_ref.get()
                 if doc.exists:
                     dict1 = doc.to_dict()
@@ -111,7 +119,8 @@ class Economy(commands.Cog):
                     description="It appears that you have been attempting to exploit the system and this is very bad!!! Therefore, your balance will be set to negative 1 million.",
                     color=self.client.primary_colour
                 )
-                embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+                embed.set_author(name=ctx.author.display_name,
+                                 icon_url=ctx.author.avatar_url)
                 await ctx.reply(embed=embed)
                 return
             dict1['money'] -= amount
@@ -120,17 +129,20 @@ class Economy(commands.Cog):
                 description=f"Welp, you lost all the money you gambled, hopefully you realise that gambling is bad :",
                 colour=self.client.primary_colour
             )
-            embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
-            chance = (math.log10(amount)-0.95)/(100+100*max(10,math.log2(amount)))
+            embed.set_author(name=ctx.author.display_name,
+                             icon_url=ctx.author.avatar_url)
+            chance = (math.log10(amount)-0.95) / \
+                (100+100*max(10, math.log2(amount)))
             print(chance)
-            if random.randint(1,100000) == 32938:
+            if random.randint(1, 100000) == 32938:
                 dict1['money'] += amount * 50000
                 embed = discord.Embed(
                     title="Gambling results",
                     description=f"Ok. You hit the jackpot of 1 in billion. Congratulations :D",
                     colour=self.client.primary_colour
                 )
-                embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+                embed.set_author(name=ctx.author.display_name,
+                                 icon_url=ctx.author.avatar_url)
 
             await ctx.reply(embed=embed)
             dict1['money'] -= amount
@@ -148,7 +160,8 @@ class Economy(commands.Cog):
     @cooldown(1, 5, BucketType.user)
     async def _money(self, ctx):
         await self.initation.checkserver(ctx)
-        doc_ref = self.db.collection(u'users').document(u'{}'.format(str(ctx.author.id)))
+        doc_ref = self.db.collection(u'users').document(
+            u'{}'.format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists:
             dict1 = doc.to_dict()
@@ -157,44 +170,51 @@ class Economy(commands.Cog):
             embed = discord.Embed(
                 title="Money added",
                 description="Money has been added to your bank. ",
-                colour = self.client.primary_colour
+                colour=self.client.primary_colour
             )
-            embed.set_author(name=ctx.author.display_name, url="https://google.com", icon_url=ctx.author.avatar_url)
-            embed.add_field(name="New Balance",value=f'{dict1["money"]}',inline=True)
-            embed.set_footer(text="Find our more about how to use other currency functions by typing 'n!help currency' :D")
+            embed.set_author(name=ctx.author.display_name,
+                             url="https://google.com", icon_url=ctx.author.avatar_url)
+            embed.add_field(name="New Balance",
+                            value=f'{dict1["money"]}', inline=True)
+            embed.set_footer(
+                text="Find our more about how to use other currency functions by typing 'n!help currency' :D")
             await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
         else:
             await self.initation.initiate(ctx)
             # await ctx.send("Now you can start running currency commands :D")
-    
+
     @commands.command()
-    async def amount(self, ctx):
+    async def bal(self, ctx):
         await self.initation.checkserver(ctx)
-        doc_ref = self.db.collection(u'users').document(u'{}'.format(str(ctx.author.id)))
+        doc_ref = self.db.collection(u'users').document(
+            u'{}'.format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists:
             embed = discord.Embed(
                 title="Current Amount",
                 description="How much money do you have in your bank?",
-                colour = self.client.primary_colour
+                colour=self.client.primary_colour
             )
-            embed.set_author(name=ctx.author.display_name, url="https://google.com", icon_url=ctx.author.avatar_url)
-            embed.add_field(name="Balance", value=f'{doc.to_dict()["money"]}',inline=True)
+            embed.set_author(name=ctx.author.display_name,
+                             url="https://google.com", icon_url=ctx.author.avatar_url)
+            embed.add_field(
+                name="Balance", value=f'{doc.to_dict()["money"]}', inline=True)
             await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
         else:
             await self.initation.initiate(ctx)
             # return False
-    
+
     @commands.command(
         name="Leaderboard",
         description="Shows you the richest and most wealthy people in the server you are in :O",
         usage="leaderboard",
-        aliases=["leaderboard", "l","rich","r", " l"]
+        aliases=["leaderboard", "l", "rich", "r", " l"]
     )
     async def _leaderboard(self, ctx):
         await self.initation.checkserver(ctx)
 
-        doc_ref = self.db.collection(u'servers').document(u'{}'.format(str(ctx.guild.id)))
+        doc_ref = self.db.collection(u'servers').document(
+            u'{}'.format(str(ctx.guild.id)))
         doc = doc_ref.get()
         dict2 = doc.to_dict()["users"]
         dict3 = {}
@@ -205,7 +225,7 @@ class Economy(commands.Cog):
             dict3[i] = dict1['money']
         descriptio = ""
         count = 1
-        for i in sorted(dict3.items(), key=lambda kv:(kv[1]), reverse=True):
+        for i in sorted(dict3.items(), key=lambda kv: (kv[1]), reverse=True):
             user = self.client.get_user(int(i[0]))
             descriptio += f'{count}) {user.mention} - {i[1]} points\n'
             count += 1
@@ -217,31 +237,35 @@ class Economy(commands.Cog):
             colour=self.client.primary_colour
         )
         embed.set_author(name="Hallo Bot",
-                        icon_url='https://cdn.discordapp.com/attachments/797393542251151380/839131666483511336/476ffc83637891f004e1ba6e1ca63e6c.jpg')
+                         icon_url='https://cdn.discordapp.com/attachments/797393542251151380/839131666483511336/476ffc83637891f004e1ba6e1ca63e6c.jpg')
         await ctx.send(embed=embed, allowed_mentions=discord.AllowedMentions.none())
-    
 
     @commands.command(name="Hourly", description="Hourly points for saying hallo :D", usage="hourly hallo", aliases=["h", "hourly", " h", " hourly"])
     @cooldown(1, 3600, BucketType.user)
-    async def _hourly(self, ctx, string:str=None):
+    async def _hourly(self, ctx, string: str = None):
         if string.lower() == "hallo":
             await self.initation.checkserver(ctx)
-            doc_ref = self.db.collection(u'users').document(u'{}'.format(str(ctx.author.id)))
+            doc_ref = self.db.collection(u'users').document(
+                u'{}'.format(str(ctx.author.id)))
             doc = doc_ref.get()
             booster = 1
             if doc.exists:
                 dict1 = doc.to_dict()
                 # value = int(doc.to_dict()['money'])
-                dict1["money"] = dict1["money"] + booster * (random.randint(20, 50))
+                dict1["money"] = dict1["money"] + \
+                    booster * (random.randint(20, 50))
                 doc_ref.set(dict1)
                 embed = discord.Embed(
                     title="Hourly claimed :D",
                     description="Money gained from saying \"hallo\" has been added to your bank. ",
-                    colour = self.client.primary_colour
+                    colour=self.client.primary_colour
                 )
-                embed.set_author(name=ctx.author.display_name, url="https://google.com", icon_url=ctx.author.avatar_url)
-                embed.add_field(name="New Balance",value=f'{dict1["money"]}',inline=True)
-                embed.set_footer(text="Find our more about how to use other currency functions by typing 'n!help currency' :D")
+                embed.set_author(name=ctx.author.display_name,
+                                 url="https://google.com", icon_url=ctx.author.avatar_url)
+                embed.add_field(name="New Balance",
+                                value=f'{dict1["money"]}', inline=True)
+                embed.set_footer(
+                    text="Find our more about how to use other currency functions by typing 'n!help currency' :D")
                 await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
             else:
                 await self.initation.initiate(ctx)
@@ -254,19 +278,19 @@ class Economy(commands.Cog):
         aliases=["sm", "setmoney", "setm"],
         hidden=True
     )
-    async def _setmoney(self, ctx, amount: int, name: str=None):
-        if name==None:
-            uid=str(ctx.author.id)
+    async def _setmoney(self, ctx, amount: int, name: str = None):
+        if name == None:
+            uid = str(ctx.author.id)
         else:
             uid = name[3:-1]
 
         doc_ref = self.db.collection(u'users').document(u'{}'.format(uid))
         doc = doc_ref.get()
         if doc.exists:
-            dict2=doc.to_dict()
+            dict2 = doc.to_dict()
             dict2["money"] = amount
             doc_ref.set(dict2)
-            embed=discord.Embed(
+            embed = discord.Embed(
                 title="User amount set",
                 description=f"Amount of <@{uid}> has been set to {amount}.",
                 colour=self.client.primary_colour
@@ -274,7 +298,7 @@ class Economy(commands.Cog):
             await ctx.send(embed=embed)
 
         else:
-            embed=discord.Embed(
+            embed = discord.Embed(
                 title="User not initiated",
                 description="This user is not initiated. Please make sure that the person has used hallo bot before :D",
                 colour=self.client.primary_colour

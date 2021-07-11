@@ -2,3 +2,4 @@ config.json
 serviceAccountKey.json
 cogs/__pycache__
 __pycache__
+.replit

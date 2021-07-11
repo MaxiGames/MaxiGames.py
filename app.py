@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 import os
 from client import Client
-
+from start import keep_alive
 import firebase_admin
 from firebase_admin import firestore
 from firebase_admin import credentials
@@ -28,4 +28,5 @@ async def on_ready():
 with open('config.json', 'r') as file:
     data = json.load(file)
     client.run(data["tokenId"])
-    
+
+keep_alive()
