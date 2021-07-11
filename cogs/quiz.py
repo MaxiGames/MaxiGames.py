@@ -16,7 +16,7 @@ class Quiz(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @cooldown(5, 1, BucketType.user)
+    @cooldown(1, 5, BucketType.user)
     @commands.command()
     async def trivia(self, ctx):
         r = {
