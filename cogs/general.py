@@ -97,5 +97,39 @@ class general(commands.Cog):
     @commands.command()
     async def servercount(self,ctx):
         await ctx.send(str(len(self.bot.servers)))
+    @commands.command()
+    async def help(self,ctx,which:str):
+        if which == "general":
+            embed=discord.Embed(title = "A list of all the current commands!",
+            description = " ",color=0x12A366)
+        #this is initial help command. Soon i will push another version that has different categories and is less messy.
+
+            embed.add_field(name="help",value="Brings you to this page",inline=True)
+            embed.add_field(name="invite",value="Creates a link that lets you invite the bot to any server that you are an admin in.",inline=True)
+        
+            embed.add_field(name="official",value="Generates an invite to Stonks Bot and MaxiGames' official server!",inline=True)
+        elif which == "currency":
+            embed=discord.Embed(title="Currency commands",description="commands that are related to the bot's currency system.",color=self.client.primary_colour)
+            embed.add_field(name="initiate",value="Makes an account for you if you don't already have one.",inline=True)
+            embed.add_field(name="money",value="Gives you one money for using this command!",inline=True)
+            embed.add_field(name="h hallo",value="Hourly command that gives you some money for saying hallo",inline=True)
+            embed.add_field(name="bal",value="Shows you how much money you have!",inline=True) 
+        elif which == "fun":  
+            embed=discord.Embed(title="Fun commands",description="random commands which are for the user's enjoyment.",color=self.client.primary_colour)    
+            embed.add_field(name="hallolong",value="Prints out hallo with the number of letter o that you specify!",inline=True)
+            
+            embed.add_field(name="ns",value="prints out a descending right angled triangle of ^ characters of your specified size",inline=True)
+        elif which == "others":
+            embed=discord.Embed(title="Other commands",description="The other commands that do not fall into any of the other categories.",color=self.client.primary_colour)
+            embed.add_field(name="current",value="Returns the current date and time",inline=True)
+            embed.add_field(name="seconds",value="returns the number of seconds that have passed since 1 Jan 1970. No one knows what this date means.",inline=True)
+
+            embed.add_field(name="whoami",value="Gives you some personal information about yourself!",inline=True)
+        else:
+            embed=discord.Embed(title="Invalid category.",description="The categories are general, currency, fun and others",color=self.client.primary_colour)
+        
+        
+        
+        await ctx.send(embed=embed)
 def setup(client):
     client.add_cog(general(client))

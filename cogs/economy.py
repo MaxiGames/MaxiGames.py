@@ -168,7 +168,7 @@ class Economy(commands.Cog):
             # await ctx.send("Now you can start running currency commands :D")
     
     @commands.command()
-    async def amount(self, ctx):
+    async def bal(self, ctx):
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(u'{}'.format(str(ctx.author.id)))
         doc = doc_ref.get()
