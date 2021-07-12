@@ -2,6 +2,7 @@ import discord
 import time
 from discord.ext import commands
 from discord_components import *
+import asyncio
 
 
 class general(commands.Cog):
@@ -135,9 +136,10 @@ class general(commands.Cog):
         pages = []
         page=discord.Embed(
             title="Maxi Game :D",
-            description="Hallooo",
+            description="Hallooo!!! This is maxi game and come here to witness nianny's desperate attempts to understand buttons...",
             colour=self.client.primary_colour
         )
+        pages.append(page)
 
 
         page = discord.Embed(
@@ -162,6 +164,27 @@ class general(commands.Cog):
         pages.append(page)
 
         # await ctx.send(embed=page)
+        previous = Button(style=ButtonStyle.green, label="Previous", id="Previous")
+        next = Button(style=ButtonStyle.green, label="Next", id="Next")
+
+        page_num = 0
+        msg = await ctx.send(
+            embed=pages[page_num],
+            components= [
+                ActionRow([
+                    previous, next
+                ])
+            ]
+        )
+        def check(message):
+            return message == msg
+        while True:
+            try:
+                event = await self.client.wait_for("button_click", timeout = 60.0, check = check)
+                print(event)
+            except asyncio.TimeoutError:
+                return
+
 
 
 

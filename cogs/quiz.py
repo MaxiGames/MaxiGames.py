@@ -56,7 +56,7 @@ class Quiz(commands.Cog):
         await message.add_reaction("4️⃣")
         # res = await Bot.wait_for_reaction('3️⃣', message=msg, timeout=15)
         def check(reaction, user):
-            return user == ctx.author
+            return user == ctx.author and reaction.message == message
 
         try:
             reaction, user = await self.client.wait_for('reaction_add', timeout=10.0, check=check)

@@ -7,6 +7,7 @@ from client import Client
 import firebase_admin
 from firebase_admin import firestore
 from firebase_admin import credentials
+from discord_components import *
 
 client = Client(command_prefix=["m!"], help_command=None)
 
@@ -24,6 +25,7 @@ for filename in os.listdir('./cogs'):
 async def on_ready():
     await client.change_presence(status=discord.Status.online, activity=discord.Game(name="m!help on " + str(len(client.guilds)) + " servers", type=0))
     print("We have logged in as {0.user}".format(client))
+    DiscordComponents(client)
 
 with open('config.json', 'r') as file:
     data = json.load(file)
