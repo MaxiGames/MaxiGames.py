@@ -49,7 +49,6 @@ class Quiz(commands.Cog):
         await message.add_reaction("2️⃣")
         await message.add_reaction("3️⃣")
         await message.add_reaction("4️⃣")
-        reaction = await message.wait_for_reaction(emoji="1️⃣", msg1)
         await bot.say("You responded with {}".format(reaction.emoji))
 
 
