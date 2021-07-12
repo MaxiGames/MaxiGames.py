@@ -7,11 +7,6 @@ import json
 
 questions = [""]
 alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-# NO NO @nianny go put quiz questions on firebase then retrive them ig
-# or use an API 
-
-# hm are there quiz apis :O
-# yep just search "trivia APIS"
 class Quiz(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -44,12 +39,22 @@ class Quiz(commands.Cog):
             description += f'({alpha[count]}) {i}\n'
             count += 1
         embed = discord.Embed(
-            title="TRIVIA",
+            title="TRIVIA- You have 5 seconds to answer",
             description=results["question"].replace("&quot;", '\"').replace("&#039;","\'")+'\n'+description,
         
             colour=self.client.primary_colour
         )
-        await ctx.send(embed=embed) 
+        message = await ctx.send(embed=embed)
+        await message.add_reaction("1️⃣")
+        await message.add_reaction("2️⃣")
+        await message.add_reaction("3️⃣")
+        await message.add_reaction("4️⃣")
+        reaction = await message.wait_for_reaction(emoji="1️⃣", msg1)
+        await bot.say("You responded with {}".format(reaction.emoji))
+
 
 def setup(client):
-    client.add_cog(Quiz(client)) 
+    client.add_cog(Quiz(client))
+
+def check(msg, ctx):
+        return msg.author == ctx.author and msg.channel == ctx.channel
