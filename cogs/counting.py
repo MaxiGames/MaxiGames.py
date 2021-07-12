@@ -23,7 +23,6 @@ class Counting(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        
         if message.author == self.client.user:
             return
         if(message.author.bot):
@@ -43,14 +42,12 @@ class Counting(commands.Cog):
                 if not (num == dict2["countingChannels"][message.channel.name.lower()]["count"]+1) or (message.author.id == dict2["countingChannels"][message.channel.name.lower()]["last_user"]):
                     wrongCount = not (
                         num == dict2["countingChannels"][message.channel.name.lower()]["count"]+1)
-                    previous = dict2["countingChannels"][message.channel.name.lower(
-                    )]["count"]
-                    dict2["countingChannels"][message.channel.name.lower()
-                                              ]["count"] = 0
-                    dict2["countingChannels"][message.channel.name.lower()
-                                              ]["last_user"] = None
+                    previous = dict2["countingChannels"][message.channel.name.lower()]["count"]
+                    dict2["countingChannels"][message.channel.name.lower()]["count"] = 0
+                    dict2["countingChannels"][message.channel.name.lower()]["last_user"] = None
                     self.data[str(message.guild.id)] = dict2
                     await message.add_reaction("❌")
+                    embed="No embed"
                     if wrongCount:
                         embed = discord.Embed(
                             title="Wrong Count",
@@ -64,21 +61,18 @@ class Counting(commands.Cog):
                             colour=self.client.primary_colour
                         )
                     await message.channel.send(embed=embed)
+                    print("Counting Error")
 
-                    self.cooldown[str(message.guild.id)
-                                  ][message.channel.name.lower()] = time.time()
+                    self.cooldown[str(message.guild.id)][message.channel.name.lower()] = time.time()
                     # await message.channel.edit(topic=f"Count: {dict2['count']}")
 
                 else:
                     if ((time.time()-self.cooldown[str(message.guild.id)][message.channel.name.lower()]) < 2):
                         return
                     if (num > dict2["countingChannels"][message.channel.name.lower()]["highest_count"]):
-                        dict2["countingChannels"][message.channel.name.lower()
-                                                  ]["highest_count"] = num
-                        dict2["countingChannels"][message.channel.name.lower()
-                                                  ]["count"] = num
-                        dict2["countingChannels"][message.channel.name.lower(
-                        )]["last_user"] = message.author.id
+                        dict2["countingChannels"][message.channel.name.lower()]["highest_count"] = num
+                        dict2["countingChannels"][message.channel.name.lower()]["count"] = num
+                        dict2["countingChannels"][message.channel.name.lower()]["last_user"] = message.author.id
                         self.data[str(message.guild.id)] = dict2
                         await message.add_reaction("☑️")
                         # await message.channel.edit(topic=f"Count: {dict2['count']}")
@@ -117,6 +111,7 @@ class Counting(commands.Cog):
             colour=self.client.primary_colour
         )
         await ctx.send(embed=embed)
+        print("add counting channel")
 
     @check.is_admin()
     @commands.command(name="Remove Channel")
@@ -144,6 +139,7 @@ class Counting(commands.Cog):
             colour=self.client.primary_colour
         )
         await ctx.send(embed=embed)
+        print("remove counting channel")
 
     @check.is_staff()
     @commands.command(
@@ -160,9 +156,9 @@ class Counting(commands.Cog):
                 colour=self.client.primary_colour
             )
             await ctx.send(embed=embed)
+            print("channel not counting channel")
             return
-        dict2["countingChannels"][ctx.channel.name.lower()]["highest_count"] = max(
-            dict2["countingChannels"][ctx.channel.name.lower()]["highest_count"], num)
+        dict2["countingChannels"][ctx.channel.name.lower()]["highest_count"] = max(dict2["countingChannels"][ctx.channel.name.lower()]["highest_count"], num)
         dict2["countingChannels"][ctx.channel.name.lower()]["count"] = num
         dict2["countingChannels"][ctx.channel.name.lower()]["last_user"] = None
         self.data[str(ctx.guild.id)] = dict2
@@ -174,6 +170,7 @@ class Counting(commands.Cog):
             colour=self.client.primary_colour
         )
         await ctx.send(embed=embed)
+        print("setcount")
 
     @commands.command(name="Counting Channel Info",
                       description="Returns info about the current channel and counting statistics.",
@@ -192,6 +189,7 @@ class Counting(commands.Cog):
         Last counted by <@{self.data[str(ctx.guild.id)]['countingChannels'][ctx.channel.name.lower()]['last_user']}>
         """, inline=False)
         await ctx.send(embed=embed)
+        print("counting channel info")
 
     @commands.command(
         name="Counting Info",
@@ -219,6 +217,7 @@ class Counting(commands.Cog):
                 break
 
         await ctx.send(embed=embed)
+        print("cointing info")
 
     @commands.command(
         name="Counting Leaderboards",
@@ -250,6 +249,7 @@ class Counting(commands.Cog):
         embed.set_footer(
             text="Find out about the highest and most dedicated servers!!!")
         await ctx.send(embed=embed)
+        print("counting leadderboard")
 
 
 def setup(client):

@@ -23,9 +23,8 @@ class Initiation (commands.Cog):
             description="Your account has been initiated. Now you can start running currency commands :D",
             colour=discord.Colour.orange()
         )
-        embed.set_author(name=ctx.author.display_name, url="https://google.com", icon_url=ctx.author.avatar_url)
         if isinstance(ctx, discord.Message):
-            await ctx.channel.send(embed)
+            await ctx.channel.send(embed=embed)
         else:
             await ctx.send(embed=embed)
 

@@ -133,16 +133,18 @@ class general(commands.Cog):
             await ctx.send(embed=embed)
             return
         pages = []
-        # page=discord.Embed(
-        #     title=""
-        # )
+        page=discord.Embed(
+            title="Maxi Game :D",
+            description="Hallooo",
+            colour=self.client.primary_colour
+        )
+
 
         page = discord.Embed(
             title="Commands!!!",
             description="See all commmands that MaxiGame has to offer :D",
             colour=self.client.primary_colour,
         )
-        page.set_thumbnail(url=self.client.user.avatar_url)
         page.set_thumbnail(url=self.client.user.avatar_url)
         for _, cog_name in enumerate(self.client.cogs):
             if cog_name in ["Owner", "Staff"]:
