@@ -87,7 +87,7 @@ class Counting(commands.Cog):
                     str(message.guild.id)).set(dict2)
 
     @check.is_admin()
-    @commands.command(name="Add Channel")
+    @commands.command(name="Add Channel", aliases=["addc"])
     async def add_counting_channel(self, ctx, name: str = None):
         self.data = await self.initation.checkserver(ctx, self.data)
         if name == None:
