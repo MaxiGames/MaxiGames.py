@@ -164,25 +164,58 @@ class general(commands.Cog):
         pages.append(page)
 
         # await ctx.send(embed=page)
-        previous = Button(style=ButtonStyle.green, label="Previous", id="Previous")
-        next = Button(style=ButtonStyle.green, label="Next", id="Next")
+
 
         page_num = 0
+        previous_symbol = "⬅️ Previous"
+        next_symbol = "Next ➡️"
         msg = await ctx.send(
             embed=pages[page_num],
-            components= [
-                ActionRow([
-                    previous, next
-                ])
-            ]
+            components= [[Button(style=ButtonStyle.green, label=previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=next_symbol)]]
         )
-        def check(message):
-            return message == msg
+        def check(interation):
+            return interation.message == msg and ctx.author == interation.user
+            # print(message)
+            # print(type(message))
+            # return True
         while True:
             try:
-                event = await self.client.wait_for("button_click", timeout = 60.0, check = check)
-                print(event)
+                res = await self.client.wait_for("button_click", timeout = 60.0, check = check)
+                # print(res)
+                await res.respond(
+                    type=InteractionType.DeferredUpdateMessage # , content=f"{res.component.label} pressed"
+                )
+
+                if res.component.label == previous_symbol:
+                    page_num -= 1
+                    if page_num <= 0:
+                        page_num=0
+                        await msg.edit(
+                            embed=pages[page_num],
+                            components= [[Button(style=ButtonStyle.green, label=previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=next_symbol)]]
+                        )
+                    else:
+                        await msg.edit(
+                            embed=pages[page_num],
+                            components= [[Button(style=ButtonStyle.green, label=previous_symbol), Button(style=ButtonStyle.green, label=next_symbol)]]
+                        )
+                elif res.component.label == next_symbol:
+                    page_num += 1
+                    if page_num >= len(pages)-1:
+                        page_num = len(pages)-1
+                        await msg.edit(
+                            embed=pages[page_num],
+                            components= [[Button(style=ButtonStyle.green, label=previous_symbol), Button(style=ButtonStyle.green, label=next_symbol, disabled=True)]]
+                        )
+                    else:
+                        await msg.edit(
+                            embed=pages[page_num],
+                            components= [[Button(style=ButtonStyle.green, label=previous_symbol), Button(style=ButtonStyle.green, label=next_symbol)]]
+                        )
             except asyncio.TimeoutError:
+                await msg.edit(
+                    embed=pages[page_num]
+                )
                 return
 
 
