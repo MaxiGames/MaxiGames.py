@@ -151,7 +151,7 @@ class general(commands.Cog):
         )
         page.set_thumbnail(url=self.client.user.avatar_url)
         for _, cog_name in enumerate(self.client.cogs):
-            if cog_name in ["Owner", "Staff"]:
+            if cog_name in ["Owner", "Staff", "Ban"]:
                 continue
             cog = self.client.get_cog(cog_name)
             cog_commands = cog.get_commands()
@@ -173,7 +173,6 @@ class general(commands.Cog):
         next_symbol = "Next ➡️"
         msg = await ctx.send(
             embed=pages[page_num],
-            components= [[Button(style=ButtonStyle.green, label=previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=next_symbol)]]
         )
 
         page = Paginator(self.client, ctx, msg, pages, timeout=5)

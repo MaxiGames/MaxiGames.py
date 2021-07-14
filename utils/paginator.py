@@ -4,7 +4,7 @@ from typing import List, Optional, Union
 import discord
 from discord.ext import commands
 
-from discord_components import Button, ButtonStyle, InteractionType
+from discord_components import Button, ButtonStyle, InteractionType, ActionRow
 
 
 #creds https://github.com/khk4912/EZPaginator/blob/master/EZPaginator/EZPaginator.py
@@ -20,6 +20,7 @@ class Paginator:
         ctx: commands.Context,
         message: discord.Message, 
         pages: List[discord.Embed], 
+        buttons: List[List[Button]] = [[]],
         previous_symbol: str = "⬅️ Previous",
         next_symbol: str = "Next ➡️",
         timeout: int = 60,
@@ -29,6 +30,7 @@ class Paginator:
         self.ctx = ctx
         self.message = message
         self.pages = pages
+        self.buttons = buttons
         self.previous_symbol = previous_symbol
         self.next_symbol = next_symbol
         self.timeout = timeout
@@ -41,13 +43,19 @@ class Paginator:
             or isinstance(client, commands.AutoShardedBot))
         ):
             raise TypeError("Paginator client must be a discord.Client or commands.Bot")
-        print("values initiated")
+        # print("values initiated")
     
     async def start(self):
-        print("started")
+        # print("started")
+        add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)]
+        # components = self.buttons
+        # print(type(add_on_buttons))
+        # print(type(components))
+        components = [add_on_buttons]
+        # print(type(components))
         await self.message.edit(
             embed=self.pages[self.page_num],
-            components= [[Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)]]
+            components=components
         )
 
         def check(interation):
@@ -65,31 +73,40 @@ class Paginator:
                     self.page_num -= 1
                     if self.page_num <= 0:
                         self.page_num=0
+                        add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)]
+                        # print(type(add_on_buttons))
+                        # print(type(components))
+                        components = [add_on_buttons]
                         await self.message.edit(
                             embed=self.pages[self.page_num],
-                            components= [[Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)]]
+                            components= components
                         )
                     else:
+                        components = [Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol)]
                         await self.message.edit(
                             embed=self.pages[self.page_num],
-                            components= [[Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol)]]
+                            components= components
                         )
                 elif res.component.label == self.next_symbol:
                     self.page_num += 1
                     if self.page_num >= len(self.pages)-1:
                         self.page_num = len(self.pages)-1
+                        components = [Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)]
                         await self.message.edit(
                             embed=self.pages[self.page_num],
                             components= [[Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol, disabled=True)]]
                         )
                     else:
+                        components = [Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)] + self.buttons[0]
                         await self.message.edit(
                             embed=self.pages[self.page_num],
                             components= [[Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol)]]
                         )
+
             except asyncio.TimeoutError:
+                # print("Times up")
                 await self.message.edit(
-                    embed=self.pages[self.page_num]
+                    "Hallo"
                 )
                 return
             
