@@ -137,8 +137,8 @@ class general(commands.Cog):
             return
         pages = []
         page=discord.Embed(
-            title="Maxi Game :D",
-            description="Hallooo!!! This is maxi game and come here to witness nianny's desperate attempts to understand buttons...",
+            title="Maxi Game",
+            description="MaxiGames Help Page! Press Next to see the commands!",
             colour=self.client.primary_colour
         )
         pages.append(page)

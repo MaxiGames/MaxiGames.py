@@ -18,7 +18,21 @@ class Quiz(commands.Cog):
 
     # @cooldown(1, 20, BucketType.user)
     @commands.command()
-    async def trivia(self, ctx):
+    async def trivia(self, ctx, difficulty = 100000000000):
+        word = "hard"
+        moneyToAdd = 0
+        if(difficulty == 1):
+            word = "easy"
+            moneyToAdd = 2
+        elif(difficulty == 2):
+            word = "medium"
+            moneyToAdd = 5
+        elif(difficulty == 3):
+            word = "hard"
+            moneyToAdd = 10
+        else:
+            await ctx.reply(embed=discord.Embed(title = "Error", description="A difficulty level of 1, 2 or 3 is needed! Note that the harder the question is, the more points you will get if u get it right!", colour=self.client.primary_colour))
+            return
         r = {
             "response_code":'value1',
             "results":[
@@ -32,7 +46,7 @@ class Quiz(commands.Cog):
                 }
                 ]
             }
-        result = json.loads(requests.post("https://opentdb.com/api.php?amount=1&difficulty=easy&type=multiple", data=r).text)
+        result = json.loads(requests.post(f"https://opentdb.com/api.php?amount=1&difficulty={word}&type=multiple", data=r).text)
         results = result["results"][0]
         
         arr = results["incorrect_answers"]
@@ -44,7 +58,7 @@ class Quiz(commands.Cog):
             description += f'({count+1}) {i}\n'
             count += 1
         embed = discord.Embed(
-            title="TRIVIA- You have 10 seconds to answer",
+            title= f"TRIVIA- You have 10 seconds to answer ({word})",
             description=results["question"].replace("&quot;", '\"').replace("&#039;","\'")+'\n'+description,
         
             colour=self.client.primary_colour
@@ -89,7 +103,7 @@ class Quiz(commands.Cog):
             if doc.exists:
                 dict1 = doc.to_dict()
                 if ans == str(results["correct_answer"]):
-                    dict1["money"] = dict1["money"] + 3
+                    dict1["money"] = dict1["money"] + random.randint(0, moneyToAdd)
                     embed = discord.Embed(
                         title = "Correct Answer! You win 3 money!",
                         description = "You now have " + str(dict1["money"]) + " money!",
@@ -99,7 +113,7 @@ class Quiz(commands.Cog):
                     
                 else:
                     
-                    dict1["money"] = dict1["money"] - 1
+                    dict1["money"] = dict1["money"] - int(random.randint(0, moneyToAdd)/3)
                     embed = discord.Embed(
                         title = "Wrong Answer! You lost 1 money!",
                         description = f"You now have " + str(dict1["money"]) + f" money! The correct answer was {results['correct_answer']} :",
