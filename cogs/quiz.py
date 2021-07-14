@@ -66,7 +66,7 @@ class Quiz(commands.Cog):
                 description = " ",
                 color = self.client.primary_colour
             )
-            ctx.reply(embed=embed)
+            await ctx.reply(embed=embed)
             
         else:
             #find which option is correct????

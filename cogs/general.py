@@ -4,6 +4,8 @@ from discord.ext import commands
 from discord_components import *
 import asyncio
 
+from utils.paginator import Paginator
+
 
 class general(commands.Cog):
     def __init__(self, client):
@@ -173,50 +175,9 @@ class general(commands.Cog):
             embed=pages[page_num],
             components= [[Button(style=ButtonStyle.green, label=previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=next_symbol)]]
         )
-        def check(interation):
-            return interation.message == msg and ctx.author == interation.user
-            # print(message)
-            # print(type(message))
-            # return True
-        while True:
-            try:
-                res = await self.client.wait_for("button_click", timeout = 60.0, check = check)
-                # print(res)
-                await res.respond(
-                    type=InteractionType.DeferredUpdateMessage # , content=f"{res.component.label} pressed"
-                )
 
-                if res.component.label == previous_symbol:
-                    page_num -= 1
-                    if page_num <= 0:
-                        page_num=0
-                        await msg.edit(
-                            embed=pages[page_num],
-                            components= [[Button(style=ButtonStyle.green, label=previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=next_symbol)]]
-                        )
-                    else:
-                        await msg.edit(
-                            embed=pages[page_num],
-                            components= [[Button(style=ButtonStyle.green, label=previous_symbol), Button(style=ButtonStyle.green, label=next_symbol)]]
-                        )
-                elif res.component.label == next_symbol:
-                    page_num += 1
-                    if page_num >= len(pages)-1:
-                        page_num = len(pages)-1
-                        await msg.edit(
-                            embed=pages[page_num],
-                            components= [[Button(style=ButtonStyle.green, label=previous_symbol), Button(style=ButtonStyle.green, label=next_symbol, disabled=True)]]
-                        )
-                    else:
-                        await msg.edit(
-                            embed=pages[page_num],
-                            components= [[Button(style=ButtonStyle.green, label=previous_symbol), Button(style=ButtonStyle.green, label=next_symbol)]]
-                        )
-            except asyncio.TimeoutError:
-                await msg.edit(
-                    embed=pages[page_num]
-                )
-                return
+        page = Paginator(self.client, ctx, msg, pages, timeout=5)
+        await page.start()
 
 
 
