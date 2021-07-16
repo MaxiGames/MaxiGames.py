@@ -1,3 +1,4 @@
+
 from bs4 import BeautifulSoup as soup
 import os
 from urllib.request import urlopen as uReq
@@ -190,3 +191,4 @@ def setup(client):
 #             f"It took {totaltime} minutes to run the program! A total of {numberOfWords} words has been added to the database"
 #         )
 #         os.chdir("..")
+
