@@ -189,7 +189,9 @@ class Quiz(commands.Cog):
 
             else:
                 embed = discord.Embed(
-                    title="<@!" + ctx.author.id + "> Your answer was wrong! The correct answer was " + theanswer,
+                    title="<@!" +
+                    str(ctx.author.id) +
+                    ">Your answer was wrong! The correct answer was " + theanswer,
                     description=f"Not beeg brain :'( U lost 1 money!",
                     color=self.client.primary_colour
                 )
