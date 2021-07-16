@@ -20,7 +20,7 @@ class Quiz(commands.Cog):
         self.db = firestore.client()
 
     # @cooldown(1, 20, BucketType.user)
-    @commands.command()
+    @commands.command(name="trivia", description="Answer a trivia question using reactions! Provide a number from 1 to 3 specifying the difficulty of the trivia question you want.", usage="trivia <difficulty>")
     async def trivia(self, ctx, difficulty=100000000000):
         word = "hard"
         moneyToAdd = 0
@@ -133,7 +133,7 @@ class Quiz(commands.Cog):
                     await ctx.reply(embed=embed)
                 doc_ref.set(dict1)
 
-    @commands.command()
+    @commands.command(name="math", description="Answer a math question correctly to gain coins. If you don't get it correct you lose coins!", usage="math")
     async def math(self, ctx):
         first = random.randint(1, 100)
         second = random.randint(1, 100)
@@ -169,7 +169,7 @@ class Quiz(commands.Cog):
             messageanswer = await self.client.wait_for('message', timeout=timehehe, check=check)
             msgcontent = messageanswer.content
 
-            await self.initation.checkserver(ctx)
+            await self.initiation.checkserver(ctx)
             doc_ref = self.db.collection(u'users').document(
                 u'{}'.format(str(ctx.author.id)))
             doc = doc_ref.get()
@@ -189,9 +189,7 @@ class Quiz(commands.Cog):
 
             else:
                 embed = discord.Embed(
-                    title="<@!" +
-                    str(ctx.author.id) +
-                    ">Your answer was wrong! The correct answer was " + theanswer,
+                    title="Your answer was wrong! The correct answer was " + theanswer,
                     description=f"Not beeg brain :'( U lost 1 money!",
                     color=self.client.primary_colour
                 )

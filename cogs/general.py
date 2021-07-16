@@ -3,6 +3,7 @@ import time
 from discord.ext import commands
 from discord_components import *
 import asyncio
+import random
 
 from utils.paginator import Paginator
 
@@ -102,10 +103,10 @@ class general(commands.Cog):
 
     @commands.command()
     async def servercount(self, ctx):
-        embed=discord.Embed(
-            title = "I'm in " + str(len(self.client.guilds)) + " servers",
-            description = "Invite the bot to your server today using the link from s!invite!",
-            color = 0xBB2277
+        embed = discord.Embed(
+            title="I'm in " + str(len(self.client.guilds)) + " servers",
+            description="Invite the bot to your server today using the link from s!invite!",
+            color=0xBB2277
         )
         await ctx.send(embed=embed)
 
@@ -127,22 +128,23 @@ class general(commands.Cog):
                 description=command.description,
                 colour=self.client.primary_colour,
             )
-            usage = "\n".join([ctx.prefix + x.strip() for x in command.usage.split('\n')])
+            usage = "\n".join([ctx.prefix + x.strip()
+                               for x in command.usage.split('\n')])
             embed.add_field(name="Usage", value=f"```{usage}```", inline=False)
             if len(command.aliases) > 1:
-                embed.add_field(name="Aliases", value=f"`{'`, `'.join(command.aliases)}`")
+                embed.add_field(
+                    name="Aliases", value=f"`{'`, `'.join(command.aliases)}`")
             elif len(command.aliases) > 0:
                 embed.add_field(name="Alias", value=f"`{command.aliases[0]}`")
             await ctx.send(embed=embed)
             return
         pages = []
-        page=discord.Embed(
+        page = discord.Embed(
             title="Maxi Game",
             description="MaxiGames Help Page! Press Next to see the commands!",
             colour=self.client.primary_colour
         )
         pages.append(page)
-
 
         page = discord.Embed(
             title="Commands!!!",
@@ -167,7 +169,6 @@ class general(commands.Cog):
 
         # await ctx.send(embed=page)
 
-
         page_num = 0
         previous_symbol = "⬅️ Previous"
         next_symbol = "Next ➡️"
@@ -178,8 +179,10 @@ class general(commands.Cog):
         page = Paginator(self.client, ctx, msg, pages, timeout=5)
         await page.start()
 
-
-
+    @commands.command(name="randnum", description="Gives you a random number between the two numbers you specified.", usage="randnum <minimum number> <maximum number>")
+    async def randnum(self, ctx, start: int, end: int):
+        answer = random.randint(start, end)
+        await ctx.reply("Your number was " + str(answer))
 
 
 def setup(client):
