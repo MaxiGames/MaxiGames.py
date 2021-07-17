@@ -65,7 +65,6 @@ class Hangman(commands.Cog):
             print(wordChoice[i])
             currentGuess.append("□")
             answer = answer + "□" + " "
-            print(answer)
         
         embed = discord.Embed(
             title = "Your hangman game: ",
@@ -97,7 +96,7 @@ class Hangman(commands.Cog):
                     else:
                         embed = discord.Embed(
                             title = "Pog! Your guess is correct!",
-                            description = f"The word now is {wordChoice}! You have {lives} lives left",
+                            description = f"The word now is {' '.join(currentGuess)}! You have {lives} lives left",
                             color = self.client.primary_colour
                         )
                     await ctx.reply(embed=embed)
@@ -109,6 +108,7 @@ class Hangman(commands.Cog):
                             description = "The word was " + wordChoice,
                             color = self.client.primary_colour
                         )
+                        answer = messageanswer
                         await message.reply(embed=embed)
                     else:
                         lives -= 1
