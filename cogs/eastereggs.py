@@ -20,7 +20,7 @@ class EasterEggs(commands.Cog):
             inline = False
         )
         await ctx.author.send(embed=embed)
-    @commands.command
+    @commands.command()
     async def whoareu(self, ctx):
         embed = discord.Embed(title = "Hey! Looks like you found this easter egg!",description = "Nice.",color = self.client.primary_colour)
         embed.add_field(
