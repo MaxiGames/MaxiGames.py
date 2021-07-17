@@ -62,7 +62,7 @@ class Paginator:
         components = [add_on_buttons]
         await self.message.edit(
             embed=self.pages[self.page_num],
-            components=component
+            components=components
         )
 
         def check(interation):

@@ -335,8 +335,6 @@ class Economy(commands.Cog):
         aliases=["se","snakeyes"]
     )
     async def se(self, ctx,amount:int):
-
-       
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(
             u'{}'.format(str(ctx.author.id)))
