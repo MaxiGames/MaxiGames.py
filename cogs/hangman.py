@@ -58,7 +58,10 @@ class Hangman(commands.Cog):
 
         wordChoice = random.choice(wordList)
         while True:
-            if isalpha(wordChoice) == True:
+            res = True
+            for i in wordChoice:
+                res = res and isalpha(i)
+            if res:
                 break
             else:
                 wordChoice = random.choice(wordList)
