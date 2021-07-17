@@ -60,7 +60,7 @@ class Initiation (commands.Cog):
             if data != None:
                 return data
         else:
-            await self.initiate(ctx)
+            await self.serverinitiate(ctx)  
             if data != None:
                 dat = {}
                 docs = self.db.collection(u'servers').stream()
