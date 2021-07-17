@@ -21,7 +21,7 @@ class Initiation (commands.Cog):
         embed = discord.Embed(
             title="Account Initiation",
             description="Your account has been initiated. Now you can start running currency commands :D",
-            colour=discord.Colour.orange()
+            colour=self.client.primary_colour
         )
         if isinstance(ctx, discord.Message):
             await ctx.channel.send(embed=embed)
