@@ -183,7 +183,9 @@ class general(commands.Cog):
     async def randnum(self, ctx, start: int, end: int):
         answer = random.randint(start, end)
         await ctx.reply("Your number was " + str(answer))
-
+    @commands.command()
+    async def empty(self,ctx):
+        await ctx.reply("‎")
 
 def setup(client):
     client.add_cog(general(client))

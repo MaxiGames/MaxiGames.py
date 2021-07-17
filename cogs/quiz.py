@@ -10,8 +10,6 @@ from firebase_admin import firestore
 import os
 import copy
 
-guess_questions = ["What is 1+1?", ""]
-guess_answers = ["2"]
 alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
@@ -286,7 +284,7 @@ class Quiz(commands.Cog):
                 break
         doc_ref.set(dict1)
 
-
+    
 def setup(client):
     client.add_cog(Quiz(client))
 
