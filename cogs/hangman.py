@@ -74,7 +74,7 @@ class Hangman(commands.Cog):
         lives = 5
         await ctx.reply(embed=embed)
 
-        while answer != wordChoice:
+        while answer != wordChoice and lives > 0:
             try:
                 message = await self.client.wait_for('message', timeout=45, check=check)
                 messageanswer = message.content.lower()
@@ -121,6 +121,20 @@ class Hangman(commands.Cog):
             except asyncio.TimeoutError:
                 await ctx.reply(embed = discord.Embed(title="Hangman game aborted due to Timeout", description="", colour=0x00ff00))
                 return
+        if lives == 0:
+            embed = discord.Embed(
+                title = "You lost!",
+                description = "The word was " + wordChoice,
+                color = 0xff0000
+            )
+            await ctx.reply(embed=embed)
+        else:
+            embed = discord.Embed(
+                title = "You won!",
+                description = "The word was " + wordChoice,
+                color = 0x00ff00
+            )
+            await ctx.reply(embed=embed)
 
 
 # ! DO NOT DELETE- DATABASE RETRIEVER
