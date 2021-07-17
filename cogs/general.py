@@ -22,10 +22,6 @@ class General(commands.Cog):
         }
         self.hidden = False
 
-    @cog_ext.cog_slash(name="test")
-    async def _test(self, ctx: SlashContext):
-        embed = discord.Embed(title="Embed Test")
-        await ctx.send(embed=embed)
 
     @commands.command()
     async def hallo(self, ctx):
@@ -118,7 +114,6 @@ class General(commands.Cog):
 
     @commands.command(name="help", description="Shows this help menu or information about a specific command if specified", usage="help")
     async def help(self, ctx, *cmd):
-
         if len(cmd)>0:
             command = " ".join(cmd)
             command = self.client.get_command(command.lower())
@@ -191,7 +186,7 @@ class General(commands.Cog):
         page = Paginator(self.client, ctx, msg, pages, buttons=buttons,timeout=60)
         await page.start()
     
-    @cog_ext.cog_slash(name="help")
+    @cog_ext.cog_slash(name="help", description="Shows the help menu :D")
     async def help_command(self, ctx: SlashContext):
         await self.help(ctx)
 

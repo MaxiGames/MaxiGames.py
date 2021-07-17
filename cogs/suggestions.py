@@ -10,7 +10,7 @@ class Suggestions (commands.Cog):
         self.hidden = False
 
     @check.is_banned()
-    @commands.command(name="Suggestions", description="Suggest anything that you want us to know about!!! Be it a game that you really want to be implemented, or some comments you have on what can be improved :D", usage="suggest <suggestion>")
+    @commands.command(name="Suggestions", description="Suggest anything that you want us to know about!!! Be it a game that you really want to be implemented, or some comments you have on what can be improved :D", usage="suggest <suggestion>", aliases=["suggest"])
     async def suggest(self, ctx, *msg):
         suggestion = " ".join(msg[:])
         channel = self.client.get_channel(865821669730156544)
@@ -31,6 +31,8 @@ class Suggestions (commands.Cog):
 
         def check(reaction, user):
             return user == ctx.author and reaction.message == message and reaction.emoji == "❌"
+        await message.add_reaction("⬆️")
+        await message.add_reaction("⬇️")
         await message.add_reaction("❌")
         reaction, user = await self.client.wait_for('reaction_add', check=check)
         await message.delete()
