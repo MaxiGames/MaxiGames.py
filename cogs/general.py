@@ -8,7 +8,7 @@ import random
 from utils.paginator import Paginator
 
 
-class general(commands.Cog):
+class General(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.dates = {
@@ -20,6 +20,7 @@ class general(commands.Cog):
             5: "Saturday",
             6: "Sunday"
         }
+        self.hidden = False
 
     @commands.command()
     async def hallo(self, ctx):
@@ -111,7 +112,7 @@ class general(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(name="help", description="Shows this help menu or information about a specific command if specified", usage="help")
-    async def hallohelp(self, ctx, command: str = None):
+    async def help(self, ctx, command: str = None):
         if command:
             command = self.client.get_command(command.lower())
             if not command:
@@ -153,9 +154,9 @@ class general(commands.Cog):
         )
         page.set_thumbnail(url=self.client.user.avatar_url)
         for _, cog_name in enumerate(self.client.cogs):
-            if cog_name in ["Owner", "Staff", "Ban"]:
-                continue
             cog = self.client.get_cog(cog_name)
+            if cog.hidden:
+                continue
             cog_commands = cog.get_commands()
             if len(cog_commands) == 0:
                 continue
@@ -176,8 +177,9 @@ class general(commands.Cog):
             embed=pages[page_num],
         )
 
-        page = Paginator(self.client, ctx, msg, pages, timeout=120)
+        page = Paginator(self.client, ctx, msg, pages, timeout=10)
         await page.start()
+        await ctx.message.delete()
 
     @commands.command(name="randnum", description="Gives you a random number between the two numbers you specified.", usage="randnum <minimum number> <maximum number>")
     async def randnum(self, ctx, start: int, end: int):
@@ -188,4 +190,4 @@ class general(commands.Cog):
         await ctx.reply("‎")
 
 def setup(client):
-    client.add_cog(general(client))
+    client.add_cog(General(client))

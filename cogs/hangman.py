@@ -17,6 +17,7 @@ import time
 class Hangman(commands.Cog):
     def __init__(self, client):
         self.client = client
+        self.hidden = False
 
     @commands.command()
     async def hangman(self, ctx):

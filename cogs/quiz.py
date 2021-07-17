@@ -18,6 +18,7 @@ class Quiz(commands.Cog):
         self.client = client
         self.initiation = self.client.get_cog("Initiation")
         self.db = firestore.client()
+        self.hidden = False
 
     # @cooldown(1, 20, BucketType.user)
     @commands.command(name="trivia", description="Answer a trivia question using reactions! Provide a number from 1 to 3 specifying the difficulty of the trivia question you want.", usage="trivia <difficulty>")

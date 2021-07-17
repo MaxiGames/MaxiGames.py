@@ -2,10 +2,12 @@ import asyncio
 from typing import List, Optional, Union
 
 import discord
+from discord import embeds
 from discord.ext import commands
 
 from discord_components import Button, ButtonStyle, InteractionType
 
+import copy
 
 #creds https://github.com/khk4912/EZPaginator/blob/master/EZPaginator/EZPaginator.py
 class Paginator:
@@ -35,7 +37,6 @@ class Paginator:
         self.next_symbol = next_symbol
         self.timeout = timeout
         self.page_num = start_page
-        print(f"button: {buttons}")
 
         if (not(
             isinstance(client, discord.Client)
@@ -47,22 +48,15 @@ class Paginator:
         # print("values initiated")
     
     async def start(self):
-        # print("started")
         add_on_buttons: List[Button] = [Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)]
-        # print(self.buttons+add_on_buttons)
-        # print(f"component 1: {component}")
-        component: List[List[Button]] = self.buttons
-        
-        print(f"buttons[0]: {self.buttons}, type: {type(self.buttons[0])}")
-        print(f"component[0]: {component[0]}, type:{type(component[0])}")
-        print(f"add_on_buttons: {add_on_buttons}, type: {type(add_on_buttons)}")
+        component = copy.copy(self.buttons)
         component[0] = add_on_buttons + component[0]
         
         # print(component)
         components = [add_on_buttons]
         await self.message.edit(
             embed=self.pages[self.page_num],
-            components=components
+            components=copy.copy(component)
         )
 
         def check(interation):
@@ -82,44 +76,55 @@ class Paginator:
                         self.page_num=0
                         add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)]
 
+                        component = copy.copy(self.buttons)
+                        component[0] = add_on_buttons + component[0]
+                        
+                        # print(component)
                         components = [add_on_buttons]
-                        print(self.buttons+add_on_buttons)
                         await self.message.edit(
                             embed=self.pages[self.page_num],
-                            components= components
+                            components=copy.copy(component)
                         )
                     else:
                         add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol)]
+                        ccomponent = copy.copy(self.buttons)
+                        component[0] = add_on_buttons + component[0]
+                        
+                        # print(component)
                         components = [add_on_buttons]
-
                         await self.message.edit(
                             embed=self.pages[self.page_num],
-                            components= components
+                            components=copy.copy(component)
                         )
                 elif res.component.label == self.next_symbol:
                     self.page_num += 1
                     if self.page_num >= len(self.pages)-1:
                         self.page_num = len(self.pages)-1
                         add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol, disabled=True)]
+                        component = copy.copy(self.buttons)
+                        component[0] = add_on_buttons + component[0]
+                        
+                        # print(component)
                         components = [add_on_buttons]
-
                         await self.message.edit(
                             embed=self.pages[self.page_num],
-                            components= components
+                            components=copy.copy(component)
                         )
                     else:
 
                         add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol)] + self.buttons[0]
+                        component = copy.copy(self.buttons)
+                        component[0] = add_on_buttons + component[0]
+                        
+                        # print(component)
                         components = [add_on_buttons]
                         await self.message.edit(
                             embed=self.pages[self.page_num],
-                            components= components
+                            components=copy.copy(component)
                         )
 
             except asyncio.TimeoutError:
                 # print("Times up")
-                await self.message.edit(
-                    "Hallo"
-                )
+                await self.message.delete()
                 return
             

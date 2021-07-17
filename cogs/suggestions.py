@@ -1,15 +1,13 @@
 import discord
 from discord.ext import commands
 import os
-import firebase_admin
-from firebase_admin import firestore
 from utils import check
 
 
 class Suggestions (commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.db = firestore.client()
+        self.hidden = False
 
     @check.is_banned()
     @commands.command(name="Suggestions", description="Suggest anything that you want us to know about!!! Be it a game that you really want to be implemented, or some comments you have on what can be improved :D", usage="suggest <suggestion>")

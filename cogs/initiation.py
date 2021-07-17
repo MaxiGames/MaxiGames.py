@@ -9,6 +9,7 @@ class Initiation (commands.Cog):
     def __init__(self, client):
         self.client = client
         self.db = firestore.client()
+        self.hidden = True
 
 
     async def initiate(self, ctx):

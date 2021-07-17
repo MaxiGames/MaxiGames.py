@@ -5,6 +5,7 @@ from discord.ext import commands
 class TicTacToe(commands.Cog):
     def __init__(self, client):
         self.client = client
+        self.hidden = True
 	
     @commands.command()
     async def ttt(self, ctx):

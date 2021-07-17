@@ -14,6 +14,7 @@ class Economy(commands.Cog):
         self.client = client
         self.db = firestore.client()
         self.initation = self.client.get_cog("Initiation")
+        self.hidden = False
 
     # Curb gambling addiction
     @check.is_banned()

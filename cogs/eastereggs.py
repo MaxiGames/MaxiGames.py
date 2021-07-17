@@ -1,12 +1,14 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands.core import has_guild_permissions
 # import tictactoe
 
 class EasterEggs(commands.Cog):
     def __init__(self, client):
         self.client = client
+        self.hidden = True
 	
-    @commands.command()
+    @commands.command(hidden=True)
     async def whoru(self, ctx):
         embed = discord.Embed(title = "Hey! Looks like you found this easter egg!",description = "Nice.",color = self.client.primary_colour)
         embed.add_field(
@@ -20,7 +22,7 @@ class EasterEggs(commands.Cog):
             inline = False
         )
         await ctx.author.send(embed=embed)
-    @commands.command()
+    @commands.command(hidden=True)
     async def whoareu(self, ctx):
         embed = discord.Embed(title = "Hey! Looks like you found this easter egg!",description = "Nice.",color = self.client.primary_colour)
         embed.add_field(

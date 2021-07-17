@@ -4,6 +4,7 @@ from discord.ext import commands
 class Errors(commands.Cog):
     def __init__(self, client):
         self.client = client
+        self.hidden = True
     
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error, bypass=False):
