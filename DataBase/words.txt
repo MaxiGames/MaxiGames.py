@@ -41,7 +41,6 @@ Dogs
 Doctors and Dentists
 Dolch Words
 Driving
-Duos
 Elections
 Elements
 Emotions and Feelings
@@ -53,7 +52,6 @@ Fire Fighting
 Fish
 Flowers
 Food
-Friends, Acquaintances, and Other People
 Fruit
 Furniture
 Geography
@@ -86,17 +84,12 @@ Music Theory
 New Year's Eve
 Ocean
 Office and Business
-Opposites
-Pairs
-Palindromes
 People (Non-Family)
 Personal Qualities
 Pirates
 Plants
 Post Office
-Prepositions
 President's Day
-Pronouns
 Reptiles
 Restaurant
 Roadways
