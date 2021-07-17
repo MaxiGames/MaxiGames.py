@@ -52,7 +52,7 @@ class Hangman(commands.Cog):
         await ctx.reply(embed=embed)
         def check(msg):
             return msg.author == ctx.author and msg.channel == ctx.channel
-        while answer != wordc:
+        while currguess != corrword:
             messagen = await self.client.wait_for('message', timeout=45, check=check)
             messageanswer = messagen.content.lower()
             if len(str(messageanswer)) == 1:
@@ -61,27 +61,30 @@ class Hangman(commands.Cog):
                 for i in range(len(corrword)):
                     if messageanswer == corrword[i]:
                         currguess[i] = corrword[i]
-                        answer += currguess[i]
+                        
                         ok = 1
+                    answer += currguess[i]
                 if ok == 0:
                     embed = discord.Embed(
                         title = "Oof... Your guess wasn't correct.",
                         description = "Try again using individual character or whole word guesses!",
                         color = 0xff0000
                     )
+                    await messagen.reply(embed=embed)
                 else:
                     embed = discord.Embed(
                         title = "Pog! Your guess is correct!",
                         description = "The word now is " + answer,
                         color = self.client.primary_colour
                     )
-                await ctx.reply(embed=embed)
+                    await messagen.reply(embed=embed)
+                    currguess = corrword
+                
 
 
                 
             else:
-                print(str(messageanswer)) #debug
-                print(wordc) #debug
+                
                 if messageanswer == wordc:
                 
                     embed=discord.Embed(
@@ -97,6 +100,9 @@ class Hangman(commands.Cog):
                         color = 0xff0000
                     )
                     await messagen.reply(embed=embed)
+            print(currguess)
+            print(corrword)
+
     #     while True: 
         
     #     while True: 
