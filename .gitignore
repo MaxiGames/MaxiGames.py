@@ -5,3 +5,4 @@ __pycache__
 .replit
 ban.py
 .vscode
+/env
