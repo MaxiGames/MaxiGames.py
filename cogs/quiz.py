@@ -14,7 +14,7 @@ import copy
 alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
-class Quiz(commands.Cog):
+class Games(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.initiation = self.client.get_cog("Initiation")
@@ -288,7 +288,7 @@ class Quiz(commands.Cog):
 
     
 def setup(client):
-    client.add_cog(Quiz(client))
+    client.add_cog(Games(client))
 
 
 def check(msg, ctx):
