@@ -186,7 +186,7 @@ If you think you do not have it (checking system to see if u already have it or 
     if a == "1":
         while True:
             try:
-                os.chdir(str(os.getcwd()) + "./DataBase")
+                os.chdir(str(os.getcwd()) + "/DataBase")
                 break
             except:
                 print("U do not have a Database, creating it now...")
