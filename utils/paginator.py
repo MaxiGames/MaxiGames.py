@@ -49,14 +49,15 @@ class Paginator:
         # print("started")
         add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)]
         print(self.buttons+add_on_buttons)
-        # components = self.buttons
-        # print(type(add_on_buttons))
-        # print(type(components))
+        component = self.buttons
+        print(f"component: {component}")
+        print(f"buttons: {self.buttons}")
+        component[0] = add_on_buttons + self.buttons[0]
+        print(component)
         components = [add_on_buttons]
-        # print(type(components))
         await self.message.edit(
             embed=self.pages[self.page_num],
-            components=components
+            components=component
         )
 
         def check(interation):
@@ -75,6 +76,8 @@ class Paginator:
                     if self.page_num <= 0:
                         self.page_num=0
                         add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)]
+
+                        components = [add_on_buttons]
                         print(self.buttons+add_on_buttons)
                         await self.message.edit(
                             embed=self.pages[self.page_num],
@@ -82,7 +85,8 @@ class Paginator:
                         )
                     else:
                         add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol)]
-                        print(self.buttons+add_on_buttons)
+                        components = [add_on_buttons]
+
                         await self.message.edit(
                             embed=self.pages[self.page_num],
                             components= components
@@ -91,16 +95,20 @@ class Paginator:
                     self.page_num += 1
                     if self.page_num >= len(self.pages)-1:
                         self.page_num = len(self.pages)-1
-                        components = [Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)]
+                        add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol, disabled=True)]
+                        components = [add_on_buttons]
+
                         await self.message.edit(
                             embed=self.pages[self.page_num],
-                            components= [[Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol, disabled=True)]]
+                            components= components
                         )
                     else:
-                        components = [Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)] + self.buttons[0]
+
+                        add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol)] + self.buttons[0]
+                        components = [add_on_buttons]
                         await self.message.edit(
                             embed=self.pages[self.page_num],
-                            components= [[Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol)]]
+                            components= components
                         )
 
             except asyncio.TimeoutError:

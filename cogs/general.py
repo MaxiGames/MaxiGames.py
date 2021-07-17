@@ -176,7 +176,7 @@ class general(commands.Cog):
             embed=pages[page_num],
         )
 
-        page = Paginator(self.client, ctx, msg, pages, timeout=5)
+        page = Paginator(self.client, ctx, msg, pages, timeout=120)
         await page.start()
 
     @commands.command(name="randnum", description="Gives you a random number between the two numbers you specified.", usage="randnum <minimum number> <maximum number>")
