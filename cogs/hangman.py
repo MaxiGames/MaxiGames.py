@@ -45,6 +45,7 @@ class Hangman(commands.Cog):
 
             except asyncio.TimeoutError:
                 await ctx.reply(embed = discord.Embed(title="Hangman game aborted due to Timeout", description="", colour=0x00ff00))
+                return
         
         if chosenTopic == "":
             return

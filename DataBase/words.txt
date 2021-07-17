@@ -13,7 +13,6 @@ Backyard
 Baseball
 Bathroom
 Beach
-"Big"
 Birds
 Biomes
 Birthday
@@ -29,7 +28,6 @@ Cars
 Castles, Kings, Queens
 Cats
 Chinese New Year
-Christmas (secular)
 Circus and Carnival
 Clothing
 Colors
@@ -66,12 +64,9 @@ Friends, Acquaintances, and Other People
 Fruit
 Furniture
 Geography
-Good Luck Symbols
 Grammar
-Groundhog Day
 Halloween
 Happiness
-"Happy" synonyms
 Hats
 Herbs and Spices
 Holidays
@@ -80,7 +75,6 @@ Household Devices
 Housing and Dwellings
 Insects
 Interjections
-Irregular Verbs
 Jobs and Occupations
 Kitchen
 Landforms
@@ -88,8 +82,6 @@ Languages
 Leaders
 Legal Terms
 Mammals
-"Many"
-Martin Luther King, Jr.
 Math and Numbers
 Measurement
 Metals
@@ -101,7 +93,6 @@ Musical Instruments
 Music Theory
 New Year's Eve
 Negative Words
-Nouns that are Verbs
 Ocean
 Office and Business
 Opposites
@@ -116,13 +107,11 @@ Post Office
 Prepositions
 President's Day
 Pronouns
-Regular Verbs
 Reptiles
 Restaurant
 Roadways
 Rocks and Minerals
 Rooms
-"Said"
 School
 Science
 Science Fields
@@ -143,23 +132,12 @@ Tools
 Transportation and Vehicles
 Trees
 Types of Cars
-US Constitution
-US Flag Day
-US States
 Vacation
 Valentine's Day
 Vegetables
 Vehicles and Transportation
-Verbs
-Verbs, Irregular
-Verbs, Regular
-Verbs that are Nouns
 Virtues
 Water
-Ways to Say Big
-Ways to Say Happy
-Ways to Say Many
-Ways to Say Said
 Weapons
 Weather
 Weights and Measures
