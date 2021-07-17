@@ -48,6 +48,7 @@ class Paginator:
     async def start(self):
         # print("started")
         add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)]
+        print(self.buttons+add_on_buttons)
         # components = self.buttons
         # print(type(add_on_buttons))
         # print(type(components))
@@ -74,15 +75,14 @@ class Paginator:
                     if self.page_num <= 0:
                         self.page_num=0
                         add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True), Button(style=ButtonStyle.green, label=self.next_symbol)]
-                        # print(type(add_on_buttons))
-                        # print(type(components))
-                        components = [add_on_buttons]
+                        print(self.buttons+add_on_buttons)
                         await self.message.edit(
                             embed=self.pages[self.page_num],
                             components= components
                         )
                     else:
-                        components = [Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol)]
+                        add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol)]
+                        print(self.buttons+add_on_buttons)
                         await self.message.edit(
                             embed=self.pages[self.page_num],
                             components= components
