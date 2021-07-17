@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup as soup
 import sys
 import asyncio
 import time
-
+alpha = "abcdefghijklmnopqrstuvwxyz "
 class Hangman(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -71,8 +71,13 @@ class Hangman(commands.Cog):
         for i in range(len(wordChoice)):
             correctWord.append(wordChoice[i])
             print(wordChoice[i])
-            currentGuess.append("□")
-            answer = answer + "□" + " "
+            if wordChoice[i] == " ":
+                answer = answer + " "
+                currentGuess.append(" ") 
+            else:
+
+                currentGuess.append("□") 
+                answer = answer + "□"
         
         embed = discord.Embed(
             title = "Your hangman game: ",
