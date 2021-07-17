@@ -125,6 +125,13 @@ class Paginator:
 
             except asyncio.TimeoutError:
                 # print("Times up")
-                await self.message.delete()
+                component = copy.copy(self.buttons)
+                if component != [[]]:
+                    await self.message.edit(
+                        embed=self.pages[self.page_num],
+                        components=copy.copy(component)
+                    )
+                else:
+                    await self.message.delete()
                 return
             

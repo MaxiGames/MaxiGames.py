@@ -88,7 +88,7 @@ class Counting(commands.Cog):
                     str(message.guild.id)).set(dict2)
 
     @check.is_admin()
-    @commands.command(name="Add Channel", aliases=["addc"])
+    @commands.command(name="addchannel", description="Adds a counting channel, from which counts will be recorded :D", usage="addchannel <channel name (empty if referring to current channel)>", aliases=["addc"])
     async def add_counting_channel(self, ctx, name: str = None):
         self.data = await self.initation.checkserver(ctx, self.data)
         if name == None:
@@ -115,7 +115,7 @@ class Counting(commands.Cog):
         print("add counting channel")
 
     @check.is_admin()
-    @commands.command(name="Remove Channel", aliases=["rcc"])
+    @commands.command(name="removechannel", aliases=["rcc"])
     async def remove_counting_channel(self, ctx, name: str = None):
         self.data = await self.initation.checkserver(ctx, self.data)
         if name == None:
@@ -173,9 +173,9 @@ class Counting(commands.Cog):
         await ctx.send(embed=embed)
         print("setcount")
 
-    @commands.command(name="Counting Channel Info",
+    @commands.command(name="channelinfo",
                       description="Returns info about the current channel and counting statistics.",
-                      usage="countingchannel", aliases=["csi", "cs", "countingchanne;"]
+                      usage="countingchannel", aliases=["csi", "cs", "countingchannel"]
                       )
     async def channelcountinginfo(self, ctx):
         embed = discord.Embed(
@@ -193,7 +193,7 @@ class Counting(commands.Cog):
         print("counting channel info")
 
     @commands.command(
-        name="Counting Info",
+        name="countinginfo",
         description="Shows the statistics of all counting channels in the current server.",
         usage="countinfo", aliases=["ci", "countinfo"]
     )
@@ -221,7 +221,7 @@ class Counting(commands.Cog):
         print("cointing info")
 
     @commands.command(
-        name="Counting Leaderboards",
+        name="countingleaderboards",
         description="The very best of all counting channels from all servers.",
         usage="countingl",
         aliases=["cl", "countingl", "cleaderb", "cleaderboards"]

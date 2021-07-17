@@ -13,3 +13,4 @@ class Hacks(commands.Cog):
 
 def setup(client):
     client.add_cog(Hacks(client))
+

@@ -4,7 +4,7 @@ from discord.ext import commands
 from discord_components import *
 import asyncio
 import random
-
+from discord_slash import cog_ext, SlashContext
 from utils.paginator import Paginator
 
 
@@ -21,6 +21,11 @@ class General(commands.Cog):
             6: "Sunday"
         }
         self.hidden = False
+
+    @cog_ext.cog_slash(name="test")
+    async def _test(self, ctx: SlashContext):
+        embed = discord.Embed(title="Embed Test")
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def hallo(self, ctx):
@@ -112,8 +117,10 @@ class General(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(name="help", description="Shows this help menu or information about a specific command if specified", usage="help")
-    async def help(self, ctx, command: str = None):
-        if command:
+    async def help(self, ctx, *cmd):
+
+        if len(cmd)>0:
+            command = " ".join(cmd)
             command = self.client.get_command(command.lower())
             if not command:
                 await ctx.send(
@@ -141,10 +148,14 @@ class General(commands.Cog):
             return
         pages = []
         page = discord.Embed(
-            title="Maxi Game",
-            description="MaxiGames Help Page! Press Next to see the commands!",
+            title="Help",
+            description="""Halloooo and thank you for using Maxigames, a fun, random, cheerful and gambling-addiction-curbing bot developed as part of an initiative to curb gambling addiction and fill everyones' lives with bad puns, minigames and happiness!!!
+
+            Feel free to invite this bot to your own server from the link below, or even join our support server, if you have any questions or suggestions :D""",
             colour=self.client.primary_colour
         )
+        page.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+        page.set_footer(text="Press Next to see the commands :D")
         pages.append(page)
 
         page = discord.Embed(
@@ -176,10 +187,13 @@ class General(commands.Cog):
         msg = await ctx.send(
             embed=pages[page_num],
         )
-
-        page = Paginator(self.client, ctx, msg, pages, timeout=10)
+        buttons = [[Button(style=ButtonStyle.URL, label="Invite :D", url="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=8&scope=bot%20applications.commands"), Button(style=ButtonStyle.URL, label="Support Server!!!", url="https://discord.gg/BNm87Cvdx3")]]
+        page = Paginator(self.client, ctx, msg, pages, buttons=buttons,timeout=60)
         await page.start()
-        await ctx.message.delete()
+    
+    @cog_ext.cog_slash(name="help")
+    async def help_command(self, ctx: SlashContext):
+        await self.help(ctx)
 
     @commands.command(name="randnum", description="Gives you a random number between the two numbers you specified.", usage="randnum <minimum number> <maximum number>")
     async def randnum(self, ctx, start: int, end: int):
