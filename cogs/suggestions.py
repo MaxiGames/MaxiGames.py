@@ -22,8 +22,13 @@ class Suggestions (commands.Cog):
             colour=self.client.primary_colour
         )
         embed.add_field(name="Suggestion", value=suggestion, inline=False)
-        await channel.send(embed=embed)
+        message = await channel.send(embed=embed)
         await ctx.reply("Suggestion acknowledged")
+        def check(reaction, user):
+            return user == ctx.author and reaction.message == message and reaction.emoji == "❌"
+        await message.add_reaction("❌")
+        reaction, user = await self.client.wait_for('reaction_add', timeout=10.0, check=check)
+        await message.delete()
 
 
 
