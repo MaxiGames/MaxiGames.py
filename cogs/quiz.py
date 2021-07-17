@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ext.commands import cooldown, BucketType
 import random
 import requests
+import math
 import json
 import asyncio
 import firebase_admin
@@ -248,7 +249,7 @@ class Quiz(commands.Cog):
                 msgcontent = messageanswer.content
                 if msgcontent in correctWords:
                     toAdd = len(msgcontent)
-                    dict1["money"] += toAdd
+                    dict1["money"] += math.floor(toAdd*1.5)
                     moneynow = dict1["money"]
                     embed = discord.Embed(
                         title="Correct answer",
