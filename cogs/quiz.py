@@ -7,6 +7,8 @@ import json
 import asyncio
 import firebase_admin
 from firebase_admin import firestore
+import os
+import copy
 
 guess_questions = ["What is 1+1?", ""]
 guess_answers = ["2"]
@@ -16,7 +18,7 @@ alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 class Quiz(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.initation = self.client.get_cog("Initiation")
+        self.initiation = self.client.get_cog("Initiation")
         self.db = firestore.client()
 
     # @cooldown(1, 20, BucketType.user)
@@ -102,7 +104,7 @@ class Quiz(commands.Cog):
             else:
                 return
             ans = arr[index]
-            await self.initation.checkserver(ctx)
+            await self.initiation.checkserver(ctx)
             doc_ref = self.db.collection(u'users').document(
                 u'{}'.format(str(ctx.author.id)))
             doc = doc_ref.get()
@@ -205,6 +207,84 @@ class Quiz(commands.Cog):
                 color=self.client.primary_colour
             )
             await ctx.reply(embed=embed)
+
+    @commands.command(name="scramble", description="Try to unscramble a word!", usage="scramble")
+    async def scramble(self, ctx):
+        wordCount = 5
+        chosenWords = []
+        correctWords = []
+        with open(file=str(os.getcwd()) + "/cogs/word.txt", mode="r") as f:
+            wordDict = f.read().split('\n')
+            for i in range(wordCount):
+                firstWord = list(random.choice(wordDict))
+                word = copy.copy(firstWord)
+                random.shuffle(firstWord) 
+                newWord = ''.join(word)
+                newStartWord = ''.join(firstWord)
+                chosenWords.append(newStartWord)
+                correctWords.append(newWord)
+        print(correctWords)
+        embed = discord.Embed(
+            title="Scrambled words",
+            description=f"The words you have to unscramble are: {', '.join(chosenWords)}",
+            color=self.client.primary_colour
+        )
+        await ctx.reply(embed=embed)
+        await ctx.send("You have 1 minute to unscramble the word. Everytime u send a message and it contains a correct word, the timer will reset")
+
+        # firebase 
+        def check(msg):
+            return msg.author == ctx.author and msg.channel == ctx.channel
+        await self.initiation.checkserver(ctx)
+        doc_ref = self.db.collection(u'users').document(u'{}'.format(str(ctx.author.id)))
+        doc = doc_ref.get()
+        if doc.exists == False:
+            print("Nonexistant database")
+            return
+        dict1 = doc.to_dict()
+
+        while True:
+            try:
+                messageanswer = await self.client.wait_for('message', timeout=60, check=check)
+                msgcontent = messageanswer.content
+                if msgcontent in correctWords:
+                    toAdd = len(msgcontent)
+                    dict1["money"] += toAdd
+                    moneynow = dict1["money"]
+                    embed = discord.Embed(
+                        title="Correct answer",
+                        description=f"The word was {msgcontent}, you gained {toAdd} money! You now have {moneynow} money! :D",
+                        color=self.client.primary_colour
+                    )
+                    await messageanswer.reply(embed=embed)
+                    correctWords.remove(msgcontent)
+                    if len(chosenWords) == 0:
+                        embed = discord.Embed(
+                            title="You won!",
+                            description="You have won the game!",
+                            color=self.client.primary_colour
+                        )
+                        await messageanswer.reply(embed=embed)
+                        break
+                else:
+                    embed = discord.Embed(
+                        title="Wrong answer",
+                        description="Continue guessing. Oof. Oof. Oof.",
+                        color=0xff0000
+                    )
+                    await messageanswer.reply(embed=embed)
+
+            except asyncio.TimeoutError:
+                lost = random.randint(1, 10)
+                dict1["money"] -= lost
+                embed = discord.Embed(
+                    title="Time has run out...",
+                    description=f"How saddening, you lost {lost} money, you currently have {dict1['money']}",
+                    color=self.client.primary_colour
+                )
+                await ctx.reply(embed=embed)
+                break
+        doc_ref.set(dict1)
 
 
 def setup(client):
