@@ -15,7 +15,8 @@ class Initiation (commands.Cog):
         self.doc_ref = self.db.collection(u'users').document(u'{}'.format(str(ctx.author.id)))
         self.doc_ref.set({
             u'money': 0,
-            u'countingsaves': 0
+            u'countingsaves': 0,
+            u'name': str(ctx.author.name),
         })
         await self.serverinitiate(ctx)
         embed = discord.Embed(
