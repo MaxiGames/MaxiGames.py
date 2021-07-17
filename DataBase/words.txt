@@ -41,7 +41,6 @@ Dogs
 Doctors and Dentists
 Dolch Words
 Driving
-Duos
 Elections
 Elements
 Emotions and Feelings
@@ -53,7 +52,6 @@ Fire Fighting
 Fish
 Flowers
 Food
-Friends, Acquaintances, and Other People
 Fruit
 Furniture
 Geography
@@ -91,9 +89,7 @@ Personal Qualities
 Pirates
 Plants
 Post Office
-Prepositions
 President's Day
-Pronouns
 Reptiles
 Restaurant
 Roadways
