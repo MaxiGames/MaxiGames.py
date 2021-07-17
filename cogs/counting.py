@@ -114,7 +114,7 @@ class Counting(commands.Cog):
         print("add counting channel")
 
     @check.is_admin()
-    @commands.command(name="Remove Channel")
+    @commands.command(name="Remove Channel", aliases=["rcc"])
     async def remove_counting_channel(self, ctx, name: str = None):
         self.data = await self.initation.checkserver(ctx, self.data)
         if name == None:
