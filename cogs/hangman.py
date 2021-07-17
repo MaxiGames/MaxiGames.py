@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup as soup
 import os
 from urllib.request import urlopen as uReq
 import bs4
+import random
 import time
 import discord
 from discord.ext import commands
@@ -13,6 +14,7 @@ import os
 import sys
 import time
 
+test_words = ["maxigames","minigames"]
 
 class Hangman(commands.Cog):
     def __init__(self, client):
@@ -21,11 +23,82 @@ class Hangman(commands.Cog):
 
     @commands.command()
     async def hangman(self, ctx):
-        myList = []
-        words = open("../DataBase/words.txt", "r")
-        for topic in words:
-            myList.append(topic.rstrip("\n"))
-        words.close() #can we run it?
+        # myList = []
+        # words = open("../DataBase/words.txt", "r")
+        # for topic in words:
+        #     myList.append(topic.rstrip("\n"))
+        # words.close() #can we run it?
+        wordc = random.choice(test_words)
+        corrword = []
+        currguess = []
+        answer = ""
+        for i in range(len(wordc)):
+            corrword.append(wordc[i])
+            print(wordc[i])
+        
+        
+            currguess.append("□")
+        
+
+            answer = answer + "□" + " "
+            print(answer)
+        embed = discord.Embed(
+            title = "Your hangman game: ",
+            description = answer,
+            color = 0xffff00
+        )
+        print(answer)
+        guesses = 10
+        await ctx.reply(embed=embed)
+        def check(msg):
+            return msg.author == ctx.author and msg.channel == ctx.channel
+        while answer != wordc:
+            messagen = await self.client.wait_for('message', timeout=45, check=check)
+            messageanswer = messagen.content.lower()
+            if len(str(messageanswer)) == 1:
+                ok = 0
+                answer = ""
+                for i in range(len(corrword)):
+                    if messageanswer == corrword[i]:
+                        currguess[i] = corrword[i]
+                        answer += currguess[i]
+                        ok = 1
+                if ok == 0:
+                    embed = discord.Embed(
+                        title = "Oof... Your guess wasn't correct.",
+                        description = "Try again using individual character or whole word guesses!",
+                        color = 0xff0000
+                    )
+                else:
+                    embed = discord.Embed(
+                        title = "Pog! Your guess is correct!",
+                        description = "The word now is " + answer,
+                        color = self.client.primary_colour
+                    )
+                await ctx.reply(embed=embed)
+
+
+                
+            else:
+                print(str(messageanswer)) #debug
+                print(wordc) #debug
+                if messageanswer == wordc:
+                
+                    embed=discord.Embed(
+                        title = "You guessed the word!",
+                        description = "The word was " + wordc,
+                        color = self.client.primary_colour
+                    )
+                    await messagen.reply(embed=embed)
+                else:
+                    embed = discord.Embed(
+                        title = "Your guess was wrong!",
+                        description = "Try again using individual character or whole word guesses!",
+                        color = 0xff0000
+                    )
+                    await messagen.reply(embed=embed)
+    #     while True: 
+        
     #     while True: 
     #         topic = input(
     #          "Wh
