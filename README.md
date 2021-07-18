@@ -6,20 +6,19 @@ Your one and only discord bot that includes all forms of mini games u will ever 
 
 ### Commands
 
-- tictactoe
+- tictactoe (implementing)
 - typeracer
-- blackjack
+- blackjack 
 - fastword (greentea/blacktea?)
 - moreword (yellowtea)
 - longword (redtea)
 - highlow?
-- command for hourly work
 - snake and ladder
 - chess? wow so hard
 - uno?????
 - pictionary!
 - that telephone game?
 - google snake game with button
-- let me google that for you
+- let me google that for you (DONE)
 - guess the song
 - random guessing

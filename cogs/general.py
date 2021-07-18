@@ -3,6 +3,7 @@ import time
 from discord.ext import commands
 from discord_components import *
 import asyncio
+import math
 import random
 from discord_slash import cog_ext, SlashContext
 from utils.paginator import Paginator
@@ -316,5 +317,144 @@ class General(commands.Cog):
                 color = 0xff0000
             )
             await ctx.reply(embed=embed)
-def setup(client): 
+    @commands.command(name="numprop",description = "tells you the property of a number you specify!", usage="numprop <number>")
+    async def numprop(self,ctx,num:int):
+        
+        if num > 1000000000000:
+            embed = discord.Embed(
+                title = "Bruh. I'm not going to waste my time trying to find out more about that big guy.",
+                description = "",
+                color = 0xff0000
+            )
+            await ctx.reply(embed=embed)
+            return
+        elif num < 0:
+            embed=discord.Embed(
+                title = "Hey. I won't evaluate negative numbers for you.",
+                description="",
+                color = 0xff0000
+            )
+            await ctx.reply(embed=embed)
+            return
+        embed=discord.Embed(
+            title = "Thinking... :thinking::thinking::thinking:",
+            description = "",
+            color = 0xffff00
+        )
+        message = await ctx.reply(embed=embed)
+        embed=discord.Embed(
+            title = "The number " + str(num),
+            description = "",
+            color = self.client.primary_colour
+        )
+        if num == 0:
+            embed.add_field(
+                name = "This number, when added to anything, gives the thing you added it to!",
+                value = "HoW iNtErEsTiNg!",
+                inline=True
+            )
+        root = math.sqrt(num)
+        if int(root + 0.5) ** 2 == num:
+            embed.add_field(
+                name = "Perfect Square!",
+                value = "Fascinating.",
+                inline=True
+            )
+        if num % 2 == 0:
+            embed.add_field(
+                name = "Even!",
+                value = "Also known as a multiple of 2!",
+                inline = True
+            )
+        else:
+            embed.add_field(
+                name = "Odd!",
+                value = "It is not a multiple of 2!",
+                inline = True
+            )
+        flag = False
+        if num > 1:
+            # check for factors
+            for i in range(2, math.ceil(root)+1):
+                if i != num:
+                    if (num % i) == 0:
+                        flag = True
+                        break
+
+        
+        if not flag and num == 1:
+            embed.add_field(
+                name="Not prime and not composite!",
+                value = "That's special!",
+                inline=True
+            )
+        elif not flag and num == 0:
+            embed.add_field(
+                name="Not prime and not composite!",
+                value = "That's special!",
+                inline=True
+            )
+        elif flag:
+            embed.add_field(
+                name="Composite!",
+                value = "That means that it has more than 2 factors!",
+                inline=True
+            )
+        else:
+            embed.add_field(
+                name = "Prime!",
+                value = "Ooh!",
+                inline = True
+            )
+        if "69420" in str(num):
+            embed.add_field(
+                name = "VERRRRYYYYYYY SUSSSSSS!!!",
+                value = "That's because it contains :six::nine::four::two::zero: in it!!!!!!",
+                inline = True
+            )
+        elif "69" in str(num):
+            embed.add_field(
+                name = "SUS!",
+                value = "because it contains 69!!!",
+                inline= True
+            )
+        elif "420" in str(num):
+            embed.add_field(
+                name = "SUS!",
+                value = "because it contains 420!!!",
+                inline=True
+            )
+        res = str(num) == str(num)[::-1]
+        if res:
+            embed.add_field(
+                name = "Palindrome!",
+                value = "Reads same forwards and backwards!",
+                inline = True
+            )
+        time.sleep(1)
+        await message.edit(embed=embed)
+
+    @commands.command(name="lmgtfy",description="Command that creats a Let Me Google That For You link for all your queries!",usage="lmgtfy")
+    async def lmgtfy(self,ctx,*quer:str):
+        curr_url = "https://lmgtfy.app/?q="
+        query = ' '.join(quer)
+        query = query.replace(" ","+")
+        curr_url += query
+        embed=discord.Embed(
+            title = curr_url,
+            description ="Let Me Google That For You!",
+            color = self.client.primary_colour
+        )
+        await ctx.reply(embed=embed)
+    @commands.command(name="choose",description="Chooses a random choice from the set of words given",usage = "choose <choices space-separated>")
+    async def choose(self,ctx,*choices:str):
+        chosen = random.choice(choices)
+        embed=discord.Embed(
+            title = chosen + " was chosen!",
+            description = "Poggers!",
+            color = self.client.primary_colour
+        )
+        await ctx.reply(embed=embed)
+    
+def setup(client):
     client.add_cog(General(client))

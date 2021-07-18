@@ -30,8 +30,10 @@ async def on_ready():
     await client.change_presence(status=discord.Status.online, activity=discord.Game(name="m!help on " + str(len(client.guilds)) + " servers", type=0))
     print("We have logged in as {0.user}".format(client))
 
+# keep_alive()
 
 with open('config.json', 'r') as file:
     data = json.load(file)
     client.run(data["tokenIdBeta"])
-# keep_alive()
+    #test!
+
