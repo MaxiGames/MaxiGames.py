@@ -240,10 +240,32 @@ class General(commands.Cog):
                 color = 0xff0000
             )
             await ctx.reply(embed=embed)
-    @commands.command(name="bigdice",description="rolls the number of dice you specify.",usage="dice <number of dice>")
-    async def bigdice(self,ctx,num:int):
+    @commands.command(name="bigdice",description="rolls a specified number of dice with a specified number of faces that you can specify.",usage="dice <number of faces for each dice> <number of dice>")
+    async def bigdice(self,ctx,sides:int,num:int):
         curr = ""
-        if num <= 0:
+        if sides <= 0:
+            embed = discord.Embed(
+                title = "What kind of dice is this?",
+                description="",
+                color = 0xff0000
+            )
+            await ctx.reply(embed=embed)
+        elif sides == 1:
+            embed = discord.Embed(
+                title = "What's the point of rolling a die if it's always gonna come out on the same side?",
+                description = "",
+                color = 0xff0000
+            )
+            await ctx.reply(embed=embed)
+        elif sides >= 1000:
+            embed = discord.Embed(
+                title = str(sides) + " sides?!?! Come back to me when you make this die. Seriously why.",
+                description = "Bruh",
+                color = 0xff0000
+            )
+            await ctx.reply(embed=embed)
+        
+        elif num <= 0:
             embed = discord.Embed(
                 title = "Don't be stupid. Honestly.",
                 description = "",
@@ -252,7 +274,7 @@ class General(commands.Cog):
             await ctx.reply(embed=embed)
         elif num <= 100:
             for i in range(num):
-                curr += str(random.randint(1,6)) 
+                curr += str(random.randint(1,sides)) 
                 curr += " "
             embed = discord.Embed(
                 title = "Your dice roll results came out!",
