@@ -16,7 +16,7 @@ class TicTacToe(commands.Cog):
         await message.add_reaction("✅")
         
         def check(reaction, user):
-            if reaction.message == message and user.id != 863419048041381920:
+            if reaction.message == message and user.id != self.client.user.id:
                 return True
             else: return False
 
@@ -42,34 +42,102 @@ class TicTacToe(commands.Cog):
         turn = 0
         while True:
             if turn == 0:
-                await ctx.reply(f"{player1.mention}'s turn!")
-                await ctx.reply("Your turn, type a number from 1 to 9 to place a marker on the board")
+                turn = 1
+                await ctx.send(f"{player1.mention}'s turn! Type a number from 1 to 9 to place a marker on the board")
                 while True:
                     try:
+                        
                         message = await self.client.wait_for('message', timeout=45, check=lambda m: m.author == player1)
-                        if message.content.isdigit() and int(message.content) in range(1,10):
-                            board[int(message.content)-1][0] = "X"
+                        
+                        if int(message.content) and int(message.content) in range(1,10):
+                            selected = int(message.content)-1
+                            board[int(selected/3)][int(selected%3)] = "X"
                             break
                         else:
-                            await ctx.reply("Please enter a valid number from 1 to 9")
+                            await message.reply("Please enter a valid number from 1 to 9")
                     except asyncio.TimeoutError:
-                        await ctx.reply("Please enter a valid number from 1 to 9")
+                        await message.reply("Timeout")
             else:
-                await ctx.reply(f"{player2.mention}'s turn!")
-                await ctx.reply("Your turn, type a number from 1 to 9 to place a marker on the board")
+                turn = 0 
+                await ctx.send(f"{player2.mention}'s turn! Type a number from 1 to 9 to place a marker on the board")
                 while True:
                     try:
                         message = await self.client.wait_for('message', timeout=45, check=lambda m: m.author == player2)
-                        if message.content.isdigit() and int(message.content) in range(1,10):
-                            board[int(message.content)-1][2] = "O"
+                        if int(message.content) and int(message.content) in range(1,10):
+                            selected = int(message.content)-1
+                            board[int(selected/3)][int(selected%3)] = "O"
                             break
                         else:
-                            await ctx.reply("Please enter a valid number from 1 to 9")
+                            await message.reply("Please enter a valid number from 1 to 9")
                     except asyncio.TimeoutError:
-                        await ctx.reply("Please enter a valid number from 1 to 9")
-            
-
-
+                        await message.reply("Timeout")
+            string = ""
+            for i in board:
+                for j in i:
+                    toAdd = ""
+                    if j == " ":
+                        toAdd = "□ "
+                    else:
+                        toAdd = j + " "
+                    string += toAdd
+                string += "\n"
+            embed = discord.Embed(title="Tic Tac Toe", description=string, color=0x00ff00)
+            await message.reply(embed=embed)
+            if board[0][0] == board[1][1] == board[2][2] == "X" or board[0][0] == board[1][1] == board[2][2] == "O": #diagonals
+                if board[0][0] == "X":
+                    await ctx.reply(f"{player1.mention} wins!")
+                else:
+                    await ctx.reply(f"{player2.mention} wins!")
+                break
+            elif board[0][2] == board[1][1] == board[2][0] == "X" or board[0][2] == board[1][1] == board[2][0] == "O":
+                if board[0][2] == "X":
+                    await ctx.reply(f"{player1.mention} wins!")
+                else:
+                    await ctx.reply(f"{player2.mention} wins!")
+                break
+            #horizontal
+            elif board[0][0] == board[0][1] == board[0][2] == "X" or board[0][0] == board[0][1] == board[0][2] == "O":
+                if board[0][0] == "X":
+                    await ctx.reply(f"{player1.mention} wins!")
+                else:
+                    await ctx.reply(f"{player2.mention} wins!")
+                break
+            elif board[1][0] == board[1][1] == board[1][2] == "X" or board[1][0] == board[1][1] == board[1][2] == "O":
+                if board[1][0] == "X":
+                    await ctx.reply(f"{player1.mention} wins!")
+                else:
+                    await ctx.reply(f"{player2.mention} wins!")
+                break
+            elif board[2][0] == board[2][1] == board[2][2] == "X" or board[2][0] == board[2][1] == board[2][2] == "O":
+                if board[2][0] == "X":
+                    await ctx.reply(f"{player1.mention} wins!")
+                else:
+                    await ctx.reply(f"{player2.mention} wins!")
+                break
+            #vertical
+            elif board[0][0] == board[1][0] == board[2][0] == "X" or board[0][0] == board[1][0] == board[2][0] == "O":
+                if board[0][0] == "X":
+                    await ctx.reply(f"{player1.mention} wins!")
+                else:
+                    await ctx.reply(f"{player2.mention} wins!")
+                break
+            elif board[0][1] == board[1][1] == board[2][1] == "X" or board[0][1] == board[1][1] == board[2][1] == "O":
+                if board[0][1] == "X":
+                    await ctx.reply(f"{player1.mention} wins!")
+                else:
+                    await ctx.reply(f"{player2.mention} wins!")
+                break
+            elif board[0][2] == board[1][2] == board[2][2] == "X" or board[0][2] == board[1][2] == board[2][2] == "O":
+                if board[0][2] == "X":
+                    await ctx.reply(f"{player1.mention} wins!")
+                else:
+                    await ctx.reply(f"{player2.mention} wins!")
+                break
+            elif " " not in board[0] and " " not in board[1] and " " not in board[2]:
+                await ctx.reply("Draw!")
+                break
+        await ctx.send("Game over, please start a new game!")
+                    
 
 def setup(client):
     client.add_cog(TicTacToe(client))
