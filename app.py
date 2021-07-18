@@ -34,4 +34,5 @@ async def on_ready():
 with open('config.json', 'r') as file:
     data = json.load(file)
     client.run(data["tokenIdBeta"])
+    #test!
 # keep_alive()
