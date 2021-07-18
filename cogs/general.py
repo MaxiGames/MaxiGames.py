@@ -433,5 +433,18 @@ class General(commands.Cog):
             )
         time.sleep(1)
         await message.edit(embed=embed)
+
+    @commands.command(name="lmgtfy",description="Command that creats a Let Me Google That For You link for all your queries!",usage="lmgtfy")
+    async def lmgtfy(self,ctx,*quer:str):
+        curr_url = "https://lmgtfy.app/?q="
+        query = ' '.join(quer)
+        query = query.replace(" ","+")
+        curr_url += query
+        embed=discord.Embed(
+            title = curr_url,
+            description ="Let Me Google That For You!",
+            color = self.client.primary_colour
+        )
+        await ctx.reply(embed=embed)
 def setup(client):
     client.add_cog(General(client))
