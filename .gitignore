@@ -1,8 +1,8 @@
-config.json 
-serviceAccountKey.json
+# config.json 
+# serviceAccountKey.json
 cogs/__pycache__
 __pycache__
 .replit
-ban.py
+# ban.py
 .vscode
 /env
