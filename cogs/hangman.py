@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup as soup
 import sys
 import asyncio
 import time
-alpha = "abcdefghijklmnopqrstuvwxyz "
+alpha = "abcdefghijklmnopqrstuvwxyz"
 class Hangman(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -57,14 +57,18 @@ class Hangman(commands.Cog):
         specificWords.close()
 
         wordChoice = random.choice(wordList)
+        wordChoice = wordChoice.lower()
         while True:
             res = True
             for i in wordChoice:
-                res = res and isalpha(i)
+                if i not in alpha:
+                    res = False
+                    break
             if res:
                 break
             else:
                 wordChoice = random.choice(wordList)
+                wordChoice = wordChoice.lower()
         correctWord = []
         currentGuess = []
         answer = ""
@@ -85,6 +89,7 @@ class Hangman(commands.Cog):
             color = 0xffff00
         )
         lives = 5
+        word_guessed = 0
         await ctx.reply(embed=embed)
 
         while answer != wordChoice and lives > 0:
@@ -116,13 +121,16 @@ class Hangman(commands.Cog):
                     
                 else:
                     if messageanswer == wordChoice:
-                        embed=discord.Embed(
-                            title = "You guessed the word!",
-                            description = "The word was " + wordChoice,
+                        embed = discord.Embed(
+                            title = "Your guess was correct!",
+                            description = "You win! The word was " + wordChoice,
                             color = self.client.primary_colour
                         )
-                        answer = messageanswer
+                        answer = wordChoice
+                        word_guessed = 1
                         await message.reply(embed=embed)
+
+                        
                     else:
                         lives -= 1
                         embed = discord.Embed(
@@ -141,7 +149,7 @@ class Hangman(commands.Cog):
                 color = 0xff0000
             )
             await ctx.reply(embed=embed)
-        else:
+        elif word_guessed == 0:
             embed = discord.Embed(
                 title = "You won!",
                 description = "The word was " + wordChoice,
