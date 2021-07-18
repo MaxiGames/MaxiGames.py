@@ -46,15 +46,25 @@ class TicTacToe(commands.Cog):
                 await ctx.send(f"{player1.mention}'s turn! Type a number from 1 to 9 to place a marker on the board")
                 while True:
                     try:
-                        
                         message = await self.client.wait_for('message', timeout=45, check=lambda m: m.author == player1)
-                        
-                        if int(message.content) and int(message.content) in range(1,10):
-                            selected = int(message.content)-1
-                            board[int(selected/3)][int(selected%3)] = "X"
-                            break
-                        else:
-                            await message.reply("Please enter a valid number from 1 to 9")
+                        try:
+                            selected =   int(message.content)-1
+                            #restrict number to 1-9
+                            if selected < 0 or selected > 8:
+                                await message.reply("Invalid number, please try again")
+                                continue
+                            #prevent overwriting
+                            if board[int(selected/3)][int(selected%3)] != " ":
+                                await message.reply("You can't overwrite a marker!")
+                            else:
+                                if int(message.content) and int(message.content) in range(1,10):
+                                    board[int(selected/3)][int(selected%3)] = "X"
+                                    break
+                                else:
+                                    await message.reply("Please enter a valid number from 1 to 9")
+                        except ValueError:
+                            await message.reply("Please enter a number from 1 to 9")
+                            continue
                     except asyncio.TimeoutError:
                         await message.reply("Timeout")
             else:
@@ -63,12 +73,24 @@ class TicTacToe(commands.Cog):
                 while True:
                     try:
                         message = await self.client.wait_for('message', timeout=45, check=lambda m: m.author == player2)
-                        if int(message.content) and int(message.content) in range(1,10):
+                        try:
                             selected = int(message.content)-1
-                            board[int(selected/3)][int(selected%3)] = "O"
-                            break
-                        else:
-                            await message.reply("Please enter a valid number from 1 to 9")
+                            #restrict number to 1-9
+                            if selected < 0 or selected > 8:
+                                await message.reply("Invalid number, please try again")
+                                continue
+                            #prevent overwriting
+                            if board[int(selected/3)][int(selected%3)] != " ":
+                                await message.reply("You can't overwrite a marker!")
+                            else:
+                                if int(message.content) and int(message.content) in range(1,10):
+                                    board[int(selected/3)][int(selected%3)] = "O"
+                                    break
+                                else:
+                                    await message.reply("Please enter a valid number from 1 to 9")
+                        except ValueError:
+                            await message.reply("Please enter a number from 1 to 9")
+                            continue
                     except asyncio.TimeoutError:
                         await message.reply("Timeout")
             string = ""

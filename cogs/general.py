@@ -455,5 +455,6 @@ class General(commands.Cog):
             color = self.client.primary_colour
         )
         await ctx.reply(embed=embed)
+    
 def setup(client):
     client.add_cog(General(client))
