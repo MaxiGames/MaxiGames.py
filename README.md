@@ -13,7 +13,6 @@ Your one and only discord bot that includes all forms of mini games u will ever 
 - moreword (yellowtea)
 - longword (redtea)
 - highlow?
-- command for hourly work
 - snake and ladder
 - chess? wow so hard
 - uno?????
