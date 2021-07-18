@@ -34,8 +34,14 @@ class Counting(commands.Cog):
             string = message.content.lower()
             string = string.split(" ")[0]
             string = string.split("_")[0]
-            string = string.split("*")[0]
-            # print(string)
+            # string = string.split("*")[0]
+
+            string = string.replace('x', '*').replace('÷', '/')
+            try: 
+                string = str(int(eval(string)))
+            except:
+                pass
+            print(string)
             if string.isdigit():
                 dict2 = self.data[(str(message.guild.id))]
                 num = int(string)
@@ -62,7 +68,6 @@ class Counting(commands.Cog):
                             colour=self.client.primary_colour
                         )
                     await message.channel.send(embed=embed)
-                    print("Counting Error")
 
                     self.cooldown[str(message.guild.id)][message.channel.name.lower()] = time.time()
                     # await message.channel.edit(topic=f"Count: {dict2['count']}")
@@ -218,7 +223,6 @@ class Counting(commands.Cog):
                 break
 
         await ctx.send(embed=embed)
-        print("cointing info")
 
     @commands.command(
         name="countingleaderboards",

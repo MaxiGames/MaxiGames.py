@@ -7,6 +7,7 @@ from utils import check
 import random
 import math
 import time
+from discord_slash import SlashContext, cog_ext
 
 
 class Economy(commands.Cog):
@@ -292,6 +293,10 @@ class Economy(commands.Cog):
                 await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
             else:
                 await self.initation.initiate(ctx)
+    
+    @cog_ext.cog_slash(name="hourly", description="Claim your hourly money here :D")
+    async def _hourly_cog(self, ctx):
+        await self._hourly(ctx, "hallo")
 
     @check.is_staff()
     @commands.command(
