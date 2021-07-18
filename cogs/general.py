@@ -197,6 +197,102 @@ class General(commands.Cog):
     @commands.command()
     async def empty(self,ctx):
         await ctx.reply("‎")
-
-def setup(client):
+    @commands.command(name="fibo",description="Returns the nth fibonacci number, where n is the number you input.", usage="fibo <number>")
+    async def fibo(self,ctx,num:int):
+        if num <= 0:
+            embed=discord.Embed(
+                title = "Bruh. Don't be stupid.",
+                description = "",
+                color = 0xff0000
+            )
+            await ctx.reply(embed=embed)
+        elif num == 1:
+            embed=discord.Embed(
+                title = "The 1st fibonacci number is 1!",
+                description = "",
+                color = self.client.primary_colour
+            )
+            await ctx.reply(embed=embed)
+        elif num == 2:
+            embed=discord.Embed(
+                title = "The 2nd fibonacci number is 1!",
+                description = "",
+                color = self.client.primary_colour
+            )
+            await ctx.reply(embed=embed)
+        elif num <= 1000:
+            fibo1 = 1
+            fibo2 = 2
+            for i in range(num-3):
+                currfibo1 = fibo1
+                fibo1 = fibo2
+                fibo2 += currfibo1
+            embed=discord.Embed(
+                title = "The " + str(num) + "th fibonacci number is " + str(fibo2) + "!",
+                description = "",
+                color = self.client.primary_colour
+            )
+            await ctx.reply(embed=embed)
+        else:
+            embed=discord.Embed(
+                title = "Make it smaller, stop trying to break me.",
+                description = "",
+                color = 0xff0000
+            )
+            await ctx.reply(embed=embed)
+    @commands.command(name="bigdice",description="rolls the number of dice you specify.",usage="dice <number of dice>")
+    async def bigdice(self,ctx,num:int):
+        curr = ""
+        if num <= 0:
+            embed = discord.Embed(
+                title = "Don't be stupid. Honestly.",
+                description = "",
+                color = 0xff0000
+            )
+            await ctx.reply(embed=embed)
+        elif num <= 100:
+            for i in range(num):
+                curr += str(random.randint(1,6)) 
+                curr += " "
+            embed = discord.Embed(
+                title = "Your dice roll results came out!",
+                description = curr,
+                color = self.client.primary_colour
+            )
+            await ctx.reply(embed=embed)
+        else:
+            embed = discord.Embed(
+                title = "Don't be stupid. Honestly.",
+                description = "",
+                color = 0xff0000
+            )
+            await ctx.reply(embed=embed)
+    @commands.command(name="dice",description="rolls the number of dice you specify.",usage="dice <number of dice>")
+    async def dice(self,ctx,num:int):
+        curr = ""
+        if num <= 0:
+            embed = discord.Embed(
+                title = "Don't be stupid. Honestly.",
+                description = "",
+                color = 0xff0000
+            )
+            await ctx.reply(embed=embed)
+        elif num <= 100:
+            for i in range(num):
+                curr += str(random.randint(1,6)) 
+                curr += " "
+            embed = discord.Embed(
+                title = "Your dice roll results came out!",
+                description = curr,
+                color = self.client.primary_colour
+            )
+            await ctx.reply(embed=embed)
+        else:
+            embed = discord.Embed(
+                title = "Don't be stupid. Honestly.",
+                description = "",
+                color = 0xff0000
+            )
+            await ctx.reply(embed=embed)
+def setup(client): 
     client.add_cog(General(client))
