@@ -10,7 +10,9 @@ from firebase_admin import credentials
 from discord_components import *
 from discord_slash import SlashCommand, SlashContext
 
-client = Client(command_prefix=["m!"], help_command=None)
+with open('config.json', 'r') as file:
+    data = json.load(file)
+    client = Client(command_prefix=[data["prefixBeta"]], help_command=None)
 
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
