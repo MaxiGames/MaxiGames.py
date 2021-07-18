@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import traceback
 
 class Errors(commands.Cog):
     def __init__(self, client):
@@ -49,9 +50,11 @@ class Errors(commands.Cog):
             )
             await ctx.send(embed=embed)
         else:
+            traceback_output = traceback.format_exc()
+            print(traceback_output)
             print(error)
 
 
 def setup(client):
-    # client.add_cog(Errors(client))
-    pass
+    client.add_cog(Errors(client))
+    # pass

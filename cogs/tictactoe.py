@@ -50,7 +50,7 @@ class TicTacToe(commands.Cog):
                         try:
                             selected =   int(message.content)-1
                             #restrict number to 1-9
-                            if selected < 0 or selected > 8:
+                            if selected < 0 or selected > 69:
                                 await message.reply("Invalid number, please try again")
                                 continue
                             #prevent overwriting
@@ -67,6 +67,7 @@ class TicTacToe(commands.Cog):
                             continue
                     except asyncio.TimeoutError:
                         await message.reply("Timeout")
+                        return
             else:
                 turn = 0 
                 await ctx.send(f"{player2.mention}'s turn! Type a number from 1 to 9 to place a marker on the board")
@@ -93,6 +94,7 @@ class TicTacToe(commands.Cog):
                             continue
                     except asyncio.TimeoutError:
                         await message.reply("Timeout")
+                        return
             string = ""
             for i in board:
                 for j in i:
