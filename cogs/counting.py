@@ -41,7 +41,6 @@ class Counting(commands.Cog):
                 string = str(int(eval(string)))
             except:
                 pass
-            print(string)
             if string.isdigit():
                 dict2 = self.data[(str(message.guild.id))]
                 num = int(string)
@@ -233,11 +232,13 @@ class Counting(commands.Cog):
     async def countingleader(self, ctx):
         leaderboard = {}
         for i in self.data:
+            # print(i)
             highest = 0
             for p in self.data[i]["countingChannels"]:
                 highest = max(
                     highest, self.data[i]["countingChannels"][p]["highest_count"])
-            leaderboard[self.data[i]["name"]] = highest
+            guild = self.client.get_guild(int(i))
+            leaderboard[guild.name] = highest
         count = 1
         description = ""
         for i in sorted(leaderboard.items(), key=lambda kv: (kv[1]), reverse=True):
@@ -254,7 +255,6 @@ class Counting(commands.Cog):
         embed.set_footer(
             text="Find out about the highest and most dedicated servers!!!")
         await ctx.send(embed=embed)
-        print("counting leadderboard")
 
 
 def setup(client):
