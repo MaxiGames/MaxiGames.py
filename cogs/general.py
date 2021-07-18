@@ -240,7 +240,7 @@ class General(commands.Cog):
                 color = 0xff0000
             )
             await ctx.reply(embed=embed)
-    @commands.command(name="bigdice",description="rolls a specified number of dice with a specified number of faces that you can specify.",usage="dice <number of faces for each dice> <number of dice>")
+    @commands.command(name="bigdice",description="rolls a specified number of dice with a specified number of faces that you can specify.",usage="bigdice <number of faces for each dice> <number of dice>")
     async def bigdice(self,ctx,sides:int,num:int):
         curr = ""
         if sides <= 0:
