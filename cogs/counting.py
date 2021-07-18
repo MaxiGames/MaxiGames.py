@@ -36,7 +36,7 @@ class Counting(commands.Cog):
             string = string.split("_")[0]
             # string = string.split("*")[0]
 
-            string = string.replace('x', '*').replace('÷', '/')
+            string = string.replace('x', '*').replace('÷', '/').replace('^', '**')
             try: 
                 string = str(int(eval(string)))
             except:
