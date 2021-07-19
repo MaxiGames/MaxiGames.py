@@ -87,7 +87,7 @@ class Paginator:
                         )
                     else:
                         add_on_buttons = [Button(style=ButtonStyle.green, label=self.previous_symbol), Button(style=ButtonStyle.green, label=self.next_symbol)]
-                        ccomponent = copy.copy(self.buttons)
+                        component = copy.copy(self.buttons)
                         component[0] = add_on_buttons + component[0]
                         
                         # print(component)
