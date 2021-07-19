@@ -271,36 +271,6 @@ class Economy(commands.Cog):
 
     @commands.command(name="Hourly", description="Hourly points :D", usage="hourly", aliases=["h", "hourly"])
     @cooldown(1, 3600, BucketType.user)
-<<<<<<< HEAD
-    async def _hourly(self, ctx, string: str = ""):
-        self.initation = self.client.get_cog("Initiation")
-        if string.lower() == "hallo":
-            await self.initation.checkserver(ctx)
-            doc_ref = self.db.collection(u'users').document(
-                u'{}'.format(str(ctx.author.id)))
-            doc = doc_ref.get()
-            booster = 1
-            if doc.exists:
-                dict1 = doc.to_dict()
-                # value = int(doc.to_dict()['money'])
-                dict1["money"] = dict1["money"] + \
-                    booster * (random.randint(20, 50))
-                doc_ref.set(dict1)
-                embed = discord.Embed(
-                    title="Hourly claimed :D",
-                    description="Money gained from saying \"hallo\" has been added to your bank. ",
-                    colour=self.client.primary_colour
-                )
-                embed.set_author(name=ctx.author.display_name,
-                                 url="https://google.com", icon_url=ctx.author.avatar_url)
-                embed.add_field(name="New Balance",
-                                value=f'{dict1["money"]}', inline=True)
-                embed.set_footer(
-                    text="Find our more about how to use other currency functions by typing 'n!help currency' :D")
-                await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
-            else:
-                await self.initation.initiate(ctx)
-=======
     async def hourly(self, ctx):
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(
@@ -323,8 +293,7 @@ class Economy(commands.Cog):
             embed.add_field(name="New Balance",
                             value=f'{dict1["money"]}', inline=True)
             await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
->>>>>>> 9397afe60641b7ed41e7c3b53206e842d9d40bef
-    
+
     @commands.command(name="Daily", description="Daily points :D", usage="daily", aliases=["d", "daily"])
     @cooldown(1, 86400, BucketType.user)
     async def daily(self, ctx):
