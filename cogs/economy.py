@@ -22,6 +22,7 @@ class Economy(commands.Cog):
     @cooldown(1, 5, BucketType.user)
     @commands.command(name="Coinflip", aliases=["coinflip", "cf", "kymchi"])
     async def _coinflip(self, ctx, choice: str, amount: int = 1):
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(
             u'{}'.format(str(ctx.author.id)))
@@ -93,6 +94,7 @@ class Economy(commands.Cog):
 
     @commands.command(name="Gamble", description="Gamble all the money you want until you're happy. Remember, theres a jackpot :D", aliases=['g', 'gamble', 'gg'], usage="gamble <amount>")
     async def _gamble(self, ctx, amount: int = 5):
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(
             u'{}'.format(str(ctx.author.id)))
@@ -182,6 +184,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 5, BucketType.user)
     async def _money(self, ctx):
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(
             u'{}'.format(str(ctx.author.id)))
@@ -209,6 +212,7 @@ class Economy(commands.Cog):
     @check.is_banned()
     @commands.command()
     async def bal(self, ctx):
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(
             u'{}'.format(str(ctx.author.id)))
@@ -235,6 +239,7 @@ class Economy(commands.Cog):
         aliases=["leaderboard", "l", "rich", "r", " l"]
     )
     async def _leaderboard(self, ctx):
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
 
         doc_ref = self.db.collection(u'servers').document(
@@ -267,7 +272,9 @@ class Economy(commands.Cog):
     @commands.command(name="Hourly", description="Hourly points for saying hallo :D", usage="hourly hallo", aliases=["h", "hourly", " h", " hourly"])
     @cooldown(1, 3600, BucketType.user)
     async def _hourly(self, ctx, string: str = None):
+        self.initation = self.client.get_cog("Initiation")
         if string.lower() == "hallo":
+            self.initation = self.client.get_cog("Initiation")
             await self.initation.checkserver(ctx)
             doc_ref = self.db.collection(u'users').document(
                 u'{}'.format(str(ctx.author.id)))
