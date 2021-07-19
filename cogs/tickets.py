@@ -3,15 +3,25 @@ import discord
 from discord.ext import commands
 from discord_components import ButtonStyle, Button, InteractionType
 from utils import check
-
+import firebase_admin
+from firebase_admin import firestore
 
 class Ticket(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.hidden = True
-        self.messages = {}
-        self.count = {}
-        self.active_tickets = {}
+        self.db = firestore.client()
+        doc_ref = self.db.collection(u'tickets').document('ticket-ref')
+        doc = doc_ref.get()
+        if doc.exists:
+            self.messages = doc.to_dict()['messages']
+            self.count = doc.to_dict()['count']
+            self.active_tickets = doc.to_dict()['active_tickets']
+        else:
+            self.messages = {}
+            self.count = {}
+            self.active_tickets = {}
+        
 
 
 
@@ -27,20 +37,19 @@ class Ticket(commands.Cog):
         msg = await ctx.send(embed=embed)
         await msg.add_reaction('🎫')
         if str(ctx.guild.id) not in self.messages:
-            self.messages[str(ctx.guild.id)] = [msg]
+            self.messages[str(ctx.guild.id)] = [str(msg.id)]
             self.count[str(ctx.guild.id)] = 0
             self.active_tickets[str(ctx.guild.id)] = {}
         else:
-            self.messages[str(ctx.guild.id)].append(msg)
+            self.messages[str(ctx.guild.id)].append(str(msg.id))
         await ctx.message.delete()
         # print(self.messages)
-
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
         if user == self.client.user:
             return
         if str(reaction.message.guild.id) in self.messages:
-            if reaction.message in self.messages[str(reaction.message.guild.id)]:
+            if str(reaction.message.id) in self.messages[str(reaction.message.guild.id)]:
                 if reaction.emoji == '🎫':
                     if str(user.id) in self.active_tickets[str(reaction.message.guild.id)]:
                         embed=discord.Embed(
@@ -77,6 +86,14 @@ class Ticket(commands.Cog):
                     startmsg = await channel.send(embed=embed, components=[[Button(style=ButtonStyle.grey, label="🔒 Close")]], allowed_mentions = discord.AllowedMentions.all())
                     await reaction.message.remove_reaction('🎫', user)
 
+                    doc_ref = self.db.collection(u'tickets').document('ticket-ref')
+                    data = {
+                        'active_tickets': self.active_tickets,
+                        'messages': self.messages,
+                        'count': self.count
+                    }
+                    doc_ref.set(data)
+
                     while True:
                         def check(interaction):
                             return interaction.user == user and interaction.message.channel == channel and interaction.component.label == "🔒 Close"
@@ -102,13 +119,31 @@ class Ticket(commands.Cog):
                         )
                         if res.component.label == "Delete":
                             await channel.delete()
-                            self.active_tickets[str(reaction.message.guild.id)].remove(str(user.id))
+                            self.active_tickets[str(reaction.message.guild.id)].pop(str(user.id))
+                            self.messages[str(reaction.message.guild.id)].remove(str(reaction.message.id))
+                            doc_ref = self.db.collection(u'tickets').document('ticket-ref')
+                            data = {
+                                'active_tickets': self.active_tickets,
+                                'messages': self.messages,
+                                'count': self.count
+                            }
+                            doc_ref.set(data)
                             break
                         else:
                             await confirm.delete()
 
                     #APPLICATIONS: VSCODE DEFENDER: bad tux! if you see this you CANNOT change any of the code :D
     
+    @commands.Cog.listener()
+    async def on_disconnect(self):
+        doc_ref = self.db.collection(u'tickets').document('ticket-ref')
+        data = {
+            'active_tickets': self.active_tickets,
+            'messages': self.messages,
+            'count': self.count
+        }
+        doc_ref.set(data)
+
     @check.is_staff()
     @commands.command()
     async def deletechannel(self, ctx):
