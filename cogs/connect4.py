@@ -148,8 +148,28 @@ class Connect4(commands.Cog):
                                 color = self.client.primary_colour
                             )
                             await message.reply(embed=embed)
+                            #diagonal
+                            for i in range(4):
+                                if board[i][i] == board[i+1][i+1] == board[i+2][i+2] == board[i+3][i+3] == "o":
+                                    embed = discord.Embed(
+                                        title = "Game over!",
+                                        description =f"{player1.mention} wins!",
+                                        color = self.client.primary_colour
+                                    )
+                                    await message.reply(embed=embed)
+                                    return
+                            #diagonal but other way around
+                            for i in range(4):
+                                if board[i][i] == board[i+1][i] == board[i+2][i] == board[i+3][i] == "o":
+                                    embed = discord.Embed(
+                                        title = "Game over!",
+                                        description =f"{player1.mention} wins!",
+                                        color = self.client.primary_colour
+                                    )
+                                    await message.reply(embed=embed)
+                                    return
+                            #horizontal
                             for i in range(7):
-                                
                                 for j in range(3):
                                     if board[i][j] == board[i][j+1] == board[i][j+2] == board[i][j+3] == "x":
                                         embed = discord.Embed(
@@ -160,6 +180,7 @@ class Connect4(commands.Cog):
 
                                         await message.reply(embed=embed)
                                         return
+                            #vertical
                             for i in range(6):
                                 for j in range(4):
                                     if board[j][i] == board[j+1][i] == board[j+2][i] == board[j+3][i] == "x":
@@ -171,6 +192,7 @@ class Connect4(commands.Cog):
                                         await message.reply(embed=embed)
                                         return
                             break
+
                         except ValueError:
                             await message.reply("Please enter a number from 1 to 7")
                             continue
