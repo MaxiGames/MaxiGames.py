@@ -106,6 +106,7 @@ class Games(commands.Cog):
             else:
                 return
             ans = arr[index]
+            self.initation = self.client.get_cog("Initiation")
             await self.initiation.checkserver(ctx)
             doc_ref = self.db.collection(u'users').document(
                 u'{}'.format(str(ctx.author.id)))
@@ -173,6 +174,7 @@ class Games(commands.Cog):
             messageanswer = await self.client.wait_for('message', timeout=timehehe, check=check)
             msgcontent = messageanswer.content
 
+            self.initation = self.client.get_cog("Initiation")
             await self.initiation.checkserver(ctx)
             doc_ref = self.db.collection(u'users').document(
                 u'{}'.format(str(ctx.author.id)))
@@ -237,6 +239,7 @@ class Games(commands.Cog):
         # firebase 
         def check(msg):
             return msg.author == ctx.author and msg.channel == ctx.channel
+        self.initation = self.client.get_cog("Initiation")
         await self.initiation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(u'{}'.format(str(ctx.author.id)))
         doc = doc_ref.get()
@@ -297,6 +300,7 @@ class Games(commands.Cog):
         aliases=["se","snakeyes"]
     )
     async def se(self, ctx,amount:int):
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(
             u'{}'.format(str(ctx.author.id)))
