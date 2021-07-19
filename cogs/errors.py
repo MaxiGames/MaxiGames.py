@@ -15,16 +15,18 @@ class Errors(commands.Cog):
                 description="The command that you requested cannot be found/is unavailable. Please make sure that it is a valid command and that everything is spelled correctly :D",
                 colour = self.client.primary_colour
             )
+            channel = self.client.get_channel(866526918484164668)
             embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed = embed)
+            await channel.send(embed = embed)
         elif isinstance(error, commands.NotOwner):
             embed = discord.Embed(
                 title = "Unauthorised Access",
                 description="You are not authorised to use this command.",
                 colour = self.client.error_colour
             )
+            channel = self.client.get_channel(866526918484164668)
             embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
-            await ctx.send(embed=embed)
+            await channel.send(embed = embed)
         
         elif isinstance(error, commands.MissingPermissions):
             embed = discord.Embed(
@@ -32,8 +34,9 @@ class Errors(commands.Cog):
                 description="You do not have permission to run this command. It might be because it is a command only for admins, or because you have been banned.",
                 colour = self.client.error_colour
             )
-            
-            await ctx.send(embed=embed)
+            channel = self.client.get_channel(866526918484164668)
+            embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+            await channel.send(embed = embed)
         
         elif isinstance(error, commands.CommandOnCooldown):
             embed = discord.Embed(
@@ -41,16 +44,23 @@ class Errors(commands.Cog):
                 description=f"This command is on cooldown. Try again in {error.retry_after:,.1f} seconds.",
                 colour = self.client.primary_colour
             )
-            await ctx.send(embed=embed)
+            channel = self.client.get_channel(866526918484164668)
+            embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+            await channel.send(embed = embed)
+
         elif isinstance(error, commands.BadArgument):
             embed = discord.Embed(
                 title="Incorrect Argument",
                 description="There is an error with your command statement. Please check your command syntax through `n!help <command>`.",
                 colour=self.client.primary_colour
             )
-            await ctx.send(embed=embed)
+            channel = self.client.get_channel(866526918484164668)
+            embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+            await channel.send(embed = embed)
+
         else:
-            traceback_output = traceback.format_exc()
+            channel = self.client.get_channel(866526918484164668)
+            await channel.send(f"Unknown error <@!712942935129456671> , <@!676748194956181505> , <@!782247763542016010> : ERROR ({traceback.format_exc()})")
             print(traceback_output)
             print(error)
 
