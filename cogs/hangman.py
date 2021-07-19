@@ -1,4 +1,3 @@
-
 from bs4 import BeautifulSoup as soup
 import os
 from urllib.request import urlopen as uReq

@@ -50,7 +50,7 @@ class TicTacToe(commands.Cog):
                         try:
                             selected =   int(message.content)-1
                             #restrict number to 1-9
-                            if selected < 0 or selected > 69:
+                            if selected < 0 or selected > 8:
                                 await message.reply("Invalid number, please try again")
                                 continue
                             #prevent overwriting
