@@ -5,9 +5,9 @@ import asyncio
 class TicTacToe(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.hidden = True
+        self.hidden = False
 	
-    @commands.command(name="ttt", description="tic tac toe game u can play with your friend!")
+    @commands.command(name="ttt", description="tic tac toe game u can play with your friend!", usage="ttt")
     async def ttt(self, ctx):
         player1 = ""
         player2 = ""
@@ -105,8 +105,7 @@ class TicTacToe(commands.Cog):
                         toAdd = j + " "
                     string += toAdd
                 string += "\n"
-            embed = discord.Embed(title="Tic Tac Toe", description=string, color=0x00ff00)
-            await message.reply(embed=embed)
+            await message.reply(f"```{string}```")
             if board[0][0] == board[1][1] == board[2][2] == "X" or board[0][0] == board[1][1] == board[2][2] == "o": #diagonals
                 if board[0][0] == "x":
                     await ctx.reply(f"{player1.mention} wins!")

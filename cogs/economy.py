@@ -22,6 +22,7 @@ class Economy(commands.Cog):
     @cooldown(1, 5, BucketType.user)
     @commands.command(name="Coinflip", aliases=["coinflip", "cf", "kymchi"])
     async def _coinflip(self, ctx, choice: str, amount: int = 1):
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(
             u'{}'.format(str(ctx.author.id)))
@@ -93,6 +94,7 @@ class Economy(commands.Cog):
 
     @commands.command(name="Gamble", description="Gamble all the money you want until you're happy. Remember, theres a jackpot :D", aliases=['g', 'gamble', 'gg'], usage="gamble <amount>")
     async def _gamble(self, ctx, amount: int = 5):
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(
             u'{}'.format(str(ctx.author.id)))
@@ -182,6 +184,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 5, BucketType.user)
     async def _money(self, ctx):
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(
             u'{}'.format(str(ctx.author.id)))
@@ -209,6 +212,7 @@ class Economy(commands.Cog):
     @check.is_banned()
     @commands.command()
     async def bal(self, ctx):
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'users').document(
             u'{}'.format(str(ctx.author.id)))
@@ -235,6 +239,7 @@ class Economy(commands.Cog):
         aliases=["leaderboard", "l", "rich", "r", " l"]
     )
     async def _leaderboard(self, ctx):
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
 
         doc_ref = self.db.collection(u'servers').document(
@@ -264,9 +269,11 @@ class Economy(commands.Cog):
                          icon_url='https://cdn.discordapp.com/attachments/797393542251151380/839131666483511336/476ffc83637891f004e1ba6e1ca63e6c.jpg')
         await ctx.send(embed=embed, allowed_mentions=discord.AllowedMentions.none())
 
-    @commands.command(name="Hourly", description="Hourly points for saying hallo :D", usage="hourly hallo", aliases=["h", "hourly", " h", " hourly"])
+    @commands.command(name="Hourly", description="Hourly points :D", usage="hourly", aliases=["h", "hourly"])
     @cooldown(1, 3600, BucketType.user)
-    async def _hourly(self, ctx, string: str = None):
+<<<<<<< HEAD
+    async def _hourly(self, ctx, string: str = ""):
+        self.initation = self.client.get_cog("Initiation")
         if string.lower() == "hallo":
             await self.initation.checkserver(ctx)
             doc_ref = self.db.collection(u'users').document(
@@ -293,10 +300,59 @@ class Economy(commands.Cog):
                 await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
             else:
                 await self.initation.initiate(ctx)
+=======
+    async def hourly(self, ctx):
+        await self.initation.checkserver(ctx)
+        doc_ref = self.db.collection(u'users').document(
+            u'{}'.format(str(ctx.author.id)))
+        doc = doc_ref.get()
+        booster = 1
+        if doc.exists:
+            dict1 = doc.to_dict()
+            # value = int(doc.to_dict()['money'])
+            dict1["money"] = dict1["money"] + \
+                booster * (random.randint(20, 50))
+            doc_ref.set(dict1)
+            embed = discord.Embed(
+                title="Hourly claimed :D",
+                description="Money gained from saying hourly!",
+                colour=self.client.primary_colour
+            )
+            embed.set_author(name=ctx.author.display_name,
+                                url="https://google.com", icon_url=ctx.author.avatar_url)
+            embed.add_field(name="New Balance",
+                            value=f'{dict1["money"]}', inline=True)
+            await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
+>>>>>>> 9397afe60641b7ed41e7c3b53206e842d9d40bef
     
-    @cog_ext.cog_slash(name="hourly", description="Claim your hourly money here :D")
+    @commands.command(name="Daily", description="Daily points :D", usage="daily", aliases=["d", "daily"])
+    @cooldown(1, 86400, BucketType.user)
+    async def daily(self, ctx):
+        await self.initation.checkserver(ctx)
+        doc_ref = self.db.collection(u'users').document(
+            u'{}'.format(str(ctx.author.id)))
+        doc = doc_ref.get()
+        booster = 1
+        if doc.exists:
+            dict1 = doc.to_dict()
+            # value = int(doc.to_dict()['money'])
+            dict1["money"] = dict1["money"] + \
+                booster * (random.randint(20, 200))
+            doc_ref.set(dict1)
+            embed = discord.Embed(
+                title="Daily claimed :D",
+                description="Money gained from saying daily!",
+                colour=self.client.primary_colour
+            )
+            embed.set_author(name=ctx.author.display_name,
+                                url="https://google.com", icon_url=ctx.author.avatar_url)
+            embed.add_field(name="New Balance",
+                            value=f'{dict1["money"]}', inline=True)
+            await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
+
+    @cog_ext.cog_slash(name="hour", description="Claim your hourly money here :D")
     async def _hourly_cog(self, ctx):
-        await self._hourly(ctx, "hallo")
+        await self._hourly(ctx)
 
     @check.is_staff()
     @commands.command(

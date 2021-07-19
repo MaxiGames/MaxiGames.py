@@ -15,6 +15,7 @@ class Todo(commands.Cog):
     @commands.command()
     async def todoADD(self, ctx, *msg):
         task = " ".join(msg)
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'servers').document(str(ctx.guild.id))
         doc = doc_ref.get()
@@ -29,6 +30,7 @@ class Todo(commands.Cog):
     @check.is_staff()
     @commands.command()
     async def todo(self, ctx):
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'servers').document(str(ctx.guild.id))
         doc = doc_ref.get()
@@ -45,6 +47,7 @@ class Todo(commands.Cog):
     @check.is_staff()
     @commands.command()
     async def todoREM(self, ctx, number):
+        self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection(u'servers').document(str(ctx.guild.id))
         doc = doc_ref.get()

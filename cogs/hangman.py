@@ -10,17 +10,18 @@ from bs4 import BeautifulSoup as soup
 import sys
 import asyncio
 import time
+from utils.paginator import Paginator
+
 alpha = "abcdefghijklmnopqrstuvwxyz"
+
+
 class Hangman(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.hidden = False
 
     @commands.command()
-    async def hangman(self, ctx):
-        def check(msg):
-            return msg.author == ctx.author and msg.channel == ctx.channel
-        
+    async def hangmanList(self, ctx):
         dir = os.getcwd() + "/DataBase/words.txt"
         words = open(dir, "r")
         myList = []
@@ -28,28 +29,81 @@ class Hangman(commands.Cog):
             myList.append(topic.rstrip("\n"))
         words.close()
 
-        await ctx.reply(embed = discord.Embed(title="Hangman Topics: (you have 45 seconds to choose one)", description=', '.join(myList), colour=0x00ff00))
+        #! PAGES
+        pages = []
+        page = discord.Embed(
+            title="Help",
+            description="List of hangman topics",
+            colour=self.client.primary_colour
+        )
+        page.set_author(name=self.client.user.name,
+                        icon_url=self.client.user.avatar_url)
+        page.set_footer(text="Press Next to see the topics :D")
+        pages.append(page)
 
-        chosenTopic = ""
+        length = len(myList)
+        total_pages = length//20 + 1
+        count = 0
+        count1 = 0
+        for i in range(0, total_pages):
+            count1 += 1
+            string = ""
+            for j in range(0, 20):
+                count += 1
+                if i*20 + j >= length:
+                    break
+                curList = myList[i*20+j]
+                string += f"{count}. `{str(curList)}` \n"
+            page = discord.Embed(
+                title=str(count1),
+                description=string,
+                colour=self.client.primary_colour
+            )
+            page.set_author(name=self.client.user.name,
+                            icon_url=self.client.user.avatar_url)
+            pages.append(page)
+        page_num = 0
+        msg = await ctx.send(
+            embed=pages[page_num],
+        )
+        page = Paginator(self.client, ctx, msg, pages, timeout=120)
+        await page.start()
+
+    @commands.command()
+    async def hangman(self, ctx):
+        def check(msg):
+            return msg.author == ctx.author and msg.channel == ctx.channel
+
+        dir = os.getcwd() + "/DataBase/words.txt"
+        words = open(dir, "r")
+        myList = []
+        for topic in words:
+            myList.append(topic.rstrip("\n"))
+        words.close()
+        await ctx.reply(embed=discord.Embed(title="You have **2 minutes** to choose one topic. Do `m!hangmanList` to check all the topics.", colour=0x00ff00))
+
+        chosenTopic = "" 
         while True:
             try:
-                message = await self.client.wait_for('message', timeout=45, check=check)
-                if message.content in myList:
+                message = await self.client.wait_for('message', timeout=120, check=check)
+                if message.content == "m!hangmanList" or message.content != "!hangmanList":
+                    continue
+                elif message.content in myList:
                     chosenTopic = message.content
-                    await message.reply(embed = discord.Embed(title="You have chosen **" + chosenTopic + "**", colour=0x00ff00))
+                    await message.reply(embed=discord.Embed(title="You have chosen **" + chosenTopic + "**", colour=0x00ff00))
                     break
                 else:
-                    await message.reply(embed = discord.Embed(title="That is not a valid topic- Spacing, Capitalisation and Spelling are important", colour=0x00ff00))
+                    await message.reply(embed=discord.Embed(title="That is not a valid topic- Spacing, Capitalisation and Spelling are important", colour=0x00ff00))
 
             except asyncio.TimeoutError:
-                await ctx.reply(embed = discord.Embed(title="Hangman game aborted due to Timeout", description="", colour=0x00ff00))
+                await ctx.reply(embed=discord.Embed(title="Hangman game aborted due to Timeout", description="", colour=0x00ff00))
                 return
-        
+
         if chosenTopic == "":
             return
-        
-        dir=os.getcwd() + "/DataBase/" + chosenTopic
-        specificWords=open(dir, "r")
+
+        dir = os.getcwd() + "/DataBase/" + chosenTopic
+        specificWords = open(dir, "r")
         wordList = []
         for hangmanWord in specificWords:
             wordList.append(hangmanWord.rstrip("\n"))
@@ -76,16 +130,16 @@ class Hangman(commands.Cog):
             print(wordChoice[i])
             if wordChoice[i] == " ":
                 answer = answer + " "
-                currentGuess.append(" ") 
+                currentGuess.append(" ")
             else:
 
-                currentGuess.append("□") 
+                currentGuess.append("□")
                 answer = answer + "□"
-        
+
         embed = discord.Embed(
-            title = "Your hangman game: ",
-            description = answer,
-            color = 0xffff00
+            title="Your hangman game: ",
+            description=answer,
+            color=0xffff00
         )
         lives = 5
         word_guessed = 0
@@ -106,55 +160,55 @@ class Hangman(commands.Cog):
                     if ok == 0:
                         lives -= 1
                         embed = discord.Embed(
-                            title = "Oof... Your guess wasn't correct.",
-                            description = f"Try again using individual character or whole word guesses! You have {lives} lives left",
-                            color = 0xff0000
+                            title="Oof... Your guess wasn't correct.",
+                            description=f"Try again using individual character or whole word guesses! You have {lives} lives left",
+                            color=0xff0000
                         )
                     else:
                         embed = discord.Embed(
-                            title = "Pog! Your guess is correct!",
-                            description = f"The word now is {' '.join(currentGuess)}! You have {lives} lives left",
-                            color = self.client.primary_colour
+                            title="Pog! Your guess is correct!",
+                            description=f"The word now is {' '.join(currentGuess)}! You have {lives} lives left",
+                            color=self.client.primary_colour
                         )
                     await ctx.reply(embed=embed)
-                    
+
                 else:
                     if messageanswer == wordChoice:
                         embed = discord.Embed(
-                            title = "Your guess was correct!",
-                            description = "You win! The word was " + wordChoice,
-                            color = self.client.primary_colour
+                            title="Your guess was correct!",
+                            description="You win! The word was " + wordChoice,
+                            color=self.client.primary_colour
                         )
                         answer = wordChoice
                         word_guessed = 1
                         await message.reply(embed=embed)
 
-                        
                     else:
                         lives -= 1
                         embed = discord.Embed(
-                            title = "Your guess was wrong!",
-                            description = f"Try again using individual character or whole word guesses! You have {lives} lives left",
-                            color = 0xff0000
+                            title="Your guess was wrong!",
+                            description=f"Try again using individual character or whole word guesses! You have {lives} lives left",
+                            color=0xff0000
                         )
                         await message.reply(embed=embed)
             except asyncio.TimeoutError:
-                await ctx.reply(embed = discord.Embed(title="Hangman game aborted due to Timeout", description="", colour=0x00ff00))
+                await ctx.reply(embed=discord.Embed(title="Hangman game aborted due to Timeout", description="", colour=0x00ff00))
                 return
         if lives == 0:
             embed = discord.Embed(
-                title = "You lost!",
-                description = "The word was " + wordChoice,
-                color = 0xff0000
+                title="You lost!",
+                description="The word was " + wordChoice,
+                color=0xff0000
             )
             await ctx.reply(embed=embed)
         elif word_guessed == 0:
             embed = discord.Embed(
-                title = "You won!",
-                description = "The word was " + wordChoice,
-                color = 0x00ff00
+                title="You won!",
+                description="The word was " + wordChoice,
+                color=0x00ff00
             )
             await ctx.reply(embed=embed)
+
 
 def setup(client):
     client.add_cog(Hangman(client))
@@ -244,4 +298,3 @@ def setup(client):
 #             f"It took {totaltime} minutes to run the program! A total of {numberOfWords} words has been added to the database"
 #         )
 #         os.chdir("..")
-

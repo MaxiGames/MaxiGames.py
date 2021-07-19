@@ -24,10 +24,12 @@ class Counting(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        self.initation = self.client.get_cog("Initiation")
         if message.author == self.client.user:
             return
         if(message.author.bot):
             return
+        self.initation = self.client.get_cog("Initiation")
         self.data = await self.initation.checkserver(message, self.data)
         # print(self.data)
         if message.channel.name.lower() in self.data[str(message.guild.id)]["countingChannels"]:
@@ -94,6 +96,7 @@ class Counting(commands.Cog):
     @check.is_admin()
     @commands.command(name="addchannel", description="Adds a counting channel, from which counts will be recorded :D", usage="addchannel <channel name (empty if referring to current channel)>", aliases=["addc"])
     async def add_counting_channel(self, ctx, name: str = None):
+        self.initation = self.client.get_cog("Initiation")
         self.data = await self.initation.checkserver(ctx, self.data)
         if name == None:
             name = ctx.channel.name
@@ -121,6 +124,7 @@ class Counting(commands.Cog):
     @check.is_admin()
     @commands.command(name="removechannel", aliases=["rcc"])
     async def remove_counting_channel(self, ctx, name: str = None):
+        self.initation = self.client.get_cog("Initiation")
         self.data = await self.initation.checkserver(ctx, self.data)
         if name == None:
             name = ctx.channel.name
@@ -151,6 +155,7 @@ class Counting(commands.Cog):
         name="Set Count", aliases=["setcount"], description="Sets the current count in the current channel.", usage="setcount <number>", hidden=True
     )
     async def setcurrentcount(self, ctx, num: int):
+        self.initation = self.client.get_cog("Initiation")
         self.data = await self.initation.checkserver(ctx, self.data)
 
         dict2 = self.data[(str(ctx.guild.id))]
