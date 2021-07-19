@@ -53,7 +53,7 @@ class Errors(commands.Cog):
 
         else:
             channel = self.client.get_channel(866526918484164668)
-            await channel.send(f"Unknown error <@!712942935129456671> , <@!676748194956181505> , <@!782247763542016010> : ERROR ({traceback.format_exc()})")
+            await channel.send(f"Unknown error: ERROR ({traceback.format_exc()})")
             print(traceback_output)
             print(error)
 
