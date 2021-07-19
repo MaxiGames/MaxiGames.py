@@ -6,7 +6,7 @@ class Ticket(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.hidden = True
-        self.messages = []
+        self.messages = {}
 
     @commands.command(name="newticket", description="Creates a new message that responds to ")
     async def newticket(self, ctx):
@@ -15,6 +15,8 @@ class Ticket(commands.Cog):
             description="To create a ticket react with ✔️",
             colour=self.client.primary_colour
         )
+        embed.set_footer(text="MaxiGames", url=self.client.user.avatar_url)
+        await ctx.send(embed=embed)
 
 
 def setup(client):

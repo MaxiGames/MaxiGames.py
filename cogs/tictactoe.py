@@ -105,8 +105,7 @@ class TicTacToe(commands.Cog):
                         toAdd = j + " "
                     string += toAdd
                 string += "\n"
-            embed = discord.Embed(title="Tic Tac Toe", description=string, color=0x00ff00)
-            await message.reply(embed=embed)
+            await message.reply(f"```{string}```")
             if board[0][0] == board[1][1] == board[2][2] == "X" or board[0][0] == board[1][1] == board[2][2] == "o": #diagonals
                 if board[0][0] == "x":
                     await ctx.reply(f"{player1.mention} wins!")

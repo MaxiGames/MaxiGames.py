@@ -72,20 +72,15 @@ class Connect4(commands.Cog):
                             curmax[selected] += 1
                             print(board)
                             success = 1
-                            board_display = "|1 2 3 4 5 6 7"
+                            board_display = "```|1 2 3 4 5 6 7"
                             for i in range(6):
                                 board_display += "|\n|"
                                 for j in range(7):
                                     board_display += board[j][5-i]
                                     board_display += " "
-                            board_display += "|"
+                            board_display += "|```"
 
-                            embed = discord.Embed(
-                                title="Successful placement",
-                                description=board_display,
-                                color=self.client.primary_colour
-                            )
-                            await message.reply(embed=embed)
+                            await message.reply(board_display)
                             for i in range(7):
 
                                 for j in range(3):
@@ -138,20 +133,16 @@ class Connect4(commands.Cog):
                             curmax[selected] += 1
                             print(board)
                             success = 1
-                            board_display = "|1 2 3 4 5 6 7"
+                            board_display = "```|1 2 3 4 5 6 7"
                             for i in range(6):
                                 board_display += "|\n|"
                                 for j in range(7):
                                     board_display += board[j][5-i]
                                     board_display += " "
                                     print(board_display)
-                            board_display += "|"
-                            embed = discord.Embed(
-                                title="Successful placement",
-                                description=board_display,
-                                color=self.client.primary_colour
-                            )
-                            await message.reply(embed=embed)
+                            board_display += "|```"
+
+                            await message.reply(board_display)
                             for i in range(4):
                                 for j in range(3):
                                     if board[i][j] == board[i+1][j+1] == board[i+2][j+2] == board[i+3][j+3] == "o":
