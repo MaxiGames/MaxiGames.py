@@ -1,6 +1,8 @@
 from gc import DEBUG_SAVEALL
 import discord
 from discord.ext import commands
+from discord_components import ButtonStyle, Button, InteractionType
+from utils import check
 
 
 class Ticket(commands.Cog):
@@ -53,24 +55,18 @@ class Ticket(commands.Cog):
                     found = False
                     for category in reaction.message.guild.categories:
                         if category.name=="open-tickets":
-                            overwrites = {
-                                reaction.message.guild.default_role: discord.PermissionOverwrite(view_channel=False),
-                                user: discord.PermissionOverwrite(read_messages=True, add_reactions=True, send_messages=True)
-                            }
-                            self.count[str(reaction.message.guild.id)] += 1
-                            self.active_tickets[str(reaction.message.guild.id)][str(user.id)] = self.count[str(reaction.message.guild.id)]
-                            channel = await reaction.message.guild.create_text_channel(f'ticket-{self.count[str(reaction.message.guild.id)]}', overwrites=overwrites, category=category)
                             found = True
                             break 
                     
                     if not found:
                         category = await reaction.message.guild.create_category(f'open-tickets', position=0)
-                        overwrites = {
-                            reaction.message.guild.default_role: discord.PermissionOverwrite(view_channel=False),
-                            user: discord.PermissionOverwrite(read_messages=True, add_reactions=True, send_messages=True)
-                        }
-                        self.count[str(reaction.message.guild.id)] += 1
-                        channel = await reaction.message.guild.create_text_channel(f'ticket-{self.count[str(reaction.message.guild.id)]}', overwrites=overwrites, category=category)
+                    overwrites = {
+                        reaction.message.guild.default_role: discord.PermissionOverwrite(view_channel=False),
+                        user: discord.PermissionOverwrite(read_messages=True, add_reactions=True, send_messages=True)
+                    }
+                    self.count[str(reaction.message.guild.id)] += 1
+                    self.active_tickets[str(reaction.message.guild.id)][str(user.id)] = self.count[str(reaction.message.guild.id)]
+                    channel = await reaction.message.guild.create_text_channel(f'ticket-{self.count[str(reaction.message.guild.id)]}', overwrites=overwrites, category=category)
                     
                     embed=discord.Embed(
                         title="New Ticket",
@@ -78,9 +74,47 @@ class Ticket(commands.Cog):
                         colour=self.client.primary_colour
                     )
                     embed.set_footer(text="MaxiGames - The Best Minigame Bot", icon_url=self.client.user.avatar_url)
-                    startmsg = await channel.send(embed=embed, allowed_mentions = discord.AllowedMentions.all())
-                    
+                    startmsg = await channel.send(embed=embed, components=[[Button(style=ButtonStyle.grey, label="🔒 Close")]], allowed_mentions = discord.AllowedMentions.all())
                     await reaction.message.remove_reaction('🎫', user)
+
+                    while True:
+                        def check(interaction):
+                            return interaction.user == user and interaction.message.channel == channel and interaction.component.label == "🔒 Close"
+                        res = await self.client.wait_for("button_click", check = check)
+                        await res.respond(
+                            type=InteractionType.DeferredUpdateMessage # , content=f"{res.component.label} pressed"
+                        )
+
+                        confirmation=discord.Embed(
+                            title="Confirm closing of ticket",
+                            description=f"Please confirm that you want to delete this ticket. This is not reversible.",
+                            colour=self.client.primary_colour
+                        )
+                        embed.set_footer(text="MaxiGames - The Best Minigame Bot", icon_url=self.client.user.avatar_url)
+                        confirm = await channel.send(embed=confirmation, components=[[Button(style=ButtonStyle.red, label="Delete"), Button(style=ButtonStyle.grey, label="Cancel")]])
+
+                        def check(interaction):
+                            return interaction.user == user and interaction.message.channel == channel
+                        
+                        res = await self.client.wait_for("button_click", check = check)
+                        await res.respond(
+                            type=InteractionType.DeferredUpdateMessage # , content=f"{res.component.label} pressed"
+                        )
+                        if res.component.label == "Delete":
+                            await channel.delete()
+                            self.active_tickets[str(reaction.message.guild.id)].remove(str(user.id))
+                            break
+                        else:
+                            await confirm.delete()
+
+                    #APPLICATIONS: VSCODE DEFENDER: bad tux! if you see this you CANNOT change any of the code :D
+    
+    @check.is_staff()
+    @commands.command()
+    async def deletechannel(self, ctx):
+        await ctx.channel.delete()
+
+                    
 
 def setup(client):
     client.add_cog(Ticket(client))

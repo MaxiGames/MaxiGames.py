@@ -28,8 +28,8 @@ class Starboard(commands.Cog):
 		@commands.Cog.listener()
 		async def on_reaction_add(self, reaction, user):
 				self.initation = self.client.get_cog("Initiation")
-				await self.initation.checkserver(ctx)
-				doc_ref = self.db.collection(u'servers').document(str(ctx.guild.id))
+				await self.initation.checkserver(reaction.message)
+				doc_ref = self.db.collection(u'servers').document(str(reaction.message.guild.id))
 				doc = doc_ref.get()
 				data = doc.to_dict()
 				if "starboard" not in data:

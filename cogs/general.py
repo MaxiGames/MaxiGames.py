@@ -343,7 +343,7 @@ class General(commands.Cog):
         )
         message = await ctx.reply(embed=embed)
         embed=discord.Embed(
-            title = "The number " + str(num),
+            title = "The number ",
             description = "",
             color = self.client.primary_colour
         )
@@ -455,6 +455,29 @@ class General(commands.Cog):
             color = self.client.primary_colour
         )
         await ctx.reply(embed=embed)
-    
+
+    @commands.command(name="kawaii",description="Makes what you say kawaii <3",usage="kawaii <message>")
+    async def kawaii(self,ctx,*msg:str):
+        words = " ".join(msg)
+        final= ""
+        previous_char = ""
+        for i in words:
+            if i == "s" == previous_char:
+                continue
+            elif i == "h" and previous_char == "s":
+                continue
+            elif i == "z" == previous_char:
+                continue
+            elif i == "h" and previous_char == "z":
+                continue
+            else:
+                final += i
+                previous_char = i
+        final = final.replace("s","sh").replace("z","zh").replace("rr","ww").replace("nine","9").replace("four","4").replace("one","1")
+        if final[-1] == "y":
+            final = final[:-1]+"ie"
+        
+        await ctx.reply(final)
+        
 def setup(client):
     client.add_cog(General(client))
