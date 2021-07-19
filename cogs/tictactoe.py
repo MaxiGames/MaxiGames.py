@@ -5,9 +5,9 @@ import asyncio
 class TicTacToe(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.hidden = True
+        self.hidden = False
 	
-    @commands.command(name="ttt", description="tic tac toe game u can play with your friend!")
+    @commands.command(name="ttt", description="tic tac toe game u can play with your friend!", usage="ttt")
     async def ttt(self, ctx):
         player1 = ""
         player2 = ""

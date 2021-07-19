@@ -19,6 +19,5 @@ class Ticket(commands.Cog):
                          icon_url=self.client.user.avatar_url)
         await ctx.send(embed=embed)
 
-
 def setup(client):
     client.add_cog(Ticket(client))
