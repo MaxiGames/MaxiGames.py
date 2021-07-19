@@ -293,7 +293,6 @@ class Economy(commands.Cog):
             embed.add_field(name="New Balance",
                             value=f'{dict1["money"]}', inline=True)
             await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
-
             
     @commands.command(name="Daily", description="Daily points :D", usage="daily", aliases=["d", "daily"])
     @cooldown(1, 86400, BucketType.user)
