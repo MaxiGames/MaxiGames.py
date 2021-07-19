@@ -446,5 +446,15 @@ class General(commands.Cog):
             color = self.client.primary_colour
         )
         await ctx.reply(embed=embed)
+    @commands.command(name="choose",description="Chooses a random choice from the set of words given",usage = "choose <choices space-separated>")
+    async def choose(self,ctx,*choices:str):
+        chosen = random.choice(choices)
+        embed=discord.Embed(
+            title = chosen + " was chosen!",
+            description = "Poggers!",
+            color = self.client.primary_colour
+        )
+        await ctx.reply(embed=embed)
+    
 def setup(client):
     client.add_cog(General(client))

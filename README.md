@@ -6,7 +6,7 @@ Your one and only discord bot that includes all forms of mini games u will ever 
 
 ### Commands
 
-- tictactoe
+- tictactoe (implementing)
 - typeracer
 - blackjack 
 - fastword (greentea/blacktea?)
@@ -19,6 +19,6 @@ Your one and only discord bot that includes all forms of mini games u will ever 
 - pictionary!
 - that telephone game?
 - google snake game with button
-- let me google that for you
+- let me google that for you (DONE)
 - guess the song
 - random guessing
