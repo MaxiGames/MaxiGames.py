@@ -53,5 +53,5 @@ class Errors(commands.Cog):
 
 
 def setup(client):
-    # client.add_cog(Errors(client))
-    pass
+    client.add_cog(Errors(client))
+    # pass
