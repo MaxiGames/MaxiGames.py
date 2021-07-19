@@ -271,10 +271,9 @@ class Economy(commands.Cog):
 
     @commands.command(name="Hourly", description="Hourly points for saying hallo :D", usage="hourly hallo", aliases=["h", "hourly", " h", " hourly"])
     @cooldown(1, 3600, BucketType.user)
-    async def _hourly(self, ctx, string: str = None):
+    async def _hourly(self, ctx, string: str = ""):
         self.initation = self.client.get_cog("Initiation")
         if string.lower() == "hallo":
-            self.initation = self.client.get_cog("Initiation")
             await self.initation.checkserver(ctx)
             doc_ref = self.db.collection(u'users').document(
                 u'{}'.format(str(ctx.author.id)))
