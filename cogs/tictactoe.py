@@ -58,7 +58,7 @@ class TicTacToe(commands.Cog):
                                 await message.reply("You can't overwrite a marker!")
                             else:
                                 if int(message.content) and int(message.content) in range(1,10):
-                                    board[int(selected/3)][int(selected%3)] = "X"
+                                    board[int(selected/3)][int(selected%3)] = "x"
                                     break
                                 else:
                                     await message.reply("Please enter a valid number from 1 to 9")
@@ -85,7 +85,7 @@ class TicTacToe(commands.Cog):
                                 await message.reply("You can't overwrite a marker!")
                             else:
                                 if int(message.content) and int(message.content) in range(1,10):
-                                    board[int(selected/3)][int(selected%3)] = "O"
+                                    board[int(selected/3)][int(selected%3)] = "o"
                                     break
                                 else:
                                     await message.reply("Please enter a valid number from 1 to 9")
@@ -107,52 +107,52 @@ class TicTacToe(commands.Cog):
                 string += "\n"
             embed = discord.Embed(title="Tic Tac Toe", description=string, color=0x00ff00)
             await message.reply(embed=embed)
-            if board[0][0] == board[1][1] == board[2][2] == "X" or board[0][0] == board[1][1] == board[2][2] == "O": #diagonals
-                if board[0][0] == "X":
+            if board[0][0] == board[1][1] == board[2][2] == "X" or board[0][0] == board[1][1] == board[2][2] == "o": #diagonals
+                if board[0][0] == "x":
                     await ctx.reply(f"{player1.mention} wins!")
                 else:
                     await ctx.reply(f"{player2.mention} wins!")
                 break
-            elif board[0][2] == board[1][1] == board[2][0] == "X" or board[0][2] == board[1][1] == board[2][0] == "O":
-                if board[0][2] == "X":
+            elif board[0][2] == board[1][1] == board[2][0] == "X" or board[0][2] == board[1][1] == board[2][0] == "o":
+                if board[0][2] == "x":
                     await ctx.reply(f"{player1.mention} wins!")
                 else:
                     await ctx.reply(f"{player2.mention} wins!")
                 break
             #horizontal
-            elif board[0][0] == board[0][1] == board[0][2] == "X" or board[0][0] == board[0][1] == board[0][2] == "O":
-                if board[0][0] == "X":
+            elif board[0][0] == board[0][1] == board[0][2] == "x" or board[0][0] == board[0][1] == board[0][2] == "o":
+                if board[0][0] == "x":
                     await ctx.reply(f"{player1.mention} wins!")
                 else:
                     await ctx.reply(f"{player2.mention} wins!")
                 break
-            elif board[1][0] == board[1][1] == board[1][2] == "X" or board[1][0] == board[1][1] == board[1][2] == "O":
-                if board[1][0] == "X":
+            elif board[1][0] == board[1][1] == board[1][2] == "x" or board[1][0] == board[1][1] == board[1][2] == "o":
+                if board[1][0] == "x":
                     await ctx.reply(f"{player1.mention} wins!")
                 else:
                     await ctx.reply(f"{player2.mention} wins!")
                 break
-            elif board[2][0] == board[2][1] == board[2][2] == "X" or board[2][0] == board[2][1] == board[2][2] == "O":
-                if board[2][0] == "X":
+            elif board[2][0] == board[2][1] == board[2][2] == "x" or board[2][0] == board[2][1] == board[2][2] == "o":
+                if board[2][0] == "x":
                     await ctx.reply(f"{player1.mention} wins!")
                 else:
                     await ctx.reply(f"{player2.mention} wins!")
                 break
             #vertical
-            elif board[0][0] == board[1][0] == board[2][0] == "X" or board[0][0] == board[1][0] == board[2][0] == "O":
-                if board[0][0] == "X":
+            elif board[0][0] == board[1][0] == board[2][0] == "x" or board[0][0] == board[1][0] == board[2][0] == "o":
+                if board[0][0] == "x":
                     await ctx.reply(f"{player1.mention} wins!")
                 else:
                     await ctx.reply(f"{player2.mention} wins!")
                 break
-            elif board[0][1] == board[1][1] == board[2][1] == "X" or board[0][1] == board[1][1] == board[2][1] == "O":
-                if board[0][1] == "X":
+            elif board[0][1] == board[1][1] == board[2][1] == "x" or board[0][1] == board[1][1] == board[2][1] == "o":
+                if board[0][1] == "x":
                     await ctx.reply(f"{player1.mention} wins!")
                 else:
                     await ctx.reply(f"{player2.mention} wins!")
                 break
-            elif board[0][2] == board[1][2] == board[2][2] == "X" or board[0][2] == board[1][2] == board[2][2] == "O":
-                if board[0][2] == "X":
+            elif board[0][2] == board[1][2] == board[2][2] == "x" or board[0][2] == board[1][2] == board[2][2] == "o":
+                if board[0][2] == "x":
                     await ctx.reply(f"{player1.mention} wins!")
                 else:
                     await ctx.reply(f"{player2.mention} wins!")
