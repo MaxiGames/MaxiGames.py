@@ -37,7 +37,7 @@ class Suggestions (commands.Cog):
         reaction, user = await self.client.wait_for('reaction_add', check=check)
         await message.delete()
 
-        delete_channel = self.client.get_channel(865825802604380200)
+        delete_channel = self.client.get_channel(866339642075775058)
         await delete_channel.send(embed=embed)
 
 
