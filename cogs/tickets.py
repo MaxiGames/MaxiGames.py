@@ -102,7 +102,7 @@ class Ticket(commands.Cog):
                         )
                         if res.component.label == "Delete":
                             await channel.delete()
-                            self.active_tickets[str(reaction.message.guild.id)].remove(str(user.id))
+                            self.active_tickets[str(reaction.message.guild.id)].pop(str(user.id))
                             break
                         else:
                             await confirm.delete()

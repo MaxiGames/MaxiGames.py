@@ -252,7 +252,7 @@ class Economy(commands.Cog):
             doc = doc_ref.get()
             dict1 = doc.to_dict()
             dict3[i] = dict1['money']
-        descriptio = ""
+        description = ""
         count = 1
         for i in sorted(dict3.items(), key=lambda kv: (kv[1]), reverse=True):
             user = self.client.get_user(int(i[0]))
@@ -262,7 +262,7 @@ class Economy(commands.Cog):
                 break
         embed = discord.Embed(
             title=f"Leaderboard in {ctx.message.guild.name}:",
-            description=descriptio,
+            description=description,
             colour=self.client.primary_colour
         )
         embed.set_author(name="Hallo Bot",
