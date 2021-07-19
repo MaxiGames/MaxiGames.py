@@ -10,14 +10,7 @@ class Errors(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error, bypass=False):
         if isinstance(error, commands.CommandNotFound):
-            embed = discord.Embed(
-                title="Command not found",
-                description="The command that you requested cannot be found/is unavailable. Please make sure that it is a valid command and that everything is spelled correctly :D",
-                colour = self.client.primary_colour
-            )
-            channel = self.client.get_channel(866526918484164668)
-            embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
-            await channel.send(embed = embed)
+            pass
         elif isinstance(error, commands.NotOwner):
             embed = discord.Embed(
                 title = "Unauthorised Access",
