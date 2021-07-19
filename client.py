@@ -30,9 +30,3 @@ class Client(commands.Bot):
     @property
     def icon_url(self):
         return self.config.icon_url
-    
-    # async def start_bot(self):
-    #     for extension in self.config.initial_extensions:
-    #         try:
-    #             self.load_extension(extension)
-    #         except Exception:
