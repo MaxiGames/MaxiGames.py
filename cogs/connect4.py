@@ -45,13 +45,23 @@ class Connect4(commands.Cog):
                 return
 
         await ctx.reply(f"2 players have joined, connect4 game starting... <@{player1.id}>, <@{player2.id}>")
-        time.sleep(2)
+        time.sleep(0.5)
         board = [["□", "□", "□", "□", "□", "□"], ["□", "□", "□", "□", "□", "□"], ["□", "□", "□", "□", "□", "□"], [
             "□", "□", "□", "□", "□", "□"], ["□", "□", "□", "□", "□", "□"], ["□", "□", "□", "□", "□", "□"], ["□", "□", "□", "□", "□", "□"]]
         print(board)
         curmax = [0, 0, 0, 0, 0, 0, 0]
         turn = 0
+        number_of_counter_left = 42
         while True:
+            print(number_of_counter_left)
+            if number_of_counter_left == 0:
+                embed=discord.Embed(
+                    title = "Draw",
+                    description = "No one wins!",
+                    color =0xffff00
+                )
+                await message.reply(embed=embed)
+                return
             if turn == 0:
                 turn = 1
                 success = 0
@@ -72,14 +82,14 @@ class Connect4(commands.Cog):
                             curmax[selected] += 1
                             print(board)
                             success = 1
-                            board_display = "```|1 2 3 4 5 6 7"
+                            board_display = "```|1 2 3 4 5 6 7 "
                             for i in range(6):
                                 board_display += "|\n|"
                                 for j in range(7):
                                     board_display += board[j][5-i]
                                     board_display += " "
                             board_display += "|```"
-
+                            number_of_counter_left -= 1
                             await message.reply(board_display)
                             for i in range(7):
 
@@ -103,7 +113,26 @@ class Connect4(commands.Cog):
                                         )
                                         await message.reply(embed=embed)
                                         return
-
+                            for i in range(4):
+                                for j in range(3):
+                                    if board[i][j] == board[i+1][j+1] == board[i+2][j+2] == board[i+3][j+3] == "o":
+                                        embed = discord.Embed(
+                                            title="Game over!",
+                                            description=f"{player1.mention} wins!",
+                                            color=self.client.primary_colour
+                                        )
+                                        await message.reply(embed=embed)
+                                        return
+                            for i in range(4):
+                                for j in range(3,6):
+                                    if board[i][j] == board[i+1][j-1] == board[i+2][j-2] == board[i+3][j-3] == "o":
+                                        embed = discord.Embed(
+                                            title="Game over!",
+                                            description=f"{player1.mention} wins!",
+                                            color=self.client.primary_colour
+                                        )
+                                        await message.reply(embed=embed)
+                                        return      
                             break
                         except ValueError:
                             await message.reply("Please enter a number from 1 to 7")
@@ -116,6 +145,15 @@ class Connect4(commands.Cog):
             else:
                 turn = 0
                 success = 0
+                print(number_of_counter_left)
+                if number_of_counter_left == 0:
+                    embed=discord.Embed(
+                        title = "Draw",
+                        description = "No one wins!",
+                        color =0xffff00
+                    )
+                    await message.reply(embed=embed)
+                    return
                 await ctx.send(f"{player2.mention}'s turn! Type a number from 1 to 7, the column you want to place a marker on!")
                 while True:
                     try:
@@ -131,34 +169,36 @@ class Connect4(commands.Cog):
                                 continue
                             board[selected][curmax[selected]] = "x"
                             curmax[selected] += 1
+                            number_of_counter_left -= 1
                             print(board)
                             success = 1
-                            board_display = "```|1 2 3 4 5 6 7"
+                            board_display = "```| 1 2 3 4 5 6 7 "
                             for i in range(6):
-                                board_display += "|\n|"
+                                board_display += "|\n| "
                                 for j in range(7):
                                     board_display += board[j][5-i]
                                     board_display += " "
                                     print(board_display)
                             board_display += "|```"
-
                             await message.reply(board_display)
+                            
                             for i in range(4):
-                                for j in range(3):
-                                    if board[i][j] == board[i+1][j+1] == board[i+2][j+2] == board[i+3][j+3] == "o":
+                                for j in range(3,6):
+                                    if board[i][j] == board[i+1][j-1] == board[i+2][j-2] == board[i+3][j-3] == "x":
                                         embed = discord.Embed(
                                             title="Game over!",
-                                            description=f"{player1.mention} wins!",
+                                            description=f"{player2.mention} wins!",
                                             color=self.client.primary_colour
                                         )
                                         await message.reply(embed=embed)
-                                        return
+                                        return        
+                            break
                             for i in range(4):
                                 for j in range(3):
-                                    if board[i][j] == board[i+1][j+1] == board[i+2][j+2] == board[i+3][j+3] == "o":
+                                    if board[i][j] == board[i+1][j+1] == board[i+2][j+2] == board[i+3][j+3] == "x":
                                         embed = discord.Embed(
                                             title="Game over!",
-                                            description=f"{player1.mention} wins!",
+                                            description=f"{player2.mention} wins!",
                                             color=self.client.primary_colour
                                         )
                                         await message.reply(embed=embed)
@@ -198,6 +238,16 @@ class Connect4(commands.Cog):
                                         )
                                         await message.reply(embed=embed)
                                         return
+                            for i in range(4):
+                                for j in range(3,6):
+                                    if board[i][j] == board[i+1][j-1] == board[i+2][j-2] == board[i+3][j-3] == "x":
+                                        embed = discord.Embed(
+                                            title="Game over!",
+                                            description=f"{player2.mention} wins!",
+                                            color=self.client.primary_colour
+                                        )
+                                        await message.reply(embed=embed)
+                                        return        
                             break
 
                         except ValueError:
