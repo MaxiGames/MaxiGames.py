@@ -13,7 +13,7 @@ class Suggestions (commands.Cog):
     @commands.command(name="Suggestions", description="Suggest anything that you want us to know about!!! Be it a game that you really want to be implemented, or some comments you have on what can be improved :D", usage="suggest <suggestion>", aliases=["suggest"])
     async def suggest(self, ctx, *msg):
         suggestion = " ".join(msg[:])
-        channel = self.client.get_channel(865821669730156544)
+        channel = self.client.get_channel(866339642075775058)
         embed = discord.Embed(
             title="New Suggestion",
             description=f"{ctx.author.mention} has submitted a suggestion.",
@@ -37,7 +37,7 @@ class Suggestions (commands.Cog):
         reaction, user = await self.client.wait_for('reaction_add', check=check)
         await message.delete()
 
-        delete_channel = self.client.get_channel(865825802604380200)
+        delete_channel = self.client.get_channel(866339642075775058)
         await delete_channel.send(embed=embed)
 
 

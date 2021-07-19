@@ -183,7 +183,7 @@ class General(commands.Cog):
         msg = await ctx.send(
             embed=pages[page_num],
         )
-        buttons = [[Button(style=ButtonStyle.URL, label="Invite :D", url="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=8&scope=bot%20applications.commands"), Button(style=ButtonStyle.URL, label="Support Server!!!", url="https://discord.gg/BNm87Cvdx3")]]
+        buttons = [[Button(style=ButtonStyle.URL, label="Invite :D", url="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=8&scope=bot%20applications.commands"), Button(style=ButtonStyle.URL, label="Support Server!!!", url="https://discord.gg/BNm87Cvdx3"), Button(style=ButtonStyle.URL, label="Vote :)", url="https://top.gg/bot/863419048041381920")]]
         page = Paginator(self.client, ctx, msg, pages, buttons=buttons,timeout=60)
         await page.start()
     
