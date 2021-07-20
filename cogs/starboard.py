@@ -51,40 +51,39 @@ class Starboard(commands.Cog):
             print("a")
             return
 
-        if reaction.count > 1:
-            if reaction.emoji == "⭐":
-                try:
-                    msg = await channel.fetch_message(
-                        data["starboard"][str(reaction.message.id)]
+        if reaction.count > 1 and reaction.emoji == "⭐":
+            try:
+                msg = await channel.fetch_message(
+                    data["starboard"][str(reaction.message.id)]
+                )
+                await msg.edit(
+                    embed=discord.Embed(
+                        title=f"Starboard: {reaction.count}",
+                        description=reaction.message.content,
+                        color=0x00FF00,
                     )
-                    await msg.edit(
-                        embed=discord.Embed(
-                            title=f"Starboard: {reaction.count}",
-                            description=reaction.message.content,
-                            color=0x00FF00,
-                        )
-                        .set_footer(text=f"React with {'🌟'} to star this message")
-                        .set_author(
-                            name=reaction.message.author.name,
-                            icon_url=reaction.message.author.avatar_url,
-                        )
+                    .set_footer(text=f"React with {'🌟'} to star this message")
+                    .set_author(
+                        name=reaction.message.author.name,
+                        icon_url=reaction.message.author.avatar_url,
                     )
-                    doc_ref.set(data)
-                except KeyError:
-                    message = await channel.send(
-                        embed=discord.Embed(
-                            title=f"Starboard: {reaction.count}",
-                            description=reaction.message.content,
-                            color=0x00FF00,
-                        )
-                        .set_footer(text=f"React with {'🌟'} to star this message")
-                        .set_author(
-                            name=reaction.message.author.name,
-                            icon_url=reaction.message.author.avatar_url,
-                        )
+                )
+                doc_ref.set(data)
+            except KeyError:
+                message = await channel.send(
+                    embed=discord.Embed(
+                        title=f"Starboard: {reaction.count}",
+                        description=reaction.message.content,
+                        color=0x00FF00,
                     )
-                    data["starboard"][str(reaction.message.id)] = message.id
-                    doc_ref.set(data)
+                    .set_footer(text=f"React with {'🌟'} to star this message")
+                    .set_author(
+                        name=reaction.message.author.name,
+                        icon_url=reaction.message.author.avatar_url,
+                    )
+                )
+                data["starboard"][str(reaction.message.id)] = message.id
+                doc_ref.set(data)
 
 
 def setup(client):
