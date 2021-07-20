@@ -86,7 +86,7 @@ class Hangman(commands.Cog):
         while True:
             try:
                 message = await self.client.wait_for('message', timeout=120, check=check)
-                if message.content == "m!hangmanList" or message.content != "!hangmanList":
+                if message.content == "m!hangmanList" or message.content == "!hangmanList":
                     continue
                 elif message.content in myList:
                     chosenTopic = message.content
