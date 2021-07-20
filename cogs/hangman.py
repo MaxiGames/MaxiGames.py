@@ -11,14 +11,17 @@ import sys
 import asyncio
 import time
 from utils.paginator import Paginator
+import firebase_admin 
+from firebase_admin import firestore
 
 alpha = "abcdefghijklmnopqrstuvwxyz"
-
 
 class Hangman(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.hidden = False
+        self.db = firestore.client()
+        self.initiation = self.client.get_cog("Initiation")
 
     @commands.command()
     async def hangmanList(self, ctx):
@@ -71,6 +74,14 @@ class Hangman(commands.Cog):
 
     @commands.command()
     async def hangman(self, ctx):
+        #! Hangman Firebase Initalisation
+        self.initiation = self.client.get_cog("Initiation")
+        await self.initiation.checkserver(ctx)
+        doc_ref = self.db.collection(u'users').document(str(ctx.author.id))
+        doc = doc_ref.get()
+        data = doc.to_dict()
+
+        #! Retriving data
         def check(msg):
             return msg.author == ctx.author and msg.channel == ctx.channel
 
@@ -82,6 +93,7 @@ class Hangman(commands.Cog):
         words.close()
         await ctx.reply(embed=discord.Embed(title="You have **2 minutes** to choose one topic. Do `m!hangmanList` to check all the topics.", colour=0x00ff00))
 
+        #! Waiting for a reply
         chosenTopic = "" 
         while True:
             try:
@@ -145,6 +157,8 @@ class Hangman(commands.Cog):
         word_guessed = 0
         await ctx.reply(embed=embed)
         guessed_letter = []
+
+        #! Main Hangman Portion
         while answer != wordChoice and lives > 0:
            
             if currentGuess == correctWord:
@@ -187,15 +201,16 @@ class Hangman(commands.Cog):
 
                 else:
                     if messageanswer == wordChoice:
+                        add = random.randint(1, 10)
+                        data["money"] += add
                         embed = discord.Embed(
-                            title="Your guess was correct!",
-                            description="You win! The word was " + wordChoice,
-                            color=self.client.primary_colour
+                            title="You won!",
+                            description=f"Congratulations, you guessed the word {wordChoice} correctly! You have {data['money']} money now!",
+                            color=0x00ff00
                         )
-                        answer = wordChoice
-                        word_guessed = 1
-                        await message.reply(embed=embed)
-
+                        await ctx.reply(embed=embed)
+                        doc_ref.set(data)
+                        return
                     else:
                         lives -= 1
                         embed = discord.Embed(
@@ -208,19 +223,27 @@ class Hangman(commands.Cog):
                 await ctx.reply(embed=discord.Embed(title="Hangman game aborted due to Timeout", description="", colour=0x00ff00))
                 return
         if lives == 0:
+            deduct = random.randint(1, 10)
+            data["money"] -= deduct
+            if data["money"] < 0:
+                data["money"] = 0
             embed = discord.Embed(
                 title="You lost!",
-                description="The word was " + wordChoice,
+                description=f"The word was {wordChoice}, {deduct} money was subtracted off your account :(. You currently have f{data['money']} money",
                 color=0xff0000
             )
             await ctx.reply(embed=embed)
+            doc_ref.set(data)
         elif word_guessed == 0:
+            add = random.randint(1, 10)
+            data["money"] += add
             embed = discord.Embed(
                 title="You won!",
-                description="The word was " + wordChoice,
+                description=f"Congratulations, you guessed the word {wordChoice} correctly! You have {data['money']} money now!",
                 color=0x00ff00
             )
             await ctx.reply(embed=embed)
+            doc_ref.set(data)
 
 
 def setup(client):
