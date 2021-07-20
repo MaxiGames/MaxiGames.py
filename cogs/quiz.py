@@ -24,37 +24,51 @@ class Games(commands.Cog):
         self.hidden = False
 
     # @cooldown(1, 20, BucketType.user)
-    @commands.command(name="trivia", description="Answer a trivia question using reactions! Provide a number from 1 to 3 specifying the difficulty of the trivia question you want.", usage="trivia <difficulty>")
+    @commands.command(
+        name="trivia",
+        description="Answer a trivia question using reactions! Provide a number from 1 to 3 specifying the difficulty of the trivia question you want.",
+        usage="trivia <difficulty>",
+    )
     async def trivia(self, ctx, difficulty=100000000000):
         word = "hard"
         moneyToAdd = 0
-        if(difficulty == 1):
+        if difficulty == 1:
             word = "easy"
             moneyToAdd = 2
-        elif(difficulty == 2):
+        elif difficulty == 2:
             word = "medium"
             moneyToAdd = 5
-        elif(difficulty == 3):
+        elif difficulty == 3:
             word = "hard"
             moneyToAdd = 10
         else:
-            await ctx.reply(embed=discord.Embed(title="Error", description="A difficulty level of 1, 2 or 3 is needed! Note that the harder the question is, the more points you will get if u get it right!", colour=self.client.primary_colour))
+            await ctx.reply(
+                embed=discord.Embed(
+                    title="Error",
+                    description="A difficulty level of 1, 2 or 3 is needed! Note that the harder the question is, the more points you will get if u get it right!",
+                    colour=self.client.primary_colour,
+                )
+            )
             return
         r = {
-            "response_code": 'value1',
+            "response_code": "value1",
             "results": [
                 {
-                    "category": 'value2',
-                    "type": 'value3',
-                    "difficulty": 'value4',
-                    "question": 'value5',
-                    "correct_answer": 'value6',
-                    "incorrect_answers": 'value7'
+                    "category": "value2",
+                    "type": "value3",
+                    "difficulty": "value4",
+                    "question": "value5",
+                    "correct_answer": "value6",
+                    "incorrect_answers": "value7",
                 }
-            ]
+            ],
         }
-        result = json.loads(requests.post(
-            f"https://opentdb.com/api.php?amount=1&difficulty={word}&type=multiple", data=r).text)
+        result = json.loads(
+            requests.post(
+                f"https://opentdb.com/api.php?amount=1&difficulty={word}&type=multiple",
+                data=r,
+            ).text
+        )
         results = result["results"][0]
 
         arr = results["incorrect_answers"]
@@ -63,14 +77,16 @@ class Games(commands.Cog):
         count = 0
         description = ""
         for i in arr:
-            description += f'({count+1}) {i}\n'
+            description += f"({count+1}) {i}\n"
             count += 1
         embed = discord.Embed(
             title=f"TRIVIA- You have 10 seconds to answer ({word})",
-            description=results["question"].replace(
-                "&quot;", '\"').replace("&#039;", "\'")+'\n'+description,
-
-            colour=self.client.primary_colour
+            description=results["question"]
+            .replace("&quot;", '"')
+            .replace("&#039;", "'")
+            + "\n"
+            + description,
+            colour=self.client.primary_colour,
         )
         message = await ctx.reply(embed=embed)
         await message.add_reaction("1️⃣")
@@ -83,62 +99,68 @@ class Games(commands.Cog):
             return user == ctx.author and reaction.message == message
 
         try:
-            reaction, user = await self.client.wait_for('reaction_add', timeout=10.0, check=check)
+            reaction, user = await self.client.wait_for(
+                "reaction_add", timeout=10.0, check=check
+            )
         except asyncio.TimeoutError:
             embed = discord.Embed(
                 title="You were too slow! Try again next time.",
                 description=" ",
-                color=self.client.primary_colour
+                color=self.client.primary_colour,
             )
             await ctx.reply(embed=embed)
 
         else:
             # find which option is correct????
             index = None
-            if reaction.emoji == '1️⃣':
+            if reaction.emoji == "1️⃣":
                 index = 0
-            elif reaction.emoji == '2️⃣':
+            elif reaction.emoji == "2️⃣":
                 index = 1
-            elif reaction.emoji == '3️⃣':
+            elif reaction.emoji == "3️⃣":
                 index = 2
-            elif reaction.emoji == '4️⃣':
+            elif reaction.emoji == "4️⃣":
                 index = 3
             else:
                 return
             ans = arr[index]
             self.initation = self.client.get_cog("Initiation")
             await self.initiation.checkserver(ctx)
-            doc_ref = self.db.collection(u'users').document(
-                u'{}'.format(str(ctx.author.id)))
+            doc_ref = self.db.collection("users").document(
+                "{}".format(str(ctx.author.id))
+            )
             doc = doc_ref.get()
             if doc.exists:
                 dict1 = doc.to_dict()
                 if ans == str(results["correct_answer"]):
-                    dict1["money"] = dict1["money"] + \
-                        random.randint(0, moneyToAdd)
+                    dict1["money"] = dict1["money"] + random.randint(0, moneyToAdd)
                     embed = discord.Embed(
                         title="Correct Answer! You win 3 money!",
-                        description="You now have " +
-                        str(dict1["money"]) + " money!",
-                        color=self.client.primary_colour
+                        description="You now have " + str(dict1["money"]) + " money!",
+                        color=self.client.primary_colour,
                     )
                     await ctx.reply(embed=embed)
 
                 else:
 
-                    dict1["money"] = dict1["money"] - \
-                        int(random.randint(0, moneyToAdd)/3)
+                    dict1["money"] = dict1["money"] - int(
+                        random.randint(0, moneyToAdd) / 3
+                    )
                     embed = discord.Embed(
                         title="Wrong Answer! You lost 1 money!",
-                        description=f"You now have " +
-                        str(dict1["money"]) +
-                        f" money! The correct answer was {results['correct_answer']} :",
-                        color=self.client.primary_colour
+                        description=f"You now have "
+                        + str(dict1["money"])
+                        + f" money! The correct answer was {results['correct_answer']} :",
+                        color=self.client.primary_colour,
                     )
                     await ctx.reply(embed=embed)
                 doc_ref.set(dict1)
 
-    @commands.command(name="math", description="Answer a math question correctly to gain coins. If you don't get it correct you lose coins!", usage="math")
+    @commands.command(
+        name="math",
+        description="Answer a math question correctly to gain coins. If you don't get it correct you lose coins!",
+        usage="math",
+    )
     async def math(self, ctx):
         first = random.randint(1, 100)
         second = random.randint(1, 100)
@@ -146,38 +168,42 @@ class Games(commands.Cog):
         oper = "+"
         if operandation < 9:
             oper = "*"
-            theanswer = str(first*second)
-            timehehe = 10 + (first+second-69)/20
+            theanswer = str(first * second)
+            timehehe = 10 + (first + second - 69) / 20
         elif operandation < 40:
             oper = "-"
-            theanswer = str(first-second)
-            timehehe = 6 + (first+second-49)/30
+            theanswer = str(first - second)
+            timehehe = 6 + (first + second - 49) / 30
         else:
-            timehehe = 4 + (first+second-69)/60
-            theanswer = str(first+second)
+            timehehe = 4 + (first + second - 69) / 60
+            theanswer = str(first + second)
         timehehe = int(timehehe)
 
         question_ask = "What is " + str(first) + oper + str(second) + "?"
 
         embed = discord.Embed(
             title=question_ask,
-
-            description="You have " +
-            str(timehehe) + " seconds to answer! You only have one chance.",
-            color=self.client.primary_colour
+            description="You have "
+            + str(timehehe)
+            + " seconds to answer! You only have one chance.",
+            color=self.client.primary_colour,
         )
         await ctx.reply(embed=embed)
 
         def check(msg):
             return msg.author == ctx.author and msg.channel == ctx.channel
+
         try:
-            messageanswer = await self.client.wait_for('message', timeout=timehehe, check=check)
+            messageanswer = await self.client.wait_for(
+                "message", timeout=timehehe, check=check
+            )
             msgcontent = messageanswer.content
 
             self.initation = self.client.get_cog("Initiation")
             await self.initiation.checkserver(ctx)
-            doc_ref = self.db.collection(u'users').document(
-                u'{}'.format(str(ctx.author.id)))
+            doc_ref = self.db.collection("users").document(
+                "{}".format(str(ctx.author.id))
+            )
             doc = doc_ref.get()
             if doc.exists == False:
                 print("Nonexistant database")
@@ -188,7 +214,7 @@ class Games(commands.Cog):
                 embed = discord.Embed(
                     title="Your answer " + theanswer + " was correct!",
                     description=f"You are veery beeg brain! U gained {added}",
-                    color=self.client.primary_colour
+                    color=self.client.primary_colour,
                 )
                 dict1["money"] += added
                 await ctx.reply(embed=embed)
@@ -197,7 +223,7 @@ class Games(commands.Cog):
                 embed = discord.Embed(
                     title="Your answer was wrong! The correct answer was " + theanswer,
                     description=f"Not beeg brain :'( U lost 1 money!",
-                    color=self.client.primary_colour
+                    color=self.client.primary_colour,
                 )
                 dict1["money"] -= 1
                 if dict1["money"] < 0:
@@ -208,40 +234,45 @@ class Games(commands.Cog):
             embed = discord.Embed(
                 title="You took too long. You math noob.",
                 description="How saddening",
-                color=self.client.primary_colour
+                color=self.client.primary_colour,
             )
             await ctx.reply(embed=embed)
 
-    @commands.command(name="scramble", description="Try to unscramble a word!", usage="scramble")
+    @commands.command(
+        name="scramble", description="Try to unscramble a word!", usage="scramble"
+    )
     async def scramble(self, ctx):
         wordCount = 5
         chosenWords = []
         correctWords = []
         with open(file=str(os.getcwd()) + "/cogs/word.txt", mode="r") as f:
-            wordDict = f.read().split('\n')
+            wordDict = f.read().split("\n")
             for i in range(wordCount):
                 firstWord = list(random.choice(wordDict))
                 word = copy.copy(firstWord)
-                random.shuffle(firstWord) 
-                newWord = ''.join(word)
-                newStartWord = ''.join(firstWord)
+                random.shuffle(firstWord)
+                newWord = "".join(word)
+                newStartWord = "".join(firstWord)
                 chosenWords.append(newStartWord)
                 correctWords.append(newWord)
         print(correctWords)
         embed = discord.Embed(
             title="Scrambled words",
             description=f"The words you have to unscramble are: {', '.join(chosenWords)}",
-            color=self.client.primary_colour
+            color=self.client.primary_colour,
         )
         await ctx.reply(embed=embed)
-        await ctx.send("You have 1 minute to unscramble the word. Everytime u send a message and it contains a correct word, the timer will reset")
+        await ctx.send(
+            "You have 1 minute to unscramble the word. Everytime u send a message and it contains a correct word, the timer will reset"
+        )
 
-        # firebase 
+        # firebase
         def check(msg):
             return msg.author == ctx.author and msg.channel == ctx.channel
+
         self.initation = self.client.get_cog("Initiation")
         await self.initiation.checkserver(ctx)
-        doc_ref = self.db.collection(u'users').document(u'{}'.format(str(ctx.author.id)))
+        doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists == False:
             print("Nonexistant database")
@@ -250,16 +281,18 @@ class Games(commands.Cog):
 
         while True:
             try:
-                messageanswer = await self.client.wait_for('message', timeout=60, check=check)
+                messageanswer = await self.client.wait_for(
+                    "message", timeout=60, check=check
+                )
                 msgcontent = messageanswer.content
                 if msgcontent in correctWords:
                     toAdd = len(msgcontent)
-                    dict1["money"] += math.floor(toAdd*1.5)
+                    dict1["money"] += math.floor(toAdd * 1.5)
                     moneynow = dict1["money"]
                     embed = discord.Embed(
                         title="Correct answer",
                         description=f"The word was {msgcontent}, you gained {toAdd} money! You now have {moneynow} money! :D",
-                        color=self.client.primary_colour
+                        color=self.client.primary_colour,
                     )
                     await messageanswer.reply(embed=embed)
                     correctWords.remove(msgcontent)
@@ -267,7 +300,7 @@ class Games(commands.Cog):
                         embed = discord.Embed(
                             title="You won!",
                             description="You have won the game!",
-                            color=self.client.primary_colour
+                            color=self.client.primary_colour,
                         )
                         await messageanswer.reply(embed=embed)
                         break
@@ -275,7 +308,7 @@ class Games(commands.Cog):
                     embed = discord.Embed(
                         title="Wrong answer",
                         description="Continue guessing. Oof. Oof. Oof.",
-                        color=0xff0000
+                        color=0xFF0000,
                     )
                     await messageanswer.reply(embed=embed)
 
@@ -285,114 +318,122 @@ class Games(commands.Cog):
                 embed = discord.Embed(
                     title="Time has run out...",
                     description=f"How saddening, you lost {lost} money, you currently have {dict1['money']}",
-                    color=self.client.primary_colour
+                    color=self.client.primary_colour,
                 )
                 await ctx.reply(embed=embed)
                 break
         doc_ref.set(dict1)
-    
 
     @check.is_banned()
     @commands.command(
         name="snake eyes",
         description="A random dice game that everyone loves.",
         usage="snakeeyes",
-        aliases=["se","snakeyes"]
+        aliases=["se", "snakeyes"],
     )
-    async def se(self, ctx,amount:int):
+    async def se(self, ctx, amount: int):
         self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
-        doc_ref = self.db.collection(u'users').document(
-            u'{}'.format(str(ctx.author.id)))
+        doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists:
             dict1 = doc.to_dict()
-            if dict1['money'] < amount:
+            if dict1["money"] < amount:
                 embed = discord.Embed(
                     title="Amount in bank too low",
                     description="The amount that you want to gamble is more than what you have in your bank.",
-                    color=self.client.primary_colour
+                    color=self.client.primary_colour,
                 )
-                embed.set_author(name=ctx.author.display_name,
-                                 icon_url=ctx.author.avatar_url)
+                embed.set_author(
+                    name=ctx.author.display_name, icon_url=ctx.author.avatar_url
+                )
                 await ctx.reply(embed=embed)
                 return
             if amount <= 0:
-                doc_ref = self.db.collection(u'users').document(
-                    u'{}'.format(str(ctx.author.id)))
+                doc_ref = self.db.collection("users").document(
+                    "{}".format(str(ctx.author.id))
+                )
                 doc = doc_ref.get()
                 if doc.exists:
                     dict1 = doc.to_dict()
-                    
+
                     doc_ref.set(dict1)
                 embed = discord.Embed(
                     title="Amount gambled unacceptable",
                     description="It appears that you have been attempting to exploit the system and this is very bad!!! Stop doing this or we'll set your balance to 0.",
-                    color=self.client.primary_colour
+                    color=self.client.primary_colour,
                 )
-                embed.set_author(name=ctx.author.display_name,
-                                 icon_url=ctx.author.avatar_url)
+                embed.set_author(
+                    name=ctx.author.display_name, icon_url=ctx.author.avatar_url
+                )
                 await ctx.reply(embed=embed)
                 return
 
             embed = discord.Embed(
-                title = "Rolling dice...",
-                description = ":game_die::game_die:",
-                color=self.client.primary_colour
+                title="Rolling dice...",
+                description=":game_die::game_die:",
+                color=self.client.primary_colour,
             )
 
             messagec = await ctx.reply(embed=embed)
             asyncio.sleep(2)
-            dice1 = random.randint(1,6)
-            dice2 = random.randint(1,6)
+            dice1 = random.randint(1, 6)
+            dice2 = random.randint(1, 6)
             if dice1 != 1 and dice2 != 1:
                 dict1["money"] -= amount
                 nowmoney = dict1["money"]
                 doc_ref.set(dict1)
                 embed = discord.Embed(
-                    title = "You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description= "You didn't get any snake eyes. Beeg sed. You now have " + str(nowmoney) + " money.",
-                    color = 0xff0000
-                    
+                    title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
+                    description="You didn't get any snake eyes. Beeg sed. You now have "
+                    + str(nowmoney)
+                    + " money.",
+                    color=0xFF0000,
                 )
                 await messagec.edit(embed=embed)
             elif dice1 == 1 and dice2 != 1:
-                earnt = math.floor(1.8*amount)
+                earnt = math.floor(1.8 * amount)
                 dict1["money"] += earnt
                 doc_ref.set(dict1)
                 nowmoney = dict1["money"]
                 embed = discord.Embed(
-                    title = "You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description = "You got one snake eye! You won 1.8x your bet. You now have " + str(nowmoney) + " money.",
-                    color = self.client.primary_colour
+                    title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
+                    description="You got one snake eye! You won 1.8x your bet. You now have "
+                    + str(nowmoney)
+                    + " money.",
+                    color=self.client.primary_colour,
                 )
                 await messagec.edit(embed=embed)
             elif dice1 != 1 and dice2 == 1:
-                earnt = math.floor(1.8*amount)
+                earnt = math.floor(1.8 * amount)
                 dict1["money"] += earnt
                 nowmoney = dict1["money"]
                 doc_ref.set(dict1)
                 embed = discord.Embed(
-                    title = "You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description = "You got one snake eye! You won 1.8x your bet. You now have " + str(nowmoney) + " money.",
-                    color = self.client.primary_colour
+                    title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
+                    description="You got one snake eye! You won 1.8x your bet. You now have "
+                    + str(nowmoney)
+                    + " money.",
+                    color=self.client.primary_colour,
                 )
                 await messagec.edit(embed=embed)
             else:
-                earnt = 10*amount
+                earnt = 10 * amount
                 dict1["money"] += earnt
                 nowmoney = dict1["money"]
                 doc_ref.set(dict1)
                 embed = discord.Embed(
-                    title = "You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description = "You got two snake eyes! You won 10x your bet. You now have " + str(nowmoney) + " money. Woo!",
-                    color = self.client.primary_colour
+                    title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
+                    description="You got two snake eyes! You won 10x your bet. You now have "
+                    + str(nowmoney)
+                    + " money. Woo!",
+                    color=self.client.primary_colour,
                 )
                 await messagec.edit(embed=embed)
         else:
             await self.initation.initiate(ctx)
 
-    
+
 def setup(client):
     client.add_cog(Games(client))
 
