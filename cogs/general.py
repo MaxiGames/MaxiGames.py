@@ -511,6 +511,8 @@ class General(commands.Cog):
         final = ""
         previous_char = ""
         for i in words:
+            if i == "s" == previous_char:
+                continue
             elif i == "h" and previous_char == "s":
                 continue
             elif i == "z" == previous_char:
@@ -522,7 +524,7 @@ class General(commands.Cog):
                 previous_char = i
         new = final
         first_time = 1 
-        while new != final or first_time = 1:
+        while new != final or first_time == 1:
             first_time = 0
             final = new
             new = final.replace("zz","z").replace("ss","s")
