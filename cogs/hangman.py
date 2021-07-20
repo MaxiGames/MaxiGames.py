@@ -5,16 +5,18 @@ import bs4
 import random
 import discord
 from discord.ext import commands
+import math
 from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
 import sys
 import asyncio
 import time
 from utils.paginator import Paginator
-import firebase_admin 
+import firebase_admin
 from firebase_admin import firestore
 
 alpha = "abcdefghijklmnopqrstuvwxyz"
+
 
 class Hangman(commands.Cog):
     def __init__(self, client):
@@ -37,15 +39,16 @@ class Hangman(commands.Cog):
         page = discord.Embed(
             title="Help",
             description="List of hangman topics",
-            colour=self.client.primary_colour
+            colour=self.client.primary_colour,
         )
-        page.set_author(name=self.client.user.name,
-                        icon_url=self.client.user.avatar_url)
+        page.set_author(
+            name=self.client.user.name, icon_url=self.client.user.avatar_url
+        )
         page.set_footer(text="Press Next to see the topics :D")
         pages.append(page)
 
         length = len(myList)
-        total_pages = length//20 + 1
+        total_pages = length // 20 + 1
         count = 0
         count1 = 0
         for i in range(0, total_pages):
@@ -53,17 +56,16 @@ class Hangman(commands.Cog):
             string = ""
             for j in range(0, 20):
                 count += 1
-                if i*20 + j >= length:
+                if i * 20 + j >= length:
                     break
-                curList = myList[i*20+j]
+                curList = myList[i * 20 + j]
                 string += f"{count}. `{str(curList)}` \n"
             page = discord.Embed(
-                title=str(count1),
-                description=string,
-                colour=self.client.primary_colour
+                title=str(count1), description=string, colour=self.client.primary_colour
             )
-            page.set_author(name=self.client.user.name,
-                            icon_url=self.client.user.avatar_url)
+            page.set_author(
+                name=self.client.user.name, icon_url=self.client.user.avatar_url
+            )
             pages.append(page)
         page_num = 0
         msg = await ctx.send(
@@ -77,7 +79,7 @@ class Hangman(commands.Cog):
         #! Hangman Firebase Initalisation
         self.initiation = self.client.get_cog("Initiation")
         await self.initiation.checkserver(ctx)
-        doc_ref = self.db.collection(u'users').document(str(ctx.author.id))
+        doc_ref = self.db.collection("users").document(str(ctx.author.id))
         doc = doc_ref.get()
         data = doc.to_dict()
 
@@ -91,24 +93,50 @@ class Hangman(commands.Cog):
         for topic in words:
             myList.append(topic.rstrip("\n"))
         words.close()
-        await ctx.reply(embed=discord.Embed(title="You have **2 minutes** to choose one topic. Do `m!hangmanList` to check all the topics.", colour=0x00ff00))
+        await ctx.reply(
+            embed=discord.Embed(
+                title="You have **2 minutes** to choose one topic. Do `m!hangmanList` to check all the topics.",
+                colour=0x00FF00,
+            )
+        )
 
         #! Waiting for a reply
-        chosenTopic = "" 
+        chosenTopic = ""
         while True:
             try:
-                message = await self.client.wait_for('message', timeout=120, check=check)
-                if message.content == "m!hangmanList" or message.content == "!hangmanList":
+                message = await self.client.wait_for(
+                    "message", timeout=120, check=check
+                )
+                if (
+                    message.content == "m!hangmanList"
+                    or message.content == "!hangmanList"
+                ):
                     continue
                 elif message.content in myList:
                     chosenTopic = message.content
-                    await message.reply(embed=discord.Embed(title="You have chosen **" + chosenTopic + "**", colour=0x00ff00))
+                    await message.reply(
+                        embed=discord.Embed(
+                            title="You have chosen **" + chosenTopic + "**",
+                            colour=0x00FF00,
+                        )
+                    )
                     break
                 else:
-                    await message.reply(embed=discord.Embed(title="That is not a valid topic- Spacing, Capitalisation and Spelling are important", colour=0x00ff00))
+                    await message.reply(
+                        embed=discord.Embed(
+                            title="That is not a valid topic- Spacing, Capitalisation and Spelling are important",
+                            colour=0x00FF00,
+                        )
+                    )
 
             except asyncio.TimeoutError:
-                await ctx.reply(embed=discord.Embed(title="Hangman game aborted due to Timeout", description="", colour=0x00ff00))
+                await ctx.reply(
+                    embed=discord.Embed(
+                        title="Hangman game aborted due to Timeout",
+                        description="",
+                        colour=0x00FF00,
+                    )
+                )
                 return
 
         if chosenTopic == "":
@@ -149,29 +177,34 @@ class Hangman(commands.Cog):
                 answer = answer + "□"
 
         embed = discord.Embed(
-            title="Your hangman game: ",
-            description=answer,
-            color=0xffff00
+            title="Your hangman game: ", description=answer, color=0xFFFF00
         )
-        lives = 5
+
+        def maxi(a, b):
+            if a > b:
+                return a
+            else:
+                return b
+
+        lives = maxi(5, math.floor(len(wordChoice) * 2 / 3))
         word_guessed = 0
         await ctx.reply(embed=embed)
         guessed_letter = []
 
         #! Main Hangman Portion
         while answer != wordChoice and lives > 0:
-           
+
             if currentGuess == correctWord:
                 break
             try:
-                message = await self.client.wait_for('message', timeout=45, check=check)
+                message = await self.client.wait_for("message", timeout=45, check=check)
                 messageanswer = message.content.lower()
                 if len(str(messageanswer)) == 1:
                     if str(messageanswer) in guessed_letter:
-                        embed=discord.Embed(
+                        embed = discord.Embed(
                             title="You already guessed that letter!",
                             description="Try again!",
-                            color=0xff0000
+                            color=0xFF0000,
                         )
                         await message.reply(embed=embed)
                         continue
@@ -189,15 +222,15 @@ class Hangman(commands.Cog):
                         embed = discord.Embed(
                             title="Oof... Your guess wasn't correct.",
                             description=f"Try again using individual character or whole word guesses! You have {lives} lives left",
-                            color=0xff0000
+                            color=0xFF0000,
                         )
                     else:
                         embed = discord.Embed(
                             title="Pog! Your guess is correct!",
                             description=f"The word now is {' '.join(currentGuess)}! You have {lives} lives left",
-                            color=self.client.primary_colour
+                            color=self.client.primary_colour,
                         )
-                    await ctx.reply(embed=embed)
+                    await message.reply(embed=embed)
 
                 else:
                     if messageanswer == wordChoice:
@@ -209,7 +242,7 @@ class Hangman(commands.Cog):
                         embed = discord.Embed(
                             title="You won!",
                             description=f"Congratulations, you guessed the word {wordChoice} correctly! You have {data['money']} money now!",
-                            color=0x00ff00
+                            color=0x00FF00,
                         )
                         await ctx.reply(embed=embed)
                         doc_ref.set(data)
@@ -219,11 +252,17 @@ class Hangman(commands.Cog):
                         embed = discord.Embed(
                             title="Your guess was wrong!",
                             description=f"Try again using individual character or whole word guesses! You have {lives} lives left",
-                            color=0xff0000
+                            color=0xFF0000,
                         )
                         await message.reply(embed=embed)
             except asyncio.TimeoutError:
-                await ctx.reply(embed=discord.Embed(title="Hangman game aborted due to Timeout", description="", colour=0x00ff00))
+                await ctx.reply(
+                    embed=discord.Embed(
+                        title="Hangman game aborted due to Timeout",
+                        description="",
+                        colour=0x00FF00,
+                    )
+                )
                 return
         if lives == 0:
             deduct = random.randint(1, 10)
@@ -235,7 +274,7 @@ class Hangman(commands.Cog):
                 description=f"The word was {wordChoice}, {deduct} money was subtracted off your account :(. You currently have {data['money']} money",
                 color=0xff0000
             )
-            await ctx.reply(embed=embed)
+            await message.reply(embed=embed)
             doc_ref.set(data)
         elif word_guessed == 0:
             add = random.randint(1, 10)
@@ -248,9 +287,9 @@ class Hangman(commands.Cog):
             embed = discord.Embed(
                 title="You won!",
                 description=f"Congratulations, you guessed the word {wordChoice} correctly! You have {data['money']} money now!",
-                color=0x00ff00
+                color=0x00FF00,
             )
-            await ctx.reply(embed=embed)
+            await message.reply(embed=embed)
             doc_ref.set(data)
     
     @commands.command(title="hangmanLB", description="The leaderboard for hangman", aliases=["hangmanleaderboard"])
@@ -316,6 +355,7 @@ class Hangman(commands.Cog):
 
 def setup(client):
     client.add_cog(Hangman(client))
+
 
 # ! DO NOT DELETE- DATABASE RETRIEVER
 # # --------GET HANGMAN FILES------------
