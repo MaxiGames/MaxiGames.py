@@ -17,9 +17,9 @@ class Starboard(commands.Cog):
         name="starboard-threshold",
         description="Starts a starboard",
         usage="m!starboard #starboard",
-        aliases=["starthresh"]
+        aliases=["starthresh", "starcount"]
     )
-    async def starboard_threshold(self, ctx, thresh: int):
+    async def starboard_threshold(self, ctx, thresh: int = None):
         self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
@@ -54,6 +54,7 @@ class Starboard(commands.Cog):
             doc = doc_ref.get()
             data = doc.to_dict()
             data["starboard"] = {"channel": channel.id}
+            data["starboard_threshold"] = 5
             doc_ref.set(data)
             await ctx.reply(f"Starboard channel has been set to {channel}!")
         except:
