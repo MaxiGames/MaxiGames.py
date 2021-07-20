@@ -296,7 +296,7 @@ class Economy(commands.Cog):
         count = 1
         for i in sorted(dict3.items(), key=lambda kv: (kv[1]), reverse=True):
             user = self.client.get_user(int(i[0]))
-            descriptio += f"{count}) {user.mention} - {i[1]} points\n"
+            description += f"{count}) {user.mention} - {i[1]} points\n"
             count += 1
             if count > 10:
                 break
