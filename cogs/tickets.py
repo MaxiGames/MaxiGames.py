@@ -1,7 +1,7 @@
 from gc import DEBUG_SAVEALL
 import discord
 from discord.ext import commands
-from discord_components import ButtonStyle, Button, InteractionType
+from discord_components import ButtonStyle, Button, InteractionType, message
 from utils import check
 import firebase_admin
 from firebase_admin import firestore
@@ -21,6 +21,9 @@ class Ticket(commands.Cog):
             self.messages = {}
             self.count = {}
             self.active_tickets = {}
+        print(self.messages)
+        print(self.count)
+        print(self.active_tickets)
         
 
 
@@ -42,16 +45,37 @@ class Ticket(commands.Cog):
             self.active_tickets[str(ctx.guild.id)] = {}
         else:
             self.messages[str(ctx.guild.id)].append(str(msg.id))
+        doc_ref = self.db.collection(u'tickets').document('ticket-ref')
+        doc = doc_ref.get()
+        if doc.exists:
+            data = doc.to_dict()
+            data["messages"] = self.messages
+            data["count"] = self.count
+            data["active_tickets"] = self.active_tickets
+        else:
+            data = {
+                'active_tickets': self.active_tickets,
+                'messages': self.messages,
+                'count': self.count
+            }
+        doc_ref.set(data)
         await ctx.message.delete()
         # print(self.messages)
+
     @commands.Cog.listener()
-    async def on_reaction_add(self, reaction, user):
-        if user == self.client.user:
+    async def on_raw_reaction_add(self, payload):
+        if payload.user_id == self.client.user.id:
             return
-        if str(reaction.message.guild.id) in self.messages:
-            if str(reaction.message.id) in self.messages[str(reaction.message.guild.id)]:
-                if reaction.emoji == '🎫':
-                    if str(user.id) in self.active_tickets[str(reaction.message.guild.id)]:
+        reaction_guild = self.client.get_guild(payload.guild_id)
+        reaction_channel = self.client.get_channel(payload.channel_id)
+        # reaction_message = self.client.get_message(reaction_channel, payload.message_id)
+        print(str(payload.message_id))
+        print(str(payload.guild_id))
+        if str(payload.guild_id) in self.messages:
+            
+            if str(payload.message_id) in self.messages[str(payload.guild_id)]:
+                if payload.emoji == '🎫':
+                    if str(payload.user_id) in self.active_tickets[str(payload.guild_id)]:
                         embed=discord.Embed(
                             title="Ticket Present",
                             description="You can only have 1 ticket open per server. Please close the other ticket before starting a new one :D",
@@ -71,20 +95,20 @@ class Ticket(commands.Cog):
                         category = await reaction.message.guild.create_category(f'open-tickets', position=0)
                     overwrites = {
                         reaction.message.guild.default_role: discord.PermissionOverwrite(view_channel=False),
-                        user: discord.PermissionOverwrite(read_messages=True, add_reactions=True, send_messages=True)
+                        payload.member: discord.PermissionOverwrite(read_messages=True, add_reactions=True, send_messages=True)
                     }
-                    self.count[str(reaction.message.guild.id)] += 1
-                    self.active_tickets[str(reaction.message.guild.id)][str(user.id)] = self.count[str(reaction.message.guild.id)]
-                    channel = await reaction.message.guild.create_text_channel(f'ticket-{self.count[str(reaction.message.guild.id)]}', overwrites=overwrites, category=category)
+                    self.count[str(payload.guild_id)] += 1
+                    self.active_tickets[str(payload.guild_id)][str(payload.user_id)] = self.count[str(payload.guild_id)]
+                    channel = await reaction.message.guild.create_text_channel(f'ticket-{self.count[str(payload.guild_id)]}', overwrites=overwrites, category=category)
                     
                     embed=discord.Embed(
                         title="New Ticket",
-                        description=f"Welcome {user.mention} to your new ticket.",
+                        description=f"Welcome {payload.member.mention} to your new ticket.",
                         colour=self.client.primary_colour
                     )
                     embed.set_footer(text="MaxiGames - The Best Minigame Bot", icon_url=self.client.user.avatar_url)
                     startmsg = await channel.send(embed=embed, components=[[Button(style=ButtonStyle.grey, label="🔒 Close")]], allowed_mentions = discord.AllowedMentions.all())
-                    await reaction.message.remove_reaction('🎫', user)
+                    await reaction.message.remove_reaction('🎫', payload.member)
 
                     doc_ref = self.db.collection(u'tickets').document('ticket-ref')
                     data = {
@@ -96,7 +120,7 @@ class Ticket(commands.Cog):
 
                     while True:
                         def check(interaction):
-                            return interaction.user == user and interaction.message.channel == channel and interaction.component.label == "🔒 Close"
+                            return interaction.user == payload.member and interaction.message.channel == channel and interaction.component.label == "🔒 Close"
                         res = await self.client.wait_for("button_click", check = check)
                         await res.respond(
                             type=InteractionType.DeferredUpdateMessage # , content=f"{res.component.label} pressed"
@@ -108,19 +132,19 @@ class Ticket(commands.Cog):
                             colour=self.client.primary_colour
                         )
                         embed.set_footer(text="MaxiGames - The Best Minigame Bot", icon_url=self.client.user.avatar_url)
-                        confirm = await channel.send(embed=confirmation, components=[[Button(style=ButtonStyle.red, label="Delete"), Button(style=ButtonStyle.grey, label="Cancel")]])
+                        confirm = await channel.send(embed=confirmation, components=[[Button(style=ButtonStyle.red, label="Close"), Button(style=ButtonStyle.grey, label="Cancel")]])
 
                         def check(interaction):
-                            return interaction.user == user and interaction.message.channel == channel
+                            return interaction.user == payload.member and interaction.message.channel == channel
                         
                         res = await self.client.wait_for("button_click", check = check)
                         await res.respond(
                             type=InteractionType.DeferredUpdateMessage # , content=f"{res.component.label} pressed"
                         )
-                        if res.component.label == "Delete":
+                        if res.component.label == "Close":
                             await channel.delete()
-                            self.active_tickets[str(reaction.message.guild.id)].pop(str(user.id))
-                            self.messages[str(reaction.message.guild.id)].remove(str(reaction.message.id))
+                            self.active_tickets[str(payload.guild_id)].pop(str(payload.user_id))
+                            # self.messages[str(reaction.message.guild.id)].remove(str(reaction.message.id))
                             doc_ref = self.db.collection(u'tickets').document('ticket-ref')
                             data = {
                                 'active_tickets': self.active_tickets,
@@ -133,16 +157,6 @@ class Ticket(commands.Cog):
                             await confirm.delete()
 
                     #APPLICATIONS: VSCODE DEFENDER: bad tux! if you see this you CANNOT change any of the code :D
-    
-    @commands.Cog.listener()
-    async def on_disconnect(self):
-        doc_ref = self.db.collection(u'tickets').document('ticket-ref')
-        data = {
-            'active_tickets': self.active_tickets,
-            'messages': self.messages,
-            'count': self.count
-        }
-        doc_ref.set(data)
 
     @check.is_staff()
     @commands.command()
