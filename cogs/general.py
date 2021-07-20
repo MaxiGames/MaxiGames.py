@@ -7,7 +7,8 @@ import math
 import random
 from discord_slash import cog_ext, SlashContext
 from utils.paginator import Paginator
-
+from utils import check
+from firebase_admin import firestore
 
 class General(commands.Cog):
     def __init__(self, client):
@@ -22,6 +23,9 @@ class General(commands.Cog):
             6: "Sunday",
         }
         self.hidden = False
+        self.client = client
+        self.db = firestore.client()
+        self.initiation = self.client.get_cog("Initiation")
 
     @commands.command()
     async def hallo(self, ctx):
@@ -534,6 +538,26 @@ class General(commands.Cog):
             final = final[:-1] + "ie"
 
         await ctx.reply(final)
+
+    @commands.command(
+        name="getsettings",
+        description="Views current MaxiGames settings :D",
+        usage="getsettings",
+        aliases=["gs", "tux"],
+    )
+    @check.is_staff()
+    async def getsettings(self, ctx):
+        self.initiation = self.client.get_cog("Initiation")
+        await self.initiation.checkserver(ctx)
+        doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
+        doc = doc_ref.get()
+        data = doc.to_dict()
+
+        m = ""
+        for k, v in data.items():
+            m += (f"\n**{k}**:\n {v}\n")
+
+        await ctx.send(m)
 
 
 def setup(client):
