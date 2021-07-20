@@ -20,7 +20,7 @@ class Economy(commands.Cog):
     # Curb gambling addiction
     @check.is_banned()
     @cooldown(1, 5, BucketType.user)
-    @commands.command(name="Coinflip", aliases=["coinflip", "cf", "kymchi"])
+    @commands.command(name="Coinflip", aliases=["coinflip", "cf"])
     async def _coinflip(self, ctx, choice: str, amount: int = 1):
         self.initation = self.client.get_cog("Initiation")
         await self.initation.checkserver(ctx)
