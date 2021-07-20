@@ -70,11 +70,11 @@ class Ticket(commands.Cog):
         print(payload.message_id)
         reaction_guild = self.client.get_guild(payload.guild_id)
         reaction_channel = self.client.get_channel(payload.channel_id)
-        # reaction_message = reaction_channel.fetch_message(payload.message_id)
+        reaction_message = await reaction_channel.fetch_message(payload.message_id)
         if str(payload.guild_id) in self.messages:
             
             if str(payload.message_id) in self.messages[str(payload.guild_id)]:
-                if payload.emoji == '🎫':
+                if payload.emoji.name == '🎫':
                     if str(payload.user_id) in self.active_tickets[str(payload.guild_id)]:
                         embed=discord.Embed(
                             title="Ticket Present",
@@ -136,19 +136,6 @@ class Ticket(commands.Cog):
                             title="Confirm closing of ticket",
                             description=f"Please confirm that you want to delete this ticket. This is not reversible.",
                             colour=self.client.primary_colour,
-                        )
-                        embed.set_footer(
-                            text="MaxiGames - The Best Minigame Bot",
-                            icon_url=self.client.user.avatar_url,
-                        )
-                        confirm = await channel.send(
-                            embed=confirmation,
-                            components=[
-                                [
-                                    Button(style=ButtonStyle.red, label="Delete"),
-                                    Button(style=ButtonStyle.grey, label="Cancel"),
-                                ]
-                            ],
                         )
                         embed.set_footer(text="MaxiGames - The Best Minigame Bot", icon_url=self.client.user.avatar_url)
                         confirm = await channel.send(embed=confirmation, components=[[Button(style=ButtonStyle.red, label="Close"), Button(style=ButtonStyle.grey, label="Cancel")]])
