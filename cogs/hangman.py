@@ -71,8 +71,8 @@ class Hangman(commands.Cog):
         )
         page = Paginator(self.client, ctx, msg, pages, timeout=120)
         await page.start()
-
-    @commands.command()
+    
+    @commands.command(name="hangman", description="Play a hangman game and potentially win points!", usage="hangman")
     async def hangman(self, ctx):
         #! Hangman Firebase Initalisation
         self.initiation = self.client.get_cog("Initiation")
@@ -203,6 +203,9 @@ class Hangman(commands.Cog):
                     if messageanswer == wordChoice:
                         add = random.randint(1, 10)
                         data["money"] += add
+                        if "hangmanWins" not in data:
+                            data["hangmanWins"] = 0
+                        data["hangmanWins"] += 1
                         embed = discord.Embed(
                             title="You won!",
                             description=f"Congratulations, you guessed the word {wordChoice} correctly! You have {data['money']} money now!",
@@ -229,7 +232,7 @@ class Hangman(commands.Cog):
                 data["money"] = 0
             embed = discord.Embed(
                 title="You lost!",
-                description=f"The word was {wordChoice}, {deduct} money was subtracted off your account :(. You currently have f{data['money']} money",
+                description=f"The word was {wordChoice}, {deduct} money was subtracted off your account :(. You currently have {data['money']} money",
                 color=0xff0000
             )
             await ctx.reply(embed=embed)
@@ -237,6 +240,11 @@ class Hangman(commands.Cog):
         elif word_guessed == 0:
             add = random.randint(1, 10)
             data["money"] += add
+
+            if "hangmanWins" not in data:
+                data["hangmanWins"] = 0
+            data["hangmanWins"] += 1
+
             embed = discord.Embed(
                 title="You won!",
                 description=f"Congratulations, you guessed the word {wordChoice} correctly! You have {data['money']} money now!",
@@ -244,6 +252,66 @@ class Hangman(commands.Cog):
             )
             await ctx.reply(embed=embed)
             doc_ref.set(data)
+    
+    @commands.command(title="hangmanLB", description="The leaderboard for hangman", aliases=["hangmanleaderboard"])
+    async def hangmanLB(self, ctx):
+        #! Hangman Firebase Initalisation
+        self.initiation = self.client.get_cog("Initiation")
+        await self.initiation.checkserver(ctx)
+        doc_ref = self.db.collection(u'users')
+        collection = doc_ref.stream()
+
+        userWinData = []
+        for doc in collection:
+            dictionary = doc.to_dict()
+            if "hangmanWins" in dictionary:
+                userWinData.append({"wins":dictionary["hangmanWins"], "name": await self.client.fetch_user(doc.id)})
+
+        userWinData = sorted(userWinData, key=lambda k: k['wins'], reverse=True)
+        #! PAGES
+        pages = []
+        page = discord.Embed(
+            title="Leaderboard!",
+            description="Hangman leaderboard",
+            colour=self.client.primary_colour
+        )
+        page.set_author(name=self.client.user.name,
+                        icon_url=self.client.user.avatar_url)
+        page.set_footer(text="Press Next to see the topics :D")
+        pages.append(page)
+
+        length = len(userWinData)
+        total_pages = length//20 + 1
+        count = 0
+        count1 = 0
+        for i in range(0, total_pages):
+            count1 += 1
+            string = ""
+            for j in range(0, 20):
+                count += 1
+                if i*20 + j >= length:
+                    break
+                curList = userWinData[i*20+j]
+                name = curList['name'].name
+                disc = curList['name'].discriminator
+                wins = curList['wins']
+                string += f"#{count}. `{name}#{disc}`-`{wins}`\n"
+            
+            page = discord.Embed(
+                title=f"Page: {count1}",
+                description=string,
+                colour=self.client.primary_colour
+            )
+            page.set_author(name=self.client.user.name,
+                            icon_url=self.client.user.avatar_url)
+            pages.append(page)
+
+        page_num = 0
+        msg = await ctx.send(
+            embed=pages[page_num],
+        )
+        page = Paginator(self.client, ctx, msg, pages, timeout=120)
+        await page.start()
 
 
 def setup(client):
