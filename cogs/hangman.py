@@ -144,13 +144,26 @@ class Hangman(commands.Cog):
         lives = 5
         word_guessed = 0
         await ctx.reply(embed=embed)
-
+        guessed_letter = []
         while answer != wordChoice and lives > 0:
+           
+            if currentGuess == correctWord:
+                break
             try:
                 message = await self.client.wait_for('message', timeout=45, check=check)
                 messageanswer = message.content.lower()
                 if len(str(messageanswer)) == 1:
+                    if str(messageanswer) in guessed_letter:
+                        embed=discord.Embed(
+                            title="You already guessed that letter!",
+                            description="Try again!",
+                            color=0xff0000
+                        )
+                        await message.reply(embed=embed)
+                        continue
                     ok = 0
+                    guessed_letter.append(str(messageanswer))
+
                     answer = ""
                     for i in range(len(correctWord)):
                         if messageanswer == correctWord[i]:
