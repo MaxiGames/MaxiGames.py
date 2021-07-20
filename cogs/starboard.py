@@ -1,8 +1,9 @@
 import discord
 from discord.ext import commands
-import firebase_admin 
+import firebase_admin
 from firebase_admin import firestore
 from utils import check
+
 
 class Starboard(commands.Cog):
     def __init__(self, client):
@@ -12,7 +13,11 @@ class Starboard(commands.Cog):
         self.initiation = self.client.get_cog("Initiation")
 
     @check.is_admin()
-    @commands.command(name="starboard", description="Starts a starboard", usage="m!starboard #starboard")
+    @commands.command(
+        name="starboard",
+        description="Starts a starboard",
+        usage="m!starboard #starboard",
+    )
     async def starboard(self, ctx, channel: discord.TextChannel = None):
         if channel == None:
             await ctx.reply("You need to specify a channel")
@@ -20,7 +25,7 @@ class Starboard(commands.Cog):
         try:
             self.initation = self.client.get_cog("Initiation")
             await self.initation.checkserver(ctx)
-            doc_ref = self.db.collection(u'servers').document(str(ctx.guild.id))
+            doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
             doc = doc_ref.get()
             data = doc.to_dict()
             data["starboard"] = {"channel": channel.id}
@@ -33,14 +38,14 @@ class Starboard(commands.Cog):
     async def on_reaction_add(self, reaction, user):
         print("WORKING")
         self.initiation = self.client.get_cog("Initiation")
-        doc_ref = self.db.collection(u'servers').document(str(reaction.message.guild.id))
+        doc_ref = self.db.collection("servers").document(str(reaction.message.guild.id))
         doc = doc_ref.get()
         data = doc.to_dict()
         channel = self.client.get_channel(int(data["starboard"]["channel"]))
         await self.initiation.checkserver(reaction.message)
 
         if "starboard" not in data:
-            print('b')
+            print("b")
             return
         if channel is None:
             print("a")
@@ -49,11 +54,35 @@ class Starboard(commands.Cog):
         if reaction.count > 1:
             if reaction.emoji == "⭐":
                 try:
-                    msg = await channel.fetch_message(data["starboard"][str(reaction.message.id)])
-                    await msg.edit(embed=discord.Embed(title=f"Starboard: {reaction.count}", description=reaction.message.content, color=0x00ff00).set_footer(text=f"React with {'🌟'} to star this message").set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url))
+                    msg = await channel.fetch_message(
+                        data["starboard"][str(reaction.message.id)]
+                    )
+                    await msg.edit(
+                        embed=discord.Embed(
+                            title=f"Starboard: {reaction.count}",
+                            description=reaction.message.content,
+                            color=0x00FF00,
+                        )
+                        .set_footer(text=f"React with {'🌟'} to star this message")
+                        .set_author(
+                            name=reaction.message.author.name,
+                            icon_url=reaction.message.author.avatar_url,
+                        )
+                    )
                     doc_ref.set(data)
                 except KeyError:
-                    message = await channel.send(embed=discord.Embed(title=f"Starboard: {reaction.count}", description=reaction.message.content, color=0x00ff00).set_footer(text=f"React with {'🌟'} to star this message").set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url))
+                    message = await channel.send(
+                        embed=discord.Embed(
+                            title=f"Starboard: {reaction.count}",
+                            description=reaction.message.content,
+                            color=0x00FF00,
+                        )
+                        .set_footer(text=f"React with {'🌟'} to star this message")
+                        .set_author(
+                            name=reaction.message.author.name,
+                            icon_url=reaction.message.author.avatar_url,
+                        )
+                    )
                     data["starboard"][str(reaction.message.id)] = message.id
                     doc_ref.set(data)
 
