@@ -5,6 +5,7 @@ import bs4
 import random
 import discord
 from discord.ext import commands
+import math
 from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
 import sys
@@ -141,7 +142,12 @@ class Hangman(commands.Cog):
             description=answer,
             color=0xffff00
         )
-        lives = 5
+        def maxi(a,b):
+            if a > b:
+                return a
+            else:
+                return b
+        lives = maxi(5,math.floor(len(wordChoice)*2/3))
         word_guessed = 0
         await ctx.reply(embed=embed)
         guessed_letter = []
@@ -183,7 +189,7 @@ class Hangman(commands.Cog):
                             description=f"The word now is {' '.join(currentGuess)}! You have {lives} lives left",
                             color=self.client.primary_colour
                         )
-                    await ctx.reply(embed=embed)
+                    await message.reply(embed=embed)
 
                 else:
                     if messageanswer == wordChoice:
@@ -213,14 +219,14 @@ class Hangman(commands.Cog):
                 description="The word was " + wordChoice,
                 color=0xff0000
             )
-            await ctx.reply(embed=embed)
+            await message.reply(embed=embed)
         elif word_guessed == 0:
             embed = discord.Embed(
                 title="You won!",
                 description="The word was " + wordChoice,
                 color=0x00ff00
             )
-            await ctx.reply(embed=embed)
+            await message.reply(embed=embed)
 
 
 def setup(client):

@@ -2,6 +2,7 @@ import json
 import discord
 from discord.ext import commands
 import os
+import time 
 from client import Client
 # from start import keep_alive
 import firebase_admin
@@ -35,5 +36,5 @@ async def on_ready():
 with open('config.json', 'r') as file:
     data = json.load(file)
     client.run(data["tokenIdBeta"])
-    #test!
+    
 
