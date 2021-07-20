@@ -14,6 +14,31 @@ class Starboard(commands.Cog):
 
     @check.is_admin()
     @commands.command(
+        name="starboard-threshold",
+        description="Starts a starboard",
+        usage="m!starboard #starboard",
+        aliases=["starthresh"]
+    )
+    async def starboard_threshold(self, ctx, thresh: int):
+        self.initation = self.client.get_cog("Initiation")
+        await self.initation.checkserver(ctx)
+        doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
+        doc = doc_ref.get()
+        data = doc.to_dict()
+
+        if thresh == None:
+            data["starboard_threshold"] = 5
+            await ctx.reply("Reset starboard threshold to 5.")
+        elif type(thresh) != int or thresh < 1:
+            await ctx.reply("Must set to a positive integer!")
+        else:
+            data["starboard_threshold"] = thresh
+            await ctx.reply(f"Starboard threshold has been set to {thresh}!")
+
+        doc_ref.set(data)
+
+    @check.is_admin()
+    @commands.command(
         name="starboard",
         description="Starts a starboard",
         usage="m!starboard #starboard",
@@ -51,7 +76,7 @@ class Starboard(commands.Cog):
             print("a")
             return
 
-        if reaction.count > 1 and reaction.emoji == "⭐":
+        if reaction.count >= data["starboard_threshold"] and reaction.emoji == "⭐":
             try:
                 msg = await channel.fetch_message(
                     data["starboard"][str(reaction.message.id)]

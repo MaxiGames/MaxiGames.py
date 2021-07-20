@@ -49,6 +49,7 @@ class Initiation(commands.Cog):
                 {
                     u"users": {str(ctx.author.id): self.usr},
                     u"all": {},
+                    u"starboard_threshold": 1,
                     u"countingChannels": {
                         "counting": {
                             "name": "counting",
