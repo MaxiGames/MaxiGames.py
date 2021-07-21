@@ -137,7 +137,7 @@ class General(commands.Cog):
     @commands.command(
         name="help",
         description="Shows this help menu or information about a specific command if specified",
-        usage="help",
+        usage="help <command (optional)> ",
     )
     async def help(self, ctx, *cmd):
         if len(cmd) > 0:
