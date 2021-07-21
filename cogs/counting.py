@@ -41,9 +41,9 @@ class Counting(commands.Cog):
                     "count": 0,
                     "previous_author": None,
                 }
-                await ctx.send("OK")
+                await ctx.reply("OK")
             else:
-                await ctx.send("Bruh")
+                await ctx.reply("Bruh")
 
         else:
             data["counting_channels"] = {str(ctx.guild.id): {str(channel): {"count": 0, "previous_author": None}}}
