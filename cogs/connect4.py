@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 import sys
 import asyncio
+from discord.ext.commands import cooldown, BucketType
 import time
 
 alpha = "abcdefghijklmnopqrstuvwxyz"

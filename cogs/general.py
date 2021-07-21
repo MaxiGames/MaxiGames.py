@@ -6,6 +6,7 @@ import asyncio
 import math
 import random
 from discord_slash import cog_ext, SlashContext
+from discord.ext.commands import cooldown, BucketType
 from utils.paginator import Paginator
 from utils import check
 from firebase_admin import firestore

@@ -3,6 +3,7 @@ import os
 from urllib.request import urlopen as uReq
 import bs4
 import random
+from discord.ext.commands import cooldown, BucketType
 import discord
 from discord.ext import commands
 import math

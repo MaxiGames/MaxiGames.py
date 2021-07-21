@@ -11,7 +11,6 @@ class EasterEggs(commands.Cog):
         self.hidden = True
    
     @commands.command(hidden=True, aliases=["whoareu"])
-     @cooldown(1, 2419200, BucketType.user)
     async def whoru(self, ctx):
         embed = discord.Embed(
             title="Hey! Looks like you found this easter egg!",
