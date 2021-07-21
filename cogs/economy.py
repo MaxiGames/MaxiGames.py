@@ -94,7 +94,7 @@ class Economy(commands.Cog):
                 await ctx.reply(embed=embed)
             doc_ref.set(dict1)
         else:
-            await self.initation.initiate(ctx)
+            await self.initation.init(ctx)
 
     @commands.command(
         name="gamble",
@@ -206,7 +206,7 @@ class Economy(commands.Cog):
                     embed=embed, allowed_mentions=discord.AllowedMentions.none()
                 )
         else:
-            await check.initiate(ctx)
+            await check.init(ctx)
 
     @check.is_banned()
     @commands.command(
@@ -243,7 +243,7 @@ class Economy(commands.Cog):
                 embed=embed, allowed_mentions=discord.AllowedMentions.none()
             )
         else:
-            await self.initation.initiate(ctx)
+            await self.initation.init(ctx)
             # await ctx.send("Now you can start running currency commands :D")
 
     @check.is_banned()
@@ -275,7 +275,7 @@ class Economy(commands.Cog):
                 embed=embed, allowed_mentions=discord.AllowedMentions.none()
             )
         else:
-            await self.initation.initiate(ctx)
+            await self.initation.init(ctx)
             # return False
 
     @commands.command(
@@ -412,8 +412,8 @@ class Economy(commands.Cog):
 
         else:
             embed = discord.Embed(
-                title="User not initiated",
-                description="This user is not initiated. Please make sure that the person has used hallo bot before :D",
+                title="User not initd",
+                description="This user is not initd. Please make sure that the person has used hallo bot before :D",
                 color=self.client.primary_colour,
             )
             await ctx.send(embed=embed)
