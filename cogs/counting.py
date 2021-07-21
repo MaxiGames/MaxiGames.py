@@ -90,11 +90,12 @@ class Counting(commands.Cog):
             and str(channel) in data["counting_channels"][str(ctx.guild.id)]
         ):
             del data["counting_channels"][str(ctx.guild.id)][str(channel)]
-            await ctx.reply(embed=discord.Embed(title="Success! Channel Added!"))
+            await ctx.reply(embed=discord.Embed(title="Success! Channel is now a counting channel!"))
         else:
             await ctx.reply(
                 embed=discord.Embed(
-                    title="Channel is already present or doesn't exist. If it exists, check if I have the permissions to view it"
+                    title="Channel is already already a counting channel or doesn't exist. " \
+                        + "If it exists, check if MaxiGames has the permissions to view it."
                 )
             )
 
