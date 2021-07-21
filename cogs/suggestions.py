@@ -16,6 +16,7 @@ class Suggestions(commands.Cog):
         usage="suggest <suggestion>",
         aliases=["suggest"],
     )
+    @cooldown(1,3600,BucketType.user)
     async def suggest(self, ctx, *msg):
         suggestion = " ".join(msg[:])
         channel = self.client.get_channel(866339642075775058)

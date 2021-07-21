@@ -18,6 +18,7 @@ class Connect4(commands.Cog):
         description="play connect4 with another player",
         usage="connect4",
     )
+    @cooldown(1, 75, BucketType.user)
     async def connect4(self, ctx):
         player1 = ctx.author
         message = await ctx.reply(

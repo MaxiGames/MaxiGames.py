@@ -23,12 +23,13 @@ class Games(commands.Cog):
         self.db = firestore.client()
         self.hidden = False
 
-    @cooldown(1, 10, BucketType.user)
+    
     @commands.command(
         name="trivia",
         description="Answer a trivia question using reactions! Provide a number from 1 to 3 specifying the difficulty of the trivia question you want.",
         usage="trivia <difficulty>",
     )
+    @cooldown(1, 15, BucketType.user)
     async def trivia(self, ctx, difficulty=100000000000):
         word = "hard"
         moneyToAdd = 0
@@ -155,13 +156,12 @@ class Games(commands.Cog):
                     )
                     await ctx.reply(embed=embed)
                 doc_ref.set(dict1)
-    
     @commands.command(
         name="math",
         description="Answer a math question correctly to gain coins. If you don't get it correct you lose coins!",
         usage="m!math",
     )
-    @cooldown(1, 20, BucketType.user)
+    @cooldown(1, 15, BucketType.user)
     async def math(self, ctx):
         first = random.randint(1, 100)
         second = random.randint(1, 100)
@@ -170,7 +170,7 @@ class Games(commands.Cog):
         if operandation < 9:
             oper = "*"
             theanswer = str(first * second)
-            timehehe = 10 + (first + second - 69) / 20
+            timehehe = 8 + (first + second - 69) / 20
         elif operandation < 40:
             oper = "-"
             theanswer = str(first - second)
@@ -242,7 +242,7 @@ class Games(commands.Cog):
     @commands.command(
         name="scramble", description="Try to unscramble a word!", usage="m!scramble"
     )
-    @cooldown(1, 10, BucketType.user)
+    @cooldown(1, 300, BucketType.user)
     async def scramble(self, ctx):
         wordCount = 5
         chosenWords = []
@@ -265,7 +265,7 @@ class Games(commands.Cog):
         )
         await ctx.reply(embed=embed)
         await ctx.send(
-            "You have 1 minute to unscramble the word. Everytime u send a message and it contains a correct word, the timer will reset"
+            "You have 1 minute to unscramble the word. Everytime you send a message and it contains a correct word, the timer will reset"
         )
 
         # firebase
@@ -326,115 +326,7 @@ class Games(commands.Cog):
                 break
         doc_ref.set(dict1)
 
-    @check.is_banned()
-    @commands.command(
-        name="snake eyes",
-        description="A random dice game that everyone loves.",
-        usage="snakeeyes",
-        aliases=["se", "snakeyes"],
-    )
-    @cooldown(1, 10, BucketType.user)
-    async def se(self, ctx, amount: int):
-        self.init = self.client.get_cog("Init")
-        await self.init.checkserver(ctx)
-        doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
-        doc = doc_ref.get()
-        if doc.exists:
-            dict1 = doc.to_dict()
-            if dict1["money"] < amount:
-                embed = discord.Embed(
-                    title="Amount in bank too low",
-                    description="The amount that you want to gamble is more than what you have in your bank.",
-                    color=self.client.primary_colour,
-                )
-                embed.set_author(
-                    name=ctx.author.display_name, icon_url=ctx.author.avatar_url
-                )
-                await ctx.reply(embed=embed)
-                return
-            if amount <= 0:
-                doc_ref = self.db.collection("users").document(
-                    "{}".format(str(ctx.author.id))
-                )
-                doc = doc_ref.get()
-                if doc.exists:
-                    dict1 = doc.to_dict()
-
-                    doc_ref.set(dict1)
-                embed = discord.Embed(
-                    title="Amount gambled unacceptable",
-                    description="It appears that you have been attempting to exploit the system and this is very bad!!! Stop doing this or we'll set your balance to 0.",
-                    color=self.client.primary_colour,
-                )
-                embed.set_author(
-                    name=ctx.author.display_name, icon_url=ctx.author.avatar_url
-                )
-                await ctx.reply(embed=embed)
-                return
-
-            embed = discord.Embed(
-                title="Rolling dice...",
-                description=":game_die::game_die:",
-                color=self.client.primary_colour,
-            )
-
-            messagec = await ctx.reply(embed=embed)
-            asyncio.sleep(2)
-            dice1 = random.randint(1, 6)
-            dice2 = random.randint(1, 6)
-            if dice1 != 1 and dice2 != 1:
-                dict1["money"] -= amount
-                nowmoney = dict1["money"]
-                doc_ref.set(dict1)
-                embed = discord.Embed(
-                    title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description="You didn't get any snake eyes. Beeg sed. You now have "
-                    + str(nowmoney)
-                    + " money.",
-                    color=0xFF0000,
-                )
-                await messagec.edit(embed=embed)
-            elif dice1 == 1 and dice2 != 1:
-                earnt = math.floor(1.8 * amount)
-                dict1["money"] += earnt
-                doc_ref.set(dict1)
-                nowmoney = dict1["money"]
-                embed = discord.Embed(
-                    title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description="You got one snake eye! You won 1.8x your bet. You now have "
-                    + str(nowmoney)
-                    + " money.",
-                    color=self.client.primary_colour,
-                )
-                await messagec.edit(embed=embed)
-            elif dice1 != 1 and dice2 == 1:
-                earnt = math.floor(1.8 * amount)
-                dict1["money"] += earnt
-                nowmoney = dict1["money"]
-                doc_ref.set(dict1)
-                embed = discord.Embed(
-                    title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description="You got one snake eye! You won 1.8x your bet. You now have "
-                    + str(nowmoney)
-                    + " money.",
-                    color=self.client.primary_colour,
-                )
-                await messagec.edit(embed=embed)
-            else:
-                earnt = 10 * amount
-                dict1["money"] += earnt
-                nowmoney = dict1["money"]
-                doc_ref.set(dict1)
-                embed = discord.Embed(
-                    title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description="You got two snake eyes! You won 10x your bet. You now have "
-                    + str(nowmoney)
-                    + " money. Woo!",
-                    color=self.client.primary_colour,
-                )
-                await messagec.edit(embed=embed)
-        else:
-            await self.init.init(ctx)
+    
     
 def setup(client):
     client.add_cog(Games(client))
