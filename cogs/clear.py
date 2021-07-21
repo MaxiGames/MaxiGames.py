@@ -120,8 +120,9 @@ class Clear(commands.Cog):
                     await message.delete()
         else:
             def check(m):
-                return substr in message.content
+                return substr in m.content
             messages = await ctx.channel.purge(check=check)
+            counter = len(messages)
         
         self.channels.remove(str(ctx.channel.id))
         embed = discord.Embed(
