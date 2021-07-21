@@ -3,6 +3,7 @@ from discord.ext import commands
 from firebase_admin import firestore
 from utils import check
 import time
+import copy
 
 
 class Counting(commands.Cog):
@@ -35,15 +36,17 @@ class Counting(commands.Cog):
         channel = t
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
 
+        init_channel_count = {"count": 0, "previous_author": None}
+
         if "counting_channels" not in data:
             data["counting_channels"] = {}
 
         if str(ctx.guild.id) in data["counting_channels"]:  # do not merge with and!
             if str(channel) not in data["counting_channels"][str(ctx.guild.id)]:
-                data["counting_channels"][str(ctx.guild.id)][str(channel)] = {
-                    "count": 0,
-                    "previous_author": None,
-                }
+                data["counting_channels"][str(ctx.guild.id)][
+                    str(channel)
+                ] = copy.deepcopy(init_channel_count)
+                data["counting_channels"][str(ctx.guild.id)]["counterUR"] = {}
                 await ctx.reply(embed=discord.Embed(title="Success! Channel Added!"))
             else:
                 await ctx.reply(
@@ -54,7 +57,10 @@ class Counting(commands.Cog):
 
         else:
             data["counting_channels"] = {
-                str(ctx.guild.id): {str(channel): {"count": 0, "previous_author": None}}
+                str(ctx.guild.id): {
+                    str(channel): copy.deepcopy(init_channel_count),
+                    "counterUR": {},
+                }
             }
             await ctx.send("OK")
 
@@ -90,12 +96,14 @@ class Counting(commands.Cog):
             and str(channel) in data["counting_channels"][str(ctx.guild.id)]
         ):
             del data["counting_channels"][str(ctx.guild.id)][str(channel)]
-            await ctx.reply(embed=discord.Embed(title="Success! Channel is now a counting channel!"))
+            await ctx.reply(
+                embed=discord.Embed(title="Success! Channel is now a counting channel!")
+            )
         else:
             await ctx.reply(
                 embed=discord.Embed(
-                    title="Channel is already already a counting channel or doesn't exist. " \
-                        + "If it exists, check if MaxiGames has the permissions to view it."
+                    title="Channel is already already a counting channel or doesn't exist. "
+                    + "If it exists, check if MaxiGames has the permissions to view it."
                 )
             )
 
@@ -103,9 +111,71 @@ class Counting(commands.Cog):
 
         return
 
+    @commands.command(
+        name="counting-leaderboard-user",
+        description="Show the leaderboard for users in this server and your position",
+        usage="counting-leaderboard-user",
+        aliases=["countlu"],
+    )
+    async def counting_leaderboard_user(self, ctx):
+        data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
+        sortedUR = list(
+            map(
+                lambda x: (x[1], x[0]),
+                sorted(
+                    [
+                        (v, k)
+                        for k, v in data["counting_channels"][str(ctx.guild.id)][
+                            "counterUR"
+                        ].items()
+                    ]
+                ),
+            )
+        )
+        if list(filter(lambda x: x[0] == str(ctx.author.id), sortedUR)) == []:
+            ctx.reply(
+                embed=discord.Embed(
+                    title="You haven't counted yet!",
+                )
+            )
+        else:
+            tmp = []
+            for i, c in enumerate(sortedUR):
+                cmemb = await ctx.guild.fetch_member(ctx.author.id)
+                cnick = cmemb.nick if cmemb.nick != None else cmemb.name.split("#")[0]
+                tmp.append(f"\n#{i+1}: {('**' if c[0] == ctx.author.id else '') + cnick} has {c[1]} correct counts{('**' if c[0] == ctx.author.id else '')}\n")
+
+            rank = 0
+            for i, c in enumerate(sortedUR):
+                if c[0] == str(ctx.author.id):
+                    rank = i + 1
+                    break
+
+            toprint = []
+            if rank < 5 and rank > len(tmp):
+                toprint = tmp
+            elif rank < 5:
+                toprint = tmp[0:rank+5]
+            elif rank > len(tmp):
+                toprint = tmp[rank-5:len(tmp)-1]
+
+            await ctx.reply(
+                embed = discord.Embed(
+                    title=f"Your counting userrank is {rank}!",
+                    description="".join(toprint)
+                )
+            )
+
+
+        return
+
     @commands.Cog.listener()
     async def on_message(self, msg):
         data = self.db.collection("servers").document(str(msg.guild.id)).get().to_dict()
+
+        # check if things exists; initialise where it makes sense
+        if "counterUR" not in data["counting_channels"][str(msg.guild.id)]:
+            data["counting_channels"][str(msg.guild.id)]["counterUR"] = {}
 
         try:
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]
@@ -136,6 +206,16 @@ class Counting(commands.Cog):
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
                 "previous_author"
             ] = msg.author.id
+            try:
+                # update user's counter userrank
+                data["counting_channels"][str(msg.guild.id)]["counterUR"][
+                    str(msg.author.id)
+                ] += 1
+            except KeyError:
+                # initialise user's counter userrank
+                data["counting_channels"][str(msg.guild.id)]["counterUR"][
+                    str(msg.author.id)
+                ] = 1
         else:
             await msg.add_reaction("❌")
             if num != ccount + 1:
@@ -152,6 +232,7 @@ class Counting(commands.Cog):
                         description=f"{msg.author.mention} messed up the count at {ccount}. The next count for this server is 1.",
                     )
                 )
+
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
                 "count"
             ] = 0
