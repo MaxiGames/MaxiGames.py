@@ -21,12 +21,12 @@ class Counting(commands.Cog):
         self.hidden = False
 
     @commands.command(
-        name="counting-channel",
+        name="counting-channel-add",
         description="set a counting channel. NOT NAME BUT ID!",
-        usage="m!counting-channel #channel-id",
-        aliases=["countc"],
+        usage="m!counting-channel-add #channel-id",
+        aliases=["countca"],
     )
-    async def counting_channel(self, ctx, channel: str):
+    async def counting_channel_add(self, ctx, channel: str):
         # sets the key "counting_channel"
         t = "".join(list(filter(str.isdigit, channel)))
         channel = t
@@ -46,8 +46,38 @@ class Counting(commands.Cog):
                 await ctx.reply("Bruh")
 
         else:
-            data["counting_channels"] = {str(ctx.guild.id): {str(channel): {"count": 0, "previous_author": None}}}
+            data["counting_channels"] = {
+                str(ctx.guild.id): {str(channel): {"count": 0, "previous_author": None}}
+            }
             await ctx.send("OK")
+
+        self.db.collection("servers").document(str(ctx.guild.id)).set(data)
+
+        return
+
+    @commands.command(
+        name="counting-channel-rm",
+        description="Remove a counting channel. GIVE ID!",
+        usage="m!counting-channel-rm #channel-id",
+        aliases=["countcr"],
+    )
+    async def counting_channel_rm(self, ctx, channel: str):
+        # sets the key "counting_channel"
+        t = "".join(list(filter(str.isdigit, channel)))
+        channel = t
+        data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
+
+        if "counting_channels" not in data:
+            return  # bruh
+
+        if (
+            str(ctx.guild.id) in data["counting_channels"]
+            and channel not in data["counting_channels"][str(ctx.guild.id)]
+        ):
+            del data["counting_channels"][str(ctx.guild.id)][str(channel)]
+            await ctx.reply("OK")
+        else:
+            await ctx.reply("Bruh")
 
         self.db.collection("servers").document(str(ctx.guild.id)).set(data)
 
@@ -72,19 +102,32 @@ class Counting(commands.Cog):
             return  # no number
         num = int(numinter)
 
-        ccount = data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"]
+        ccount = data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+            "count"
+        ]
         if (
             num == ccount + 1
-            and data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] != msg.author.id
+            and data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+                "previous_author"
+            ]
+            != msg.author.id
         ):
             await msg.add_reaction("✅")
-            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"] = num
-            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] = msg.author.id
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+                "count"
+            ] = num
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+                "previous_author"
+            ] = msg.author.id
         else:
             await msg.add_reaction("❌")
             await msg.reply("Oops... resetting counter to 0...")
-            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"] = 0
-            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] = None
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+                "count"
+            ] = 0
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+                "previous_author"
+            ] = None
 
         self.db.collection("servers").document(str(msg.guild.id)).set(data)
 
