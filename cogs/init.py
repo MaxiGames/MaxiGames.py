@@ -12,7 +12,7 @@ class Init(commands.Cog):
         self.db = firestore.client()
         self.hidden = True
 
-    async def initiate(self, ctx):
+    async def init(self, ctx):
         self.doc_ref = self.db.collection(u"users").document(
             u"{}".format(str(ctx.author.id))
         )
@@ -23,10 +23,10 @@ class Init(commands.Cog):
                 u"name": str(ctx.author.name),
             }
         )
-        await self.serverinitiate(ctx)
+        await self.serverinit(ctx)
         embed = discord.Embed(
             title="Account Init",
-            description="Your account has been initiated. Now you can start running currency commands :D",
+            description="Your account has been initd. Now you can start running currency commands :D",
             colour=self.client.primary_colour,
         )
         if isinstance(ctx, discord.Message):
@@ -34,7 +34,7 @@ class Init(commands.Cog):
         else:
             await ctx.send(embed=embed)
 
-    async def serverinitiate(self, ctx):
+    async def serverinit(self, ctx):
         self.doc_ref = self.db.collection(u"servers").document(
             u"{}".format(str(ctx.guild.id))
         )
@@ -73,7 +73,7 @@ class Init(commands.Cog):
             if data != None:
                 return data
         else:
-            await self.serverinitiate(ctx)
+            await self.serverinit(ctx)
             if data != None:
                 dat = {}
                 docs = self.db.collection(u"servers").stream()
