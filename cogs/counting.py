@@ -127,10 +127,7 @@ class Counting(commands.Cog):
         ]
         if (
             num == ccount + 1
-            and data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
-                "previous_author"
-            ]
-            != msg.author.id
+            and data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] != msg.author.id
         ):
             await msg.add_reaction("✅")
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
