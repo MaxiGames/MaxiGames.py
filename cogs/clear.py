@@ -8,7 +8,7 @@ class Clear(commands.Cog):
         self.client = client
         self.channels = []
 
-    @commands.group(invoke_without_subcommands=True)
+    @commands.group(invoke_without_subcommands=False)
     async def clear(self, ctx, member:typing.Optional[discord.Member]=None, number:typing.Optional[int]=None):  
         print(member)
         print(type(member))
@@ -30,7 +30,7 @@ class Clear(commands.Cog):
         await msg.delete()
     
     @clear.command()
-    async def all(self, ctx, search: int=100):
+    async def bot(self, ctx, search: int=100):
         if str(ctx.channel.id) in self.channels:
             await ctx.send("A clear is in progress. Try again later :D")
             return
