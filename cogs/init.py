@@ -50,14 +50,6 @@ class Init(commands.Cog):
                     u"users": {str(ctx.author.id): self.usr},
                     u"all": {},
                     u"starboard_threshold": 1,
-                    u"countingChannels": {
-                        "counting": {
-                            "name": "counting",
-                            "count": 0,
-                            "highest_count": 0,
-                            "last_user": None,
-                        }
-                    },
                     u"counting_channels": {
                     },
                     u"name": str(ctx.guild.name),
