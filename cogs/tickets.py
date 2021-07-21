@@ -22,7 +22,6 @@ class Ticket(commands.Cog):
             self.messages = {}
             self.count = {}
             self.active_tickets = {}
-        print(self.messages)
     
 
     @commands.command(
