@@ -4,4 +4,4 @@ flask
 discord_components
 discord-py-slash-command
 firebase_admin
-firebase
+firebase 
