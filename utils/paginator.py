@@ -45,7 +45,7 @@ class Paginator:
             or isinstance(client, commands.AutoShardedBot)
         ):
             raise TypeError("Paginator client must be a discord.Client or commands.Bot")
-        # print("values initiated")
+        # print("values initialised")
 
     async def start(self):
         add_on_buttons: List[Button] = [

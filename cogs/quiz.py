@@ -434,7 +434,7 @@ class Games(commands.Cog):
                 )
                 await messagec.edit(embed=embed)
         else:
-            await self.init.initiate(ctx)
+            await self.init.init(ctx)
     
 def setup(client):
     client.add_cog(Games(client))
