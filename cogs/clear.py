@@ -14,20 +14,6 @@ class Clear(commands.Cog):
         print(type(member))
         print(number)
         print(type(number))
-
-    @clear.command()
-    async def all(self, ctx, limit=100):
-        if str(ctx.channel.id) in self.channels:
-            await ctx.send("A clear is in progress. Try again later :D")
-            return
-            # clear in progress
-        self.channels.append(str(ctx.channel.id))
-        messages = await ctx.channel.purge(limit=limit)
-        
-        self.channels.remove(str(ctx.channel.id))
-        msg = await ctx.send(f"Deleted {len(messages)} messages")
-        await asyncio.sleep(3)
-        await msg.delete()
     
     @clear.command()
     async def all(self, ctx, search: int=100):
