@@ -60,11 +60,9 @@ class Errors(commands.Cog):
             await channel.send(embed=embed)
 
         else:
-            channel = self.client.get_channel(866526918484164668)
-            await channel.send(f"Unknown error: ERROR ({traceback.format_exc()})")
-            print(error)
+            raise error
 
 
 def setup(client):
-    # client.add_cog(Errors(client))
-    pass
+    client.add_cog(Errors(client))
+    # pass
