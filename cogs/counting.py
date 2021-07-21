@@ -36,17 +36,17 @@ class Counting(commands.Cog):
             data["counting_channels"] = {}  # bruh...
 
         if ctx.guild.id in data["counting_channels"]:  # do not merge with and!
-            if channel not in data["counting_channels"][ctx.guild.id]:
-                data["counting_channels"][ctx.guild.id][channel] = {
+            if channel not in data["counting_channels"][str(ctx.guild.id)]:
+                data["counting_channels"][str(ctx.guild.id)][str(channel)] = {
                     "count": 0,
-                    "previous-author": None,
+                    "previous_author": None,
                 }
                 await ctx.send("OK")
             else:
                 await ctx.send("Bruh")
 
         else:
-            data["counting_channels"] = {str(ctx.guild.id): {str(channel): {"count": 0}}}
+            data["counting_channels"] = {str(ctx.guild.id): {str(channel): {"count": 0, "previous_author": None}}}
             await ctx.send("OK")
 
         self.db.collection("servers").document(str(ctx.guild.id)).set(data)
@@ -75,16 +75,16 @@ class Counting(commands.Cog):
         ccount = data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"]
         if (
             num == ccount + 1
-            and data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous-author"] != msg.author.id
+            and data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] != msg.author.id
         ):
             await msg.add_reaction("✅")
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"] = num
-            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous-author"] = msg.author.id
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] = msg.author.id
         else:
             await msg.add_reaction("❌")
             await msg.reply("Oops... resetting counter to 0...")
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"] = 0
-            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous-author"] = None
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] = None
 
         self.db.collection("servers").document(str(msg.guild.id)).set(data)
 
