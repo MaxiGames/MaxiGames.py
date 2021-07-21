@@ -302,8 +302,11 @@ class Economy(commands.Cog):
             dict3[i] = dict1["money"]
         description = ""
         count = 1
+        print(dict3)
         for i in sorted(dict3.items(), key=lambda kv: (kv[1]), reverse=True):
+            print(int(i[0]))
             user = self.client.get_user(int(i[0]))
+            print(user)
             description += f"{count}) {user.mention} - {i[1]} points\n"
             count += 1
             if count > 10:
