@@ -143,7 +143,7 @@ class Counting(commands.Cog):
             for i, c in enumerate(sortedUR):
                 cmemb = await ctx.guild.fetch_member(ctx.author.id)
                 cnick = cmemb.nick if cmemb.nick != None else cmemb.name.split("#")[0]
-                tmp.append(f"\n#{i+1}: {('**' if c[0] == ctx.author.id else '') + cnick} has {c[1]} correct counts{('**' if c[0] == ctx.author.id else '')}\n")
+                tmp.append(f"{('**' if int(c[0]) == ctx.author.id else '')}\n#{i+1}: {cnick} has {c[1]} correct counts{('**' if int(c[0]) == ctx.author.id else '')}\n")
 
             rank = 0
             for i, c in enumerate(sortedUR):
