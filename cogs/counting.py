@@ -36,7 +36,7 @@ class Counting(commands.Cog):
             data["counting_channels"] = {}  # bruh...
 
         if str(ctx.guild.id) in data["counting_channels"]:  # do not merge with and!
-            if channel not in data["counting_channels"][str(ctx.guild.id)]:
+            if str(channel) not in data["counting_channels"][str(ctx.guild.id)]:
                 data["counting_channels"][str(ctx.guild.id)][str(channel)] = {
                     "count": 0,
                     "previous_author": None,
@@ -72,7 +72,7 @@ class Counting(commands.Cog):
 
         if (
             str(ctx.guild.id) in data["counting_channels"]
-            and channel not in data["counting_channels"][str(ctx.guild.id)]
+            and str(channel) in data["counting_channels"][str(ctx.guild.id)]
         ):
             del data["counting_channels"][str(ctx.guild.id)][str(channel)]
             await ctx.reply("OK")
