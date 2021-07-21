@@ -23,7 +23,7 @@ class Games(commands.Cog):
         self.db = firestore.client()
         self.hidden = False
 
-    # @cooldown(1, 20, BucketType.user)
+    @cooldown(1, 10, BucketType.user)
     @commands.command(
         name="trivia",
         description="Answer a trivia question using reactions! Provide a number from 1 to 3 specifying the difficulty of the trivia question you want.",
@@ -155,12 +155,13 @@ class Games(commands.Cog):
                     )
                     await ctx.reply(embed=embed)
                 doc_ref.set(dict1)
-
+    
     @commands.command(
         name="math",
         description="Answer a math question correctly to gain coins. If you don't get it correct you lose coins!",
-        usage="math",
+        usage="m!math",
     )
+    @cooldown(1, 20, BucketType.user)
     async def math(self, ctx):
         first = random.randint(1, 100)
         second = random.randint(1, 100)
@@ -239,8 +240,9 @@ class Games(commands.Cog):
             await ctx.reply(embed=embed)
 
     @commands.command(
-        name="scramble", description="Try to unscramble a word!", usage="scramble"
+        name="scramble", description="Try to unscramble a word!", usage="m!scramble"
     )
+    @cooldown(1, 10, BucketType.user)
     async def scramble(self, ctx):
         wordCount = 5
         chosenWords = []
@@ -331,6 +333,7 @@ class Games(commands.Cog):
         usage="snakeeyes",
         aliases=["se", "snakeyes"],
     )
+    @cooldown(1, 10, BucketType.user)
     async def se(self, ctx, amount: int):
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
@@ -432,8 +435,7 @@ class Games(commands.Cog):
                 await messagec.edit(embed=embed)
         else:
             await self.init.initiate(ctx)
-
-
+    
 def setup(client):
     client.add_cog(Games(client))
 

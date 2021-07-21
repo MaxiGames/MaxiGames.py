@@ -42,11 +42,10 @@ class Errors(commands.Cog):
                 description=f"This command is on cooldown. Try again in {error.retry_after:,.1f} seconds.",
                 colour=self.client.primary_colour,
             )
-            channel = self.client.get_channel(866526918484164668)
             embed.set_author(
                 name=ctx.author.display_name, icon_url=ctx.author.avatar_url
             )
-            await channel.send(embed=embed)
+            await ctx.send(embed=embed)
 
         elif isinstance(error, commands.BadArgument):
             embed = discord.Embed(
