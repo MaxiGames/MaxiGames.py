@@ -199,7 +199,7 @@ class Games(commands.Cog):
             )
             msgcontent = messageanswer.content
 
-            self.initation = self.client.get_cog("Initiation")
+            self.initiation = self.client.get_cog("Initiation")
             await self.initiation.checkserver(ctx)
             doc_ref = self.db.collection("users").document(
                 "{}".format(str(ctx.author.id))
@@ -270,7 +270,7 @@ class Games(commands.Cog):
         def check(msg):
             return msg.author == ctx.author and msg.channel == ctx.channel
 
-        self.initation = self.client.get_cog("Initiation")
+        self.initiation = self.client.get_cog("Initiation")
         await self.initiation.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
@@ -332,8 +332,8 @@ class Games(commands.Cog):
         aliases=["se", "snakeyes"],
     )
     async def se(self, ctx, amount: int):
-        self.initation = self.client.get_cog("Initiation")
-        await self.initation.checkserver(ctx)
+        self.initiation = self.client.get_cog("Initiation")
+        await self.initiation.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists:
@@ -431,7 +431,7 @@ class Games(commands.Cog):
                 )
                 await messagec.edit(embed=embed)
         else:
-            await self.initation.initiate(ctx)
+            await self.initiation.initiate(ctx)
 
 
 def setup(client):
