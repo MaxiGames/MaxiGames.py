@@ -20,7 +20,7 @@ class Economy(commands.Cog):
     # Curb gambling addiction
     @check.is_banned()
     @cooldown(1, 5, BucketType.user)
-    @commands.command(name="Coinflip", aliases=["coinflip", "cf"])
+    @commands.command(name="coinflip", description="provide 2 arguments, the choice of your coin: head/tail, and the amount you want to bet", aliases= ["cf"], usage="coinflip <choice> <amount>")
     async def _coinflip(self, ctx, choice: str, amount: int = 1):
         self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
@@ -97,11 +97,12 @@ class Economy(commands.Cog):
             await self.initation.initiate(ctx)
 
     @commands.command(
-        name="Gamble",
+        name="gamble",
         description="Gamble all the money you want until you're happy. Remember, theres a jackpot :D",
-        aliases=["g", "gamble", "gg"],
+        aliases=["g", "gg", "bet"],
         usage="gamble <amount>",
     )
+    @cooldown(1, 5, BucketType.user)
     async def _gamble(self, ctx, amount: int = 5):
         self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
@@ -209,10 +210,10 @@ class Economy(commands.Cog):
 
     @check.is_banned()
     @commands.command(
-        name="Money",
+        name="money",
         description="Allows you to get a source of unlimited points :O",
         usage="money",
-        aliases=["money", "m"],
+        aliases=["m"],
     )
     @cooldown(1, 5, BucketType.user)
     async def _money(self, ctx):
@@ -246,7 +247,11 @@ class Economy(commands.Cog):
             # await ctx.send("Now you can start running currency commands :D")
 
     @check.is_banned()
-    @commands.command()
+    @commands.command(name="bal",
+        description="Allows you to check your current balance",
+        usage="bal",
+        aliases=["balance", "b"],)
+    @cooldown(1, 5, BucketType.user)
     async def bal(self, ctx):
         self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
@@ -274,11 +279,12 @@ class Economy(commands.Cog):
             # return False
 
     @commands.command(
-        name="Leaderboard",
+        name="leaderboard",
         description="Shows you the richest and most wealthy people in the server you are in :O",
         usage="leaderboard",
-        aliases=["leaderboard", "l", "rich", "r", " l"],
+        aliases=["l", "rich", "r", " l"],
     )
+    @cooldown(1, 5, BucketType.user)
     async def _leaderboard(self, ctx):
         self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
@@ -291,6 +297,8 @@ class Economy(commands.Cog):
             doc_ref = self.db.collection("users").document("{}".format(i))
             doc = doc_ref.get()
             dict1 = doc.to_dict()
+            if dict1 == None:
+                continue
             dict3[i] = dict1["money"]
         description = ""
         count = 1
@@ -312,10 +320,10 @@ class Economy(commands.Cog):
         await ctx.send(embed=embed, allowed_mentions=discord.AllowedMentions.none())
 
     @commands.command(
-        name="Hourly",
+        name="hourly",
         description="Hourly points :D",
         usage="hourly",
-        aliases=["h", "hourly"],
+        aliases=["h"],
     )
     @cooldown(1, 3600, BucketType.user)
     async def hourly(self, ctx):
@@ -344,10 +352,10 @@ class Economy(commands.Cog):
             )
 
     @commands.command(
-        name="Daily",
+        name="daily",
         description="Daily points :D",
         usage="daily",
-        aliases=["d", "daily"],
+        aliases=["d"],
     )
     @cooldown(1, 86400, BucketType.user)
     async def daily(self, ctx):
@@ -381,10 +389,6 @@ class Economy(commands.Cog):
 
     @check.is_staff()
     @commands.command(
-        name="Set Money",
-        description="Sets the amount of money of a person.",
-        usage="setmoney <user>",
-        aliases=["sm", "setmoney", "setm"],
         hidden=True,
     )
     async def _setmoney(self, ctx, amount: int, name: discord.Member = None):

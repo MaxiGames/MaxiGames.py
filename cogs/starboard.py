@@ -62,7 +62,6 @@ class Starboard(commands.Cog):
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
-        print("WORKING")
         self.init = self.client.get_cog("Init")
         doc_ref = self.db.collection("servers").document(str(reaction.message.guild.id))
         doc = doc_ref.get()

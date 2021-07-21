@@ -22,19 +22,21 @@ class Counting(commands.Cog):
 
     @check.is_admin()
     @commands.command(
-        name="counting-channel-add",
-        description="set a counting channel. NOT NAME BUT ID!",
-        usage="m!counting-channel-add #channel-id",
-        aliases=["countca"],
+        name="countingchanneladd",
+        description="Sets a counting channel by specifing the channel",
+        usage="counting-channel-add <channel-id>",
+        aliases=["countca", "counting-channel-add"],
     )
-    async def counting_channel_add(self, ctx, channel: str):
+    async def counting_channel_add(self, ctx, channel: str = None):
         # sets the key "counting_channel"
+        if channel == None:
+            channel = str(ctx.channel.id)
         t = "".join(list(filter(str.isdigit, channel)))
         channel = t
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
 
         if "counting_channels" not in data:
-            data["counting_channels"] = {}  # bruh...
+            data["counting_channels"] = {} 
 
         if str(ctx.guild.id) in data["counting_channels"]:  # do not merge with and!
             if str(channel) not in data["counting_channels"][str(ctx.guild.id)]:
@@ -42,9 +44,9 @@ class Counting(commands.Cog):
                     "count": 0,
                     "previous_author": None,
                 }
-                await ctx.reply("OK")
+                await ctx.reply(embed=discord.Embed(title="Success! Channel Added!"))
             else:
-                await ctx.reply("Bruh")
+                await ctx.reply(embed=discord.Embed(title="Channel is already present or doesn't exist. If it exists, check if I have the permissions to view it"))
 
         else:
             data["counting_channels"] = {
@@ -58,12 +60,14 @@ class Counting(commands.Cog):
 
     @check.is_admin()
     @commands.command(
-        name="counting-channel-rm",
-        description="Remove a counting channel. GIVE ID!",
-        usage="m!counting-channel-rm #channel-id",
-        aliases=["countcr"],
+        name="countingchannelrm",
+        description="Remove a counting channe by specifying the channel name",
+        usage="countingchannelrm <channel>",
+        aliases=["countcr", "countingchannelremove", "counting-channel-remove", "counting-channel-rm"],
     )
-    async def counting_channel_rm(self, ctx, channel: str):
+    async def counting_channel_rm(self, ctx, channel: str = None):
+        if channel == None:
+            channel = str(ctx.channel.id)
         # sets the key "counting_channel"
         t = "".join(list(filter(str.isdigit, channel)))
         channel = t
@@ -77,9 +81,9 @@ class Counting(commands.Cog):
             and str(channel) in data["counting_channels"][str(ctx.guild.id)]
         ):
             del data["counting_channels"][str(ctx.guild.id)][str(channel)]
-            await ctx.reply("OK")
+            await ctx.reply(embed=discord.Embed(title="Success! Channel Added!"))
         else:
-            await ctx.reply("Bruh")
+            await ctx.reply(embed=discord.Embed(title="Channel is already present or doesn't exist. If it exists, check if I have the permissions to view it"))
 
         self.db.collection("servers").document(str(ctx.guild.id)).set(data)
 
@@ -123,7 +127,10 @@ class Counting(commands.Cog):
             ] = msg.author.id
         else:
             await msg.add_reaction("❌")
-            await msg.reply("Oops... resetting counter to 0...")
+            if num != ccount+1:
+                await msg.reply(embed=discord.Embed(title="Wrong count", description = f"{msg.author.mention} messed up the count at {ccount}. The next count for this server is 1."))
+            else: 
+                await msg.reply(embed=discord.Embed(title="You cannot count twice in a row", description = f"{msg.author.mention} messed up the count at {ccount}. The next count for this server is 1."))
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
                 "count"
             ] = 0
