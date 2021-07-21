@@ -128,7 +128,8 @@ class Counting(commands.Cog):
                         for k, v in data["counting_channels"][str(ctx.guild.id)][
                             "counterUR"
                         ].items()
-                    ]
+                    ],
+                    reverse=True
                 ),
             )
         )
@@ -141,7 +142,7 @@ class Counting(commands.Cog):
         else:
             tmp = []
             for i, c in enumerate(sortedUR):
-                cmemb = await ctx.guild.fetch_member(ctx.author.id)
+                cmemb = await ctx.guild.fetch_member(c[0])
                 cnick = cmemb.nick if cmemb.nick != None else cmemb.name.split("#")[0]
                 tmp.append(f"{('**' if int(c[0]) == ctx.author.id else '')}\n#{i+1}: {cnick} has {c[1]} correct counts{('**' if int(c[0]) == ctx.author.id else '')}\n")
 
