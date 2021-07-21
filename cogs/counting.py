@@ -35,7 +35,7 @@ class Counting(commands.Cog):
         if "counting_channels" not in data:
             data["counting_channels"] = {}  # bruh...
 
-        if ctx.guild.id in data["counting_channels"]:  # do not merge with and!
+        if str(ctx.guild.id) in data["counting_channels"]:  # do not merge with and!
             if channel not in data["counting_channels"][str(ctx.guild.id)]:
                 data["counting_channels"][str(ctx.guild.id)][str(channel)] = {
                     "count": 0,
