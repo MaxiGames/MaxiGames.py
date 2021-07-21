@@ -19,7 +19,7 @@ class EasterEggs(commands.Cog):
         )
         embed.add_field(
             name="Whoami?",
-            value="I am Maxigames! The creation of amateur bot devs <@!712942935129456671>, <@!676748194956181505>, <@!782247763542016010> and Tux!",
+            value="I am Maxigames! The creation of amateur bot devs <@!712942935129456671>, <@!676748194956181505>, <@!782247763542016010> and <@!682592012163481616>!",
             inline=False,
         )
         embed.add_field(
