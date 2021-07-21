@@ -49,25 +49,33 @@ class Counting(commands.Cog):
             await ctx.send("OK")
 
         self.db.collection("servers").document(str(ctx.guild.id)).set(data)
-        print(data["counting_channels"])
 
         return
 
     @commands.Cog.listener()
     async def on_message(self, msg):
         data = self.db.collection("servers").document(str(msg.guild.id)).get().to_dict()
-        data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]
 
-        num = 0
-        num = int(msg.content)
+        try:
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]
+        except KeyError:
+            return  # no counting channels set up for this server
+
+        numinter = ""
+        for x in msg.content:
+            if str.isdigit(x):
+                numinter += x
+            else:
+                break
+        if numinter == "":
+            return  # no number
+        num = int(numinter)
 
         ccount = data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"]
         if num == ccount + 1:
-            print("hoowayy")
             await msg.add_reaction("✅")
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"] = num
         else:
-            print("gotcha")
             await msg.add_reaction("❌")
             await msg.reply("Oops... resetting counter to 0...")
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"] = 0
