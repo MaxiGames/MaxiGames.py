@@ -7,13 +7,15 @@ class Clear(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.channels = []
+        self.hidden = True
 
     @commands.group(invoke_without_subcommands=False)
     async def clear(self, ctx, member:typing.Optional[discord.Member]=None, number:typing.Optional[int]=None):  
-        print(member)
-        print(type(member))
-        print(number)
-        print(type(number))
+        # print(member)
+        # print(type(member))
+        # print(number)
+        # print(type(number))
+        print("hallo")
     
     @clear.command()
     async def all(self, ctx, search: int=100):

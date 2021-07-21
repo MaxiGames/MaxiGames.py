@@ -3,7 +3,7 @@ from firebase_admin import firestore
 
 import discord
 from discord.ext import commands
-from cogs.init import Init
+# from cogs.init import Init
 
 db = firestore.client()
 

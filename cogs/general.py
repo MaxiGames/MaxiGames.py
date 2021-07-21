@@ -191,6 +191,8 @@ class General(commands.Cog):
         page.set_thumbnail(url=self.client.user.avatar_url)
         for _, cog_name in enumerate(self.client.cogs):
             cog = self.client.get_cog(cog_name)
+            if cog.hidden is True:
+                continue
             cog_commands = cog.get_commands()
             if len(cog_commands) == 0:
                 continue
