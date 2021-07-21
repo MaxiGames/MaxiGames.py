@@ -39,6 +39,7 @@ class Counting(commands.Cog):
             if channel not in data["counting_channels"][ctx.guild.id]:
                 data["counting_channels"][ctx.guild.id][channel] = {
                     "count": 0,
+                    "previous-author": None,
                 }
                 await ctx.send("OK")
             else:
@@ -72,13 +73,18 @@ class Counting(commands.Cog):
         num = int(numinter)
 
         ccount = data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"]
-        if num == ccount + 1:
+        if (
+            num == ccount + 1
+            and data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous-author"] != msg.author.id
+        ):
             await msg.add_reaction("✅")
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"] = num
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous-author"] = msg.author.id
         else:
             await msg.add_reaction("❌")
             await msg.reply("Oops... resetting counter to 0...")
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"] = 0
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous-author"] = None
 
         self.db.collection("servers").document(str(msg.guild.id)).set(data)
 
