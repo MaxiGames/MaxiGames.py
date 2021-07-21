@@ -9,14 +9,14 @@ class Todo(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.db = firestore.client()
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         self.hidden = True
 
     @check.is_staff()
     @commands.command()
     async def todoADD(self, ctx, *msg):
         task = " ".join(msg)
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
         doc = doc_ref.get()
@@ -31,7 +31,7 @@ class Todo(commands.Cog):
     @check.is_staff()
     @commands.command()
     async def todo(self, ctx):
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
         doc = doc_ref.get()
@@ -51,7 +51,7 @@ class Todo(commands.Cog):
     @check.is_staff()
     @commands.command()
     async def todoREM(self, ctx, number):
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
         doc = doc_ref.get()

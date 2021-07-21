@@ -11,7 +11,7 @@ class Counting(commands.Cog):
         self.db = firestore.client()
         self.data = {}
         self.cooldown = {}
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         docs = self.db.collection("servers").stream()
         for doc in docs:
             self.data[doc.id] = doc.to_dict()
@@ -22,12 +22,12 @@ class Counting(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         if message.author == self.client.user:
             return
         if message.author.bot:
             return
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         self.data = await self.initation.checkserver(message, self.data)
         # print(self.data)
         if (
@@ -139,7 +139,7 @@ class Counting(commands.Cog):
         aliases=["addc"],
     )
     async def add_counting_channel(self, ctx, name: str = None):
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         self.data = await self.initation.checkserver(ctx, self.data)
         if name == None:
             name = ctx.channel.name
@@ -166,7 +166,7 @@ class Counting(commands.Cog):
     @check.is_admin()
     @commands.command(name="removechannel", aliases=["rcc"])
     async def remove_counting_channel(self, ctx, name: str = None):
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         self.data = await self.initation.checkserver(ctx, self.data)
         if name == None:
             name = ctx.channel.name
@@ -201,7 +201,7 @@ class Counting(commands.Cog):
         hidden=True,
     )
     async def setcurrentcount(self, ctx, num: int):
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         self.data = await self.initation.checkserver(ctx, self.data)
 
         dict2 = self.data[(str(ctx.guild.id))]

@@ -10,7 +10,7 @@ class Starboard(commands.Cog):
         self.client = client
         self.hidden = True
         self.db = firestore.client()
-        self.initiation = self.client.get_cog("Initiation")
+        self.init = self.client.get_cog("Init")
 
     @check.is_admin()
     @commands.command(
@@ -20,7 +20,7 @@ class Starboard(commands.Cog):
         aliases=["starthresh", "starcount"]
     )
     async def starboard_threshold(self, ctx, thresh: int = None):
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
         doc = doc_ref.get()
@@ -48,7 +48,7 @@ class Starboard(commands.Cog):
             await ctx.reply("You need to specify a channel")
             return
         try:
-            self.initation = self.client.get_cog("Initiation")
+            self.initation = self.client.get_cog("Init")
             await self.initation.checkserver(ctx)
             doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
             doc = doc_ref.get()
@@ -63,12 +63,12 @@ class Starboard(commands.Cog):
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
         print("WORKING")
-        self.initiation = self.client.get_cog("Initiation")
+        self.init = self.client.get_cog("Init")
         doc_ref = self.db.collection("servers").document(str(reaction.message.guild.id))
         doc = doc_ref.get()
         data = doc.to_dict()
         channel = self.client.get_channel(int(data["starboard"]["channel"]))
-        await self.initiation.checkserver(reaction.message)
+        await self.init.checkserver(reaction.message)
 
         if "starboard" not in data:
             print("b")
