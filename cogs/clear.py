@@ -9,7 +9,7 @@ class Clear(commands.Cog):
         self.channels = []
 
     @commands.group(invoke_without_subcommands=True)
-    async def clear(self, ctx, member:typing.Optional[discord.Member]=None, number:typing.Optional[int]=None):  
+    async def clear(self, ctx, member:typing.Optional[discord.Member]=None, number:typing.Optional[int]=None):
         print(member)
         print(type(member))
         print(number)
