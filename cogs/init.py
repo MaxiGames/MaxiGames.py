@@ -58,6 +58,8 @@ class Init(commands.Cog):
                             "last_user": None,
                         }
                     },
+                    u"counting_channels": {
+                    },
                     u"name": str(ctx.guild.name),
                 }
             )
