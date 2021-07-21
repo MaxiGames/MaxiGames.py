@@ -6,7 +6,7 @@ from firebase_admin import firestore
 import os
 
 
-class Initiation(commands.Cog):
+class Init(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.db = firestore.client()
@@ -25,7 +25,7 @@ class Initiation(commands.Cog):
         )
         await self.serverinitiate(ctx)
         embed = discord.Embed(
-            title="Account Initiation",
+            title="Account Init",
             description="Your account has been initiated. Now you can start running currency commands :D",
             colour=self.client.primary_colour,
         )
@@ -82,5 +82,5 @@ class Initiation(commands.Cog):
 
 
 def setup(client):
-    client.add_cog(Initiation(client))
+    client.add_cog(Init(client))
     # pass

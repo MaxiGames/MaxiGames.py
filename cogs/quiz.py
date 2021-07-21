@@ -19,7 +19,7 @@ alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 class Games(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.initiation = self.client.get_cog("Initiation")
+        self.init = self.client.get_cog("Init")
         self.db = firestore.client()
         self.hidden = False
 
@@ -124,8 +124,8 @@ class Games(commands.Cog):
             else:
                 return
             ans = arr[index]
-            self.initation = self.client.get_cog("Initiation")
-            await self.initiation.checkserver(ctx)
+            self.initation = self.client.get_cog("Init")
+            await self.init.checkserver(ctx)
             doc_ref = self.db.collection("users").document(
                 "{}".format(str(ctx.author.id))
             )
@@ -199,8 +199,8 @@ class Games(commands.Cog):
             )
             msgcontent = messageanswer.content
 
-            self.initiation = self.client.get_cog("Initiation")
-            await self.initiation.checkserver(ctx)
+            self.init = self.client.get_cog("Init")
+            await self.init.checkserver(ctx)
             doc_ref = self.db.collection("users").document(
                 "{}".format(str(ctx.author.id))
             )
@@ -270,8 +270,8 @@ class Games(commands.Cog):
         def check(msg):
             return msg.author == ctx.author and msg.channel == ctx.channel
 
-        self.initiation = self.client.get_cog("Initiation")
-        await self.initiation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists == False:
@@ -332,8 +332,8 @@ class Games(commands.Cog):
         aliases=["se", "snakeyes"],
     )
     async def se(self, ctx, amount: int):
-        self.initiation = self.client.get_cog("Initiation")
-        await self.initiation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists:
@@ -431,7 +431,7 @@ class Games(commands.Cog):
                 )
                 await messagec.edit(embed=embed)
         else:
-            await self.initiation.initiate(ctx)
+            await self.init.initiate(ctx)
 
 
 def setup(client):

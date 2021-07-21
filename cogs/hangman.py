@@ -23,7 +23,7 @@ class Hangman(commands.Cog):
         self.client = client
         self.hidden = False
         self.db = firestore.client()
-        self.initiation = self.client.get_cog("Initiation")
+        self.init = self.client.get_cog("Init")
 
     @commands.command()
     async def hangmanList(self, ctx):
@@ -77,8 +77,8 @@ class Hangman(commands.Cog):
     @commands.command(name="hangman", description="Play a hangman game and potentially win points!", usage="hangman")
     async def hangman(self, ctx):
         #! Hangman Firebase Initalisation
-        self.initiation = self.client.get_cog("Initiation")
-        await self.initiation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document(str(ctx.author.id))
         doc = doc_ref.get()
         data = doc.to_dict()
@@ -295,8 +295,8 @@ class Hangman(commands.Cog):
     @commands.command(title="hangmanLB", description="The leaderboard for hangman", aliases=["hangmanleaderboard"])
     async def hangmanLB(self, ctx):
         #! Hangman Firebase Initalisation
-        self.initiation = self.client.get_cog("Initiation")
-        await self.initiation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection(u'users')
         collection = doc_ref.stream()
 

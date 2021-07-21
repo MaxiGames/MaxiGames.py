@@ -14,7 +14,7 @@ class Economy(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.db = firestore.client()
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         self.hidden = False
 
     # Curb gambling addiction
@@ -22,7 +22,7 @@ class Economy(commands.Cog):
     @cooldown(1, 5, BucketType.user)
     @commands.command(name="Coinflip", aliases=["coinflip", "cf"])
     async def _coinflip(self, ctx, choice: str, amount: int = 1):
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
@@ -103,7 +103,7 @@ class Economy(commands.Cog):
         usage="gamble <amount>",
     )
     async def _gamble(self, ctx, amount: int = 5):
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
@@ -216,7 +216,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 5, BucketType.user)
     async def _money(self, ctx):
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
@@ -248,7 +248,7 @@ class Economy(commands.Cog):
     @check.is_banned()
     @commands.command()
     async def bal(self, ctx):
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
@@ -280,7 +280,7 @@ class Economy(commands.Cog):
         aliases=["leaderboard", "l", "rich", "r", " l"],
     )
     async def _leaderboard(self, ctx):
-        self.initation = self.client.get_cog("Initiation")
+        self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
 
         doc_ref = self.db.collection("servers").document("{}".format(str(ctx.guild.id)))

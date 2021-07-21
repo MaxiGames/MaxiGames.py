@@ -25,7 +25,7 @@ class General(commands.Cog):
         self.hidden = False
         self.client = client
         self.db = firestore.client()
-        self.initiation = self.client.get_cog("Initiation")
+        self.init = self.client.get_cog("Init")
 
     @commands.command()
     async def hallo(self, ctx):
@@ -556,8 +556,8 @@ class General(commands.Cog):
     )
     @check.is_staff()
     async def getsettings(self, ctx):
-        self.initiation = self.client.get_cog("Initiation")
-        await self.initiation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
         doc = doc_ref.get()
         data = doc.to_dict()
