@@ -20,6 +20,7 @@ class Counting(commands.Cog):
                 self.cooldown[doc.id][channel] = time.time() - 5
         self.hidden = False
 
+    @check.is_admin()
     @commands.command(
         name="counting-channel-add",
         description="set a counting channel. NOT NAME BUT ID!",
@@ -55,6 +56,7 @@ class Counting(commands.Cog):
 
         return
 
+    @check.is_admin()
     @commands.command(
         name="counting-channel-rm",
         description="Remove a counting channel. GIVE ID!",
