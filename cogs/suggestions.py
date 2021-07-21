@@ -10,6 +10,7 @@ class Suggestions(commands.Cog):
         self.hidden = False
 
     @check.is_banned()
+
     @commands.command(
         name="Suggestions",
         description="Suggest anything that you want us to know about!!! Be it a game that you really want to be implemented, or some comments you have on what can be improved :D",

@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 import sys
 import asyncio
+from discord.ext.commands import cooldown, BucketType
 import time
 
 alpha = "abcdefghijklmnopqrstuvwxyz"
@@ -18,6 +19,7 @@ class Connect4(commands.Cog):
         description="play connect4 with another player",
         usage="connect4",
     )
+    @cooldown(1, 75, BucketType.user)
     async def connect4(self, ctx):
         player1 = ctx.author
         message = await ctx.reply(

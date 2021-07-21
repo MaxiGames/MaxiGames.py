@@ -3,6 +3,7 @@ import os
 from urllib.request import urlopen as uReq
 import bs4
 import random
+from discord.ext.commands import cooldown, BucketType
 import discord
 from discord.ext import commands
 import math
@@ -24,8 +25,8 @@ class Hangman(commands.Cog):
         self.hidden = False
         self.db = firestore.client()
         self.init = self.client.get_cog("Init")
-
     @commands.command()
+    @cooldown(1, 5, BucketType.user)
     async def hangmanList(self, ctx):
         dir = os.getcwd() + "/DataBase/words.txt"
         words = open(dir, "r")
@@ -75,6 +76,7 @@ class Hangman(commands.Cog):
         await page.start()
     
     @commands.command(name="hangman", description="Play a hangman game and potentially win points!", usage="hangman")
+    @cooldown(1, 150, BucketType.user)
     async def hangman(self, ctx):
         #! Hangman Firebase Initalisation
         self.init = self.client.get_cog("Init")
@@ -95,7 +97,7 @@ class Hangman(commands.Cog):
         words.close()
         await ctx.reply(
             embed=discord.Embed(
-                title="You have **2 minutes** to choose one topic. Do `m!hangmanList` to check all the topics.",
+                title="You have **1 minute** to choose one topic. Do `m!hangmanList` to check all the topics.",
                 colour=0x00FF00,
             )
         )
@@ -105,7 +107,7 @@ class Hangman(commands.Cog):
         while True:
             try:
                 message = await self.client.wait_for(
-                    "message", timeout=120, check=check
+                    "message", timeout=60, check=check
                 )
                 if (
                     message.content == "m!hangmanList"
@@ -291,8 +293,8 @@ class Hangman(commands.Cog):
             )
             await message.reply(embed=embed)
             doc_ref.set(data)
-    
     @commands.command(title="hangmanLB", description="The leaderboard for hangman", aliases=["hangmanleaderboard"])
+    @cooldown(1, 15, BucketType.user)
     async def hangmanLB(self, ctx):
         #! Hangman Firebase Initalisation
         self.init = self.client.get_cog("Init")

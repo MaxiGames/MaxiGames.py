@@ -6,6 +6,7 @@ import asyncio
 import math
 import random
 from discord_slash import cog_ext, SlashContext
+from discord.ext.commands import cooldown, BucketType
 from utils.paginator import Paginator
 from utils import check
 from firebase_admin import firestore
@@ -26,12 +27,12 @@ class General(commands.Cog):
         self.client = client
         self.db = firestore.client()
         self.init = self.client.get_cog("Init")
-
     @commands.command()
+    @cooldown(1, 60, BucketType.user)
     async def hallo(self, ctx):
         await ctx.send("Hallo")
-
     @commands.command()
+    @cooldown(1, 60, BucketType.user)
     async def current(self, ctx):
         result = time.localtime(time.time())
         embed = discord.Embed(
@@ -52,14 +53,14 @@ class General(commands.Cog):
             inline=True,
         )
         await ctx.send(embed=embed)
-
     @commands.command()
+    @cooldown(1, 30, BucketType.user)
     async def seconds(self, ctx):
         await ctx.send(
             str(round(time.time())) + " seconds have passed since the epoch!"
         )
-
     @commands.command()
+    @cooldown(1, 15, BucketType.user)
     async def ns(self, ctx, num: int):
         if num < 1 or num > 50:
             await ctx.send("That is not a valid value for this command!:thinking:")
@@ -76,8 +77,8 @@ class General(commands.Cog):
 
                 n += 1
             await ctx.send(answer)
-
     @commands.command()
+    @cooldown(1, 10, BucketType.user)
     async def invite(self, ctx):
         embed = discord.Embed(
             title="Invite Link to invite the bot",
@@ -85,8 +86,8 @@ class General(commands.Cog):
             color=self.client.primary_colour,
         )
         await ctx.send(embed=embed)
-
     @commands.command()
+    @cooldown(1, 20, BucketType.user)
     async def official(self, ctx):
         embed = discord.Embed(
             title="Join our official server today!",
@@ -94,8 +95,8 @@ class General(commands.Cog):
             colour=self.client.primary_colour,
         )
         await ctx.send(embed=embed)
-
     @commands.command()
+    @cooldown(1, 180, BucketType.user)
     async def whoami(self, ctx):
         embed = discord.Embed(
             title="You are " + str(ctx.author) + " :D",
@@ -120,12 +121,12 @@ class General(commands.Cog):
         embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
 
         await ctx.send(embed=embed)
-
     @commands.command()
+    @cooldown(1, 15, BucketType.user)
     async def hallolong(self, ctx, num: int):
         await ctx.send(f'Hall{"o"*num}')
-
     @commands.command()
+    @cooldown(1, 60, BucketType.user)
     async def servercount(self, ctx):
         embed = discord.Embed(
             title="I'm in " + str(len(self.client.guilds)) + " servers",
@@ -133,12 +134,12 @@ class General(commands.Cog):
             color=0xBB2277,
         )
         await ctx.send(embed=embed)
-
     @commands.command(
         name="help",
         description="Shows this help menu or information about a specific command if specified",
         usage="help <command (optional)> ",
     )
+    @cooldown(1, 5, BucketType.user)
     async def help(self, ctx, *cmd):
         if len(cmd) > 0:
             command = " ".join(cmd)
@@ -237,25 +238,29 @@ class General(commands.Cog):
     @cog_ext.cog_slash(name="help", description="Shows the help menu :D")
     async def help_command(self, ctx: SlashContext):
         await self.help(ctx)
-
     @commands.command(
         name="randnum",
         description="Gives you a random number between the two numbers you specified.",
         usage="randnum <minimum number> <maximum number>",
     )
+    @cooldown(1, 5, BucketType.user)
     async def randnum(self, ctx, start: int, end: int):
         answer = random.randint(start, end)
         await ctx.reply("Your number was " + str(answer))
-
-    @commands.command()
+    @commands.command(
+        name = "empty",
+        description = "Gives you an empty unicode character.",
+        usage = "empty"
+    )
+    @cooldown(1, 5, BucketType.user)
     async def empty(self, ctx):
         await ctx.reply("‎")
-
     @commands.command(
         name="fibo",
         description="Returns the nth fibonacci number, where n is the number you input.",
         usage="fibo <number>",
     )
+    @cooldown(1, 5, BucketType.user)
     async def fibo(self, ctx, num: int):
         if num <= 0:
             embed = discord.Embed(
@@ -296,12 +301,12 @@ class General(commands.Cog):
                 color=0xFF0000,
             )
             await ctx.reply(embed=embed)
-
     @commands.command(
         name="bigdice",
         description="rolls a specified number of dice with a specified number of faces that you can specify.",
         usage="bigdice <number of faces for each dice> <number of dice>",
     )
+    @cooldown(1, 10, BucketType.user)
     async def bigdice(self, ctx, sides: int, num: int):
         curr = ""
         if sides <= 0:
@@ -345,12 +350,12 @@ class General(commands.Cog):
                 title="Don't be stupid. Honestly.", description="", color=0xFF0000
             )
             await ctx.reply(embed=embed)
-
     @commands.command(
         name="dice",
         description="rolls the number of dice you specify.",
         usage="dice <number of dice>",
     )
+    @cooldown(1, 10, BucketType.user)
     async def dice(self, ctx, num: int):
         curr = ""
         if num <= 0:
@@ -373,12 +378,12 @@ class General(commands.Cog):
                 title="Don't be stupid. Honestly.", description="", color=0xFF0000
             )
             await ctx.reply(embed=embed)
-
     @commands.command(
         name="numprop",
         description="tells you the property of a number you specify!",
         usage="numprop <number>",
     )
+    @cooldown(1, 5, BucketType.user)
     async def numprop(self, ctx, num: int):
 
         if num > 1000000000000:
@@ -473,12 +478,12 @@ class General(commands.Cog):
             )
         time.sleep(1)
         await message.edit(embed=embed)
-
     @commands.command(
         name="lmgtfy",
         description="Command that creats a Let Me Google That For You link for all your queries!",
         usage="lmgtfy",
     )
+    @cooldown(1, 30, BucketType.user)
     async def lmgtfy(self, ctx, *quer: str):
         curr_url = "https://lmgtfy.app/?q="
         query = " ".join(quer)
@@ -490,12 +495,13 @@ class General(commands.Cog):
             color=self.client.primary_colour,
         )
         await ctx.reply(embed=embed)
-
+    
     @commands.command(
         name="choose",
         description="Chooses a random choice from the set of words given",
         usage="choose <choices space-separated>",
     )
+    @cooldown(1, 5, BucketType.user)
     async def choose(self, ctx, *choices: str):
         chosen = random.choice(choices)
         embed = discord.Embed(
@@ -504,12 +510,13 @@ class General(commands.Cog):
             color=self.client.primary_colour,
         )
         await ctx.reply(embed=embed)
-
+    
     @commands.command(
         name="kawaii",
         description="Makes what you say kawaii <3",
         usage="kawaii <message>",
     )
+    @cooldown(1, 10, BucketType.user)
     async def kawaii(self, ctx, *msg: str):
         words = " ".join(msg)
         final = ""
@@ -547,7 +554,7 @@ class General(commands.Cog):
             final = final[:-1] + "ie"
 
         await ctx.reply(final)
-
+    
     @commands.command(
         name="getsettings",
         description="Views current MaxiGames settings :D",
@@ -555,6 +562,7 @@ class General(commands.Cog):
         aliases=["gs", "tux"],
     )
     @check.is_staff()
+    @cooldown(1, 30, BucketType.user)
     async def getsettings(self, ctx):
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)

@@ -9,7 +9,7 @@ class EasterEggs(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.hidden = True
-
+   
     @commands.command(hidden=True, aliases=["whoareu"])
     async def whoru(self, ctx):
         embed = discord.Embed(

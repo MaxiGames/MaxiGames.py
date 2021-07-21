@@ -19,8 +19,8 @@ class Economy(commands.Cog):
 
     # Curb gambling addiction
     @check.is_banned()
-    @cooldown(1, 5, BucketType.user)
     @commands.command(name="coinflip", description="provide 2 arguments, the choice of your coin: head/tail, and the amount you want to bet", aliases= ["cf"], usage="coinflip <choice> <amount>")
+    @cooldown(1, 8, BucketType.user)
     async def _coinflip(self, ctx, choice: str, amount: int = 1):
         self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
@@ -102,7 +102,7 @@ class Economy(commands.Cog):
         aliases=["g", "gg", "bet"],
         usage="gamble <amount>",
     )
-    @cooldown(1, 5, BucketType.user)
+    @cooldown(1, 8, BucketType.user)
     async def _gamble(self, ctx, amount: int = 5):
         self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
@@ -215,7 +215,7 @@ class Economy(commands.Cog):
         usage="money",
         aliases=["m"],
     )
-    @cooldown(1, 5, BucketType.user)
+    @cooldown(1, 3, BucketType.user)
     async def _money(self, ctx):
         self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
@@ -284,7 +284,7 @@ class Economy(commands.Cog):
         usage="leaderboard",
         aliases=["l", "rich", "r", " l"],
     )
-    @cooldown(1, 5, BucketType.user)
+    @cooldown(1, 10, BucketType.user)
     async def _leaderboard(self, ctx):
         self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
@@ -420,7 +420,116 @@ class Economy(commands.Cog):
                 color=self.client.primary_colour,
             )
             await ctx.send(embed=embed)
+    @check.is_banned()
+    @commands.command(
+        name="snake eyes",
+        description="A random dice game that everyone loves.",
+        usage="snakeeyes",
+        aliases=["se", "snakeyes"],
+    )
+    @cooldown(1, 10, BucketType.user)
+    async def se(self, ctx, amount: int):
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
+        doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
+        doc = doc_ref.get()
+        if doc.exists:
+            dict1 = doc.to_dict()
+            if dict1["money"] < amount:
+                embed = discord.Embed(
+                    title="Amount in bank too low",
+                    description="The amount that you want to gamble is more than what you have in your bank.",
+                    color=self.client.primary_colour,
+                )
+                embed.set_author(
+                    name=ctx.author.display_name, icon_url=ctx.author.avatar_url
+                )
+                await ctx.reply(embed=embed)
+                return
+            if amount <= 0:
+                doc_ref = self.db.collection("users").document(
+                    "{}".format(str(ctx.author.id))
+                )
+                doc = doc_ref.get()
+                if doc.exists:
+                    dict1 = doc.to_dict()
 
+                    doc_ref.set(dict1)
+                embed = discord.Embed(
+                    title="Amount gambled unacceptable",
+                    description="It appears that you have been attempting to exploit the system and this is very bad!!! Stop doing this or we'll set your balance to 0.",
+                    color=self.client.primary_colour,
+                )
+                embed.set_author(
+                    name=ctx.author.display_name, icon_url=ctx.author.avatar_url
+                )
+                await ctx.reply(embed=embed)
+                return
+
+            embed = discord.Embed(
+                title="Rolling dice...",
+                description=":game_die::game_die:",
+                color=self.client.primary_colour,
+            )
+
+            messagec = await ctx.reply(embed=embed)
+            asyncio.sleep(2)
+            dice1 = random.randint(1, 6)
+            dice2 = random.randint(1, 6)
+            if dice1 != 1 and dice2 != 1:
+                dict1["money"] -= amount
+                nowmoney = dict1["money"]
+                doc_ref.set(dict1)
+                embed = discord.Embed(
+                    title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
+                    description="You didn't get any snake eyes. Beeg sed. You now have "
+                    + str(nowmoney)
+                    + " money.",
+                    color=0xFF0000,
+                )
+                await messagec.edit(embed=embed)
+            elif dice1 == 1 and dice2 != 1:
+                earnt = math.floor(1.8 * amount)
+                dict1["money"] += earnt
+                doc_ref.set(dict1)
+                nowmoney = dict1["money"]
+                embed = discord.Embed(
+                    title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
+                    description="You got one snake eye! You won 1.8x your bet. You now have "
+                    + str(nowmoney)
+                    + " money.",
+                    color=self.client.primary_colour,
+                )
+                await messagec.edit(embed=embed)
+            elif dice1 != 1 and dice2 == 1:
+                earnt = math.floor(1.8 * amount)
+                dict1["money"] += earnt
+                nowmoney = dict1["money"]
+                doc_ref.set(dict1)
+                embed = discord.Embed(
+                    title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
+                    description="You got one snake eye! You won 1.8x your bet. You now have "
+                    + str(nowmoney)
+                    + " money.",
+                    color=self.client.primary_colour,
+                )
+                await messagec.edit(embed=embed)
+            else:
+                earnt = 10 * amount
+                dict1["money"] += earnt
+                nowmoney = dict1["money"]
+                doc_ref.set(dict1)
+                embed = discord.Embed(
+                    title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
+                    description="You got two snake eyes! You won 10x your bet. You now have "
+                    + str(nowmoney)
+                    + " money. Woo!",
+                    color=self.client.primary_colour,
+                )
+                await messagec.edit(embed=embed)
+        else:
+            await self.init.init(ctx)
+    
 
 def setup(client):
     client.add_cog(Economy(client))

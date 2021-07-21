@@ -36,7 +36,7 @@ class Counting(commands.Cog):
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
 
         if "counting_channels" not in data:
-            data["counting_channels"] = {} 
+            data["counting_channels"] = {}
 
         if str(ctx.guild.id) in data["counting_channels"]:  # do not merge with and!
             if str(channel) not in data["counting_channels"][str(ctx.guild.id)]:
@@ -46,7 +46,11 @@ class Counting(commands.Cog):
                 }
                 await ctx.reply(embed=discord.Embed(title="Success! Channel Added!"))
             else:
-                await ctx.reply(embed=discord.Embed(title="Channel is already present or doesn't exist. If it exists, check if I have the permissions to view it"))
+                await ctx.reply(
+                    embed=discord.Embed(
+                        title="Channel is already present or doesn't exist. If it exists, check if I have the permissions to view it"
+                    )
+                )
 
         else:
             data["counting_channels"] = {
@@ -63,7 +67,12 @@ class Counting(commands.Cog):
         name="countingchannelrm",
         description="Remove a counting channe by specifying the channel name",
         usage="countingchannelrm <channel>",
-        aliases=["countcr", "countingchannelremove", "counting-channel-remove", "counting-channel-rm"],
+        aliases=[
+            "countcr",
+            "countingchannelremove",
+            "counting-channel-remove",
+            "counting-channel-rm",
+        ],
     )
     async def counting_channel_rm(self, ctx, channel: str = None):
         if channel == None:
@@ -81,9 +90,14 @@ class Counting(commands.Cog):
             and str(channel) in data["counting_channels"][str(ctx.guild.id)]
         ):
             del data["counting_channels"][str(ctx.guild.id)][str(channel)]
-            await ctx.reply(embed=discord.Embed(title="Success! Channel Added!"))
+            await ctx.reply(embed=discord.Embed(title="Success! Channel is now a counting channel!"))
         else:
-            await ctx.reply(embed=discord.Embed(title="Channel is already present or doesn't exist. If it exists, check if I have the permissions to view it"))
+            await ctx.reply(
+                embed=discord.Embed(
+                    title="Channel is already already a counting channel or doesn't exist. " \
+                        + "If it exists, check if MaxiGames has the permissions to view it."
+                )
+            )
 
         self.db.collection("servers").document(str(ctx.guild.id)).set(data)
 
@@ -113,10 +127,7 @@ class Counting(commands.Cog):
         ]
         if (
             num == ccount + 1
-            and data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
-                "previous_author"
-            ]
-            != msg.author.id
+            and data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] != msg.author.id
         ):
             await msg.add_reaction("✅")
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
@@ -127,10 +138,20 @@ class Counting(commands.Cog):
             ] = msg.author.id
         else:
             await msg.add_reaction("❌")
-            if num != ccount+1:
-                await msg.reply(embed=discord.Embed(title="Wrong count", description = f"{msg.author.mention} messed up the count at {ccount}. The next count for this server is 1."))
-            else: 
-                await msg.reply(embed=discord.Embed(title="You cannot count twice in a row", description = f"{msg.author.mention} messed up the count at {ccount}. The next count for this server is 1."))
+            if num != ccount + 1:
+                await msg.reply(
+                    embed=discord.Embed(
+                        title="Wrong count",
+                        description=f"{msg.author.mention} messed up the count at {ccount}. The next count for this server is 1.",
+                    )
+                )
+            else:
+                await msg.reply(
+                    embed=discord.Embed(
+                        title="You cannot count twice in a row",
+                        description=f"{msg.author.mention} messed up the count at {ccount}. The next count for this server is 1.",
+                    )
+                )
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
                 "count"
             ] = 0
