@@ -22,7 +22,7 @@ with open("config.json", "r") as file:
     data = json.load(file)
     client = Client(command_prefix=(get_prefix), help_command=None)
 
-cred = credentials.Certificate("serviceAccountKey2.json")
+cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
