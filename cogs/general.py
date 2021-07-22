@@ -97,6 +97,7 @@ class General(commands.Cog):
             colour=self.client.primary_colour,
         )
         await ctx.send(embed=embed)
+
     @commands.command()
     @cooldown(1, 180, BucketType.user)
     async def whoami(self, ctx):
@@ -588,6 +589,7 @@ class General(commands.Cog):
             m += (f"\n**{k}**:\n {v}\n")
 
         await ctx.send(m)
+
     @commands.command(
         name="randcol",
         description = "Gives you an embed with a random color :D",
