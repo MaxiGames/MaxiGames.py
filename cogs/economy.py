@@ -99,8 +99,8 @@ class Economy(commands.Cog):
 
     @commands.command(
         name="gamble",
-        description="Gamble all the money you want until you're happy. Remember, theres a jackpot :D",
-        aliases=["g", "gg", "bet"],
+        description="Try to beat the computer at dice rolling. Keep rolling until you're happy :D",
+        aliases=["g", "gg", "bet", "roll"],
         usage="gamble <amount>",
     )
     @cooldown(1, 8, BucketType.user)
@@ -129,11 +129,13 @@ class Economy(commands.Cog):
                 doc = doc_ref.get()
                 if doc.exists:
                     dict1 = doc.to_dict()
-                    dict1["money"] = -1
+                    dict1["money"] -= 0
+                    if dict1["money"] < 0:
+                        dict1["money"] = 0
                     doc_ref.set(dict1)
                 embed = discord.Embed(
                     title="Amount gambled unacceptable",
-                    description="It appears that you have been attempting to exploit the system and this is very bad!!! Therefore, your balance will be set to negative 1.",
+                    description="It appears that you have been trying to exploit the system and this is very bad!!!",
                     color=self.client.primary_colour,
                 )
                 embed.set_author(
@@ -141,11 +143,8 @@ class Economy(commands.Cog):
                 )
                 await ctx.reply(embed=embed)
                 return
-            # chance = (math.log10(amount)-0.95) / \
-            # (100+100*max(10, math.log2(amount)))
-            # print(chance)
             botnum = random.randint(1, 12)
-            yournum = random.randint(1, 14)
+            yournum = random.randint(1, 15)
             if yournum >= 13:
                 yournum = random.randint(1, 6)
             if yournum > botnum:

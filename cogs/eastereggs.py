@@ -23,7 +23,7 @@ class EasterEggs(commands.Cog):
             inline=False,
         )
         embed.add_field(
-            name="Are there more easter eggs?", value="Yes ofc.", inline=False
+            name="Are there more easter eggs?", value="Yes of course ^_^.", inline=False
         )
         await ctx.author.send(embed=embed)
 

@@ -20,6 +20,7 @@ class Init(commands.Cog):
             {
                 u"money": 0,
                 u"countingsaves": 0,
+                u"correctcounts": 0,
                 u"name": str(ctx.author.name),
             }
         )
