@@ -6,6 +6,7 @@ from firebase_admin import firestore
 from utils import check
 import random
 import math
+import asyncio
 import time
 from discord_slash import SlashContext, cog_ext
 
@@ -473,7 +474,7 @@ class Economy(commands.Cog):
             )
 
             messagec = await ctx.reply(embed=embed)
-            asyncio.sleep(2)
+            await asyncio.sleep(2)
             dice1 = random.randint(1, 6)
             dice2 = random.randint(1, 6)
             if dice1 != 1 and dice2 != 1:
