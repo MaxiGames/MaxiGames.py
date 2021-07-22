@@ -27,10 +27,12 @@ class General(commands.Cog):
         self.client = client
         self.db = firestore.client()
         self.init = self.client.get_cog("Init")
+
     @commands.command()
     @cooldown(1, 60, BucketType.user)
     async def hallo(self, ctx):
         await ctx.send("Hallo")
+
     @commands.command()
     @cooldown(1, 60, BucketType.user)
     async def current(self, ctx):
@@ -121,10 +123,12 @@ class General(commands.Cog):
         embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
 
         await ctx.send(embed=embed)
+
     @commands.command()
     @cooldown(1, 15, BucketType.user)
     async def hallolong(self, ctx, num: int):
         await ctx.send(f'Hall{"o"*num}')
+
     @commands.command()
     @cooldown(1, 60, BucketType.user)
     async def servercount(self, ctx):
@@ -134,6 +138,7 @@ class General(commands.Cog):
             color=0xBB2277,
         )
         await ctx.send(embed=embed)
+
     @commands.command(
         name="help",
         description="Shows this help menu or information about a specific command if specified",
@@ -238,6 +243,7 @@ class General(commands.Cog):
     @cog_ext.cog_slash(name="help", description="Shows the help menu :D")
     async def help_command(self, ctx: SlashContext):
         await self.help(ctx)
+
     @commands.command(
         name="randnum",
         description="Gives you a random number between the two numbers you specified.",
@@ -247,6 +253,7 @@ class General(commands.Cog):
     async def randnum(self, ctx, start: int, end: int):
         answer = random.randint(start, end)
         await ctx.reply("Your number was " + str(answer))
+
     @commands.command(
         name = "empty",
         description = "Gives you an empty unicode character.",
@@ -255,6 +262,7 @@ class General(commands.Cog):
     @cooldown(1, 5, BucketType.user)
     async def empty(self, ctx):
         await ctx.reply("‎")
+
     @commands.command(
         name="fibo",
         description="Returns the nth fibonacci number, where n is the number you input.",
@@ -301,6 +309,7 @@ class General(commands.Cog):
                 color=0xFF0000,
             )
             await ctx.reply(embed=embed)
+
     @commands.command(
         name="bigdice",
         description="rolls a specified number of dice with a specified number of faces that you can specify.",
@@ -350,6 +359,7 @@ class General(commands.Cog):
                 title="Don't be stupid. Honestly.", description="", color=0xFF0000
             )
             await ctx.reply(embed=embed)
+
     @commands.command(
         name="dice",
         description="rolls the number of dice you specify.",
@@ -378,6 +388,7 @@ class General(commands.Cog):
                 title="Don't be stupid. Honestly.", description="", color=0xFF0000
             )
             await ctx.reply(embed=embed)
+
     @commands.command(
         name="numprop",
         description="tells you the property of a number you specify!",
@@ -478,6 +489,7 @@ class General(commands.Cog):
             )
         time.sleep(1)
         await message.edit(embed=embed)
+
     @commands.command(
         name="lmgtfy",
         description="Command that creats a Let Me Google That For You link for all your queries!",
