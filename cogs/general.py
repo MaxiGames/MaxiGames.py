@@ -31,7 +31,7 @@ class General(commands.Cog):
     @commands.command()
     @cooldown(1, 60, BucketType.user)
     async def hallo(self, ctx):
-        await ctx.send("Hallo")
+        await ctx.send("Hallo!")
 
     @commands.command()
     @cooldown(1, 60, BucketType.user)
@@ -178,7 +178,7 @@ class General(commands.Cog):
         pages = []
         page = discord.Embed(
             title="Help",
-            description="""Halloooo and thank you for using Maxigames, a fun, random, cheerful and gambling-addiction-curbing bot developed as part of an initiative to curb gambling addiction and fill everyones' lives with bad puns, minigames and happiness!!!
+            description="""Hallo! Thank you for using Maxigames, a fun, random, cheerful and gambling-addiction-curbing bot developed as part of an initiative to curb gambling addiction and fill everyones' lives with bad puns, minigames and happiness!!!
 
             Feel free to invite this bot to your own server from the link below, or even join our support server, if you have any questions or suggestions :D""",
             colour=self.client.primary_colour,
@@ -186,12 +186,12 @@ class General(commands.Cog):
         page.set_author(
             name=self.client.user.name, icon_url=self.client.user.avatar_url
         )
-        page.set_footer(text="Press Next to see the commands :D")
+        page.set_footer(text="Press Next to see the commands")
         pages.append(page)
 
         page = discord.Embed(
-            title="Commands!!!",
-            description="See all commmands that MaxiGame has to offer :D",
+            title="Commands",
+            description="See all commmands that MaxiGame has to offer",
             colour=self.client.primary_colour,
         )
         page.set_thumbnail(url=self.client.user.avatar_url)
@@ -222,17 +222,17 @@ class General(commands.Cog):
             [
                 Button(
                     style=ButtonStyle.URL,
-                    label="Invite :D",
+                    label="Invite the bot!",
                     url="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=8&scope=bot%20applications.commands",
                 ),
                 Button(
                     style=ButtonStyle.URL,
-                    label="Support Server!!!",
+                    label="Join support server!",
                     url="https://discord.gg/BNm87Cvdx3",
                 ),
                 Button(
                     style=ButtonStyle.URL,
-                    label="Vote :)",
+                    label="Vote for us!",
                     url="https://top.gg/bot/863419048041381920",
                 ),
             ]
@@ -272,21 +272,23 @@ class General(commands.Cog):
     async def fibo(self, ctx, num: int):
         if num <= 0:
             embed = discord.Embed(
-                title="Bruh. Don't be stupid.", description="", color=0xFF0000
+                title="Bruh. Don't be stupid.", 
+                description="", 
+                color = 0xff0000
             )
             await ctx.reply(embed=embed)
         elif num == 1:
             embed = discord.Embed(
                 title="The 1st fibonacci number is 1!",
                 description="",
-                color=self.client.primary_colour,
+                color=discord.Color.from_rgb(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
             )
             await ctx.reply(embed=embed)
         elif num == 2:
             embed = discord.Embed(
                 title="The 2nd fibonacci number is 1!",
                 description="",
-                color=self.client.primary_colour,
+                color=discord.Color.from_rgb(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
             )
             await ctx.reply(embed=embed)
         elif num <= 1000:
@@ -304,7 +306,7 @@ class General(commands.Cog):
             await ctx.reply(embed=embed)
         else:
             embed = discord.Embed(
-                title="Make it smaller, stop trying to break me.",
+                title="That number is too big!",
                 description="",
                 color=0xFF0000,
             )
@@ -332,8 +334,7 @@ class General(commands.Cog):
             await ctx.reply(embed=embed)
         elif sides >= 1000:
             embed = discord.Embed(
-                title=str(sides)
-                + " sides?!?! Come back to me when you make this die. Seriously why.",
+                title="That's too many sides for a die!",
                 description="Bruh",
                 color=0xFF0000,
             )
@@ -587,7 +588,16 @@ class General(commands.Cog):
             m += (f"\n**{k}**:\n {v}\n")
 
         await ctx.send(m)
-
+    @commands.command(
+        name="randcol",
+        description = "Gives you an embed with a random color :D",
+        usage = "randcol",
+        aliases=["randomcol","randomcolor","randomcolour","randcolour","randcolor"]
+    )
+    @cooldown(1,15,BucketType.user)
+    async def randcol(self,ctx):
+        embed = discord.Embed(title="Random Color!",description="",color=discord.Colour.random())
+        await ctx.reply(embed=embed)
 
 def setup(client):
     client.add_cog(General(client))
