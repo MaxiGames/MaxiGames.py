@@ -200,14 +200,10 @@ class Counting(commands.Cog):
             ] = msg.author.id
             try:
                 # update user's counter userrank
-                data["counting_channels"][str(msg.guild.id)]["counterUR"][
-                    str(msg.author.id)
-                ] += 1
+                data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] += 1
             except KeyError:
                 # initialise user's counter userrank
-                data["counting_channels"][str(msg.guild.id)]["counterUR"][
-                    str(msg.author.id)
-                ] = 1
+                data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] = 1
         else:
             await msg.add_reaction("❌")
             if num != ccount + 1:
