@@ -14,7 +14,7 @@ from discord_slash import SlashCommand, SlashContext
 
 with open("config.json", "r") as file:
     data = json.load(file)
-    client = Client(command_prefix=[data["prefixBeta"]], help_command=None)
+    client = Client(command_prefix=[data["prefix"]], help_command=None)
 
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
@@ -44,4 +44,4 @@ async def on_ready():
 
 with open("config.json", "r") as file:
     data = json.load(file)
-    client.run(data["tokenIdBeta"])
+    client.run(data["tokenId"])
