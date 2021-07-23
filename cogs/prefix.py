@@ -42,7 +42,26 @@ class Prefix(commands.Cog):
 
     @commands.group()
     async def prefix(self, ctx):
-        pass
+        """Prefix commands"""
+        description = "```"
+
+        with open("prefix.json", "r") as f:
+            data = json.load(f)
+            prefixes = data[str(ctx.guild.id)]
+        for i in range(len(prefixes)):
+            description += f"{i+1}. {prefixes[i]}\n"
+        description += "```"
+        
+        embed = discord.Embed(
+            title = f"Prefixes in server `{ctx.guild.name}`",
+            description = description,
+            colour = self.client.primary_colour
+        )
+        if len(prefixes) > 1:
+            embed.set_footer(text = f"{len(prefixes)} prefixes :D")
+        else:
+            embed.set_footer(text = "1 prefix :D")
+        await ctx.send(embed=embed)
 
     @check.is_admin()
     @prefix.command()
@@ -68,9 +87,26 @@ class Prefix(commands.Cog):
             )
             await ctx.send(embed=embed)
             return
+        
+        if len(data["prefix"]) == 1:
+            await ctx.send("Are you sure that you want to remove the las the only prefix?")
         data["prefix"].remove(prefix)
         self.db.collection("servers").document(str(ctx.guild.id)).update(data)
         await ctx.send(f"Prefix {prefix} removed :D")
+    
+    @check.is_admin()
+    @prefix.command()
+    async def reset(self, ctx):
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
+        data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
+        data["prefix"] = [self.client.primary_prefix]
+        self.db.collection("servers").document(str(ctx.guild.id)).update(data)
+        await ctx.send(f"Prefixes reset :D")
+
+    @check.is_admin()
+    @prefix.command()
+    async def set(self, ctx, 
     
 
 def setup(client):
