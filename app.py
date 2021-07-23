@@ -38,7 +38,6 @@ async def on_ready():
         ),
     )
     print("We have logged in as {0.user}".format(client))
-    print(client.get_user(782247763542016010))
 
 
 # keep_alive()
