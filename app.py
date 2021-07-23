@@ -11,15 +11,24 @@ from firebase_admin import firestore
 from firebase_admin import credentials
 from discord_components import *
 from discord_slash import SlashCommand, SlashContext
+import threading
+
+def get_prefix(client, message): ##first we define get_prefix
+    with open('prefix.json', 'r') as f: ##we open and read the prefixes.json, assuming it's in the same file
+        prefixes = json.load(f) #load the json as prefixes
+    return prefixes[str(message.guild.id)]
 
 with open("config.json", "r") as file:
     data = json.load(file)
-    client = Client(command_prefix=[data["prefixBeta"]], help_command=None)
+    client = Client(command_prefix=(get_prefix), help_command=None)
 
 cred = credentials.Certificate("serviceAccountKey2.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
+
+
+
 DiscordComponents(client)
 slash = SlashCommand(
     client, sync_commands=True, sync_on_cog_reload=True, override_type=True

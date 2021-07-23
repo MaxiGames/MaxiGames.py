@@ -30,3 +30,7 @@ class Client(commands.Bot):
     @property
     def icon_url(self):
         return self.config.icon_url
+
+    @property
+    def primary_prefix(self):
+        return self.config.prefix
