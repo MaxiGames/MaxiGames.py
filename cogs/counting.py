@@ -28,18 +28,38 @@ class Counting(commands.Cog):
         usage="counting-channel-add <channel-id>",
         aliases=["countca", "counting-channel-add"],
     )
-    async def counting_channel_add(self, ctx, channel: str = None):
+    async def counting_channel_add(self, ctx, channelarg: str = None):
         # sets the key "counting_channel"
-        if channel == None:
-            channel = str(ctx.channel.id)
-        t = "".join(list(filter(str.isdigit, channel)))
-        channel = t
-        data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
+        if channelarg == None:
+            channelarg = str(ctx.channel.id)
 
-        init_channel_count = {"count": 0, "previous_author": None}
+        try:
+            t = int("".join(list(filter(str.isdigit, channelarg))))
+            channel = t
+            data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
 
-        if "counting_channels" not in data:
-            data["counting_channels"] = {}
+            init_channel_count = {"count": 0, "previous_author": None}
+
+            if "counting_channels" not in data:
+                data["counting_channels"] = {}
+
+            ##
+            chann = discord.utils.get(ctx.guild.channels, id=channel)
+            if chann == None or not isinstance(chann, discord.channel.TextChannel):
+                await ctx.reply(
+                    embed=discord.Embed(
+                        title="Error: channel does not exist, or is not a text channel."
+                    )
+                )
+                return
+            del chann
+        except ValueError:
+            await ctx.reply(
+                embed=discord.Embed(
+                    title="Error: channel does not exist, or is not a text channel."
+                )
+            )
+            return
 
         if str(ctx.guild.id) in data["counting_channels"]:  # do not merge with and!
             if str(channel) not in data["counting_channels"][str(ctx.guild.id)]:
@@ -49,7 +69,7 @@ class Counting(commands.Cog):
             else:
                 await ctx.reply(
                     embed=discord.Embed(
-                        title="Channel is already present or doesn't exist. If it exists, check if I have the permissions to view it"
+                        title="Error: channel is already a counting channel."
                     )
                 )
 
