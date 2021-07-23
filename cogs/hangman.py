@@ -318,7 +318,7 @@ class Hangman(commands.Cog):
         )
         page.set_author(name=self.client.user.name,
                         icon_url=self.client.user.avatar_url)
-        page.set_footer(text="Press Next to see the topics :D")
+        page.set_footer(text="Press Next to see the leaderboard :D")
         pages.append(page)
 
         length = len(userWinData)

@@ -31,6 +31,7 @@ class Games(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def trivia(self, ctx, difficulty=100000000000):
+        self.init = self.client.get_cog("Init")
         word = "hard"
         moneyToAdd = 0
         if difficulty == 1:

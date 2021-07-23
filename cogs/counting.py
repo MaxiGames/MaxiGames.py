@@ -95,7 +95,7 @@ class Counting(commands.Cog):
         ):
             del data["counting_channels"][str(ctx.guild.id)][str(channel)]
             await ctx.reply(
-                embed=discord.Embed(title="Success! Channel is now a counting channel!")
+                embed=discord.Embed(title="Success! Channel is **not** a counting channel anymore!")
             )
         else:
             await ctx.reply(
