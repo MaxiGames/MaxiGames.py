@@ -35,7 +35,7 @@ class Autoresponse(commands.Cog):
             return
         if str(msg.guild.id) in self.autoresponse:
             for trigger in self.autoresponse[str(msg.guild.id)]:
-                if trigger in msg.content:
+                if trigger.lower() in msg.content.lower():
                     await msg.channel.send(self.autoresponse[str(msg.guild.id)][trigger])
                     return
 
