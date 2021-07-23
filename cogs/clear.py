@@ -15,10 +15,12 @@ class Clear(commands.Cog):
     async def clear(self, ctx, member:typing.Optional[discord.Member]=None, number:typing.Optional[int]=None):  
         if ctx.invoked_subcommand is None:
             if member is None and number is not None:
+                
                 if str(ctx.channel.id) in self.channels:
                     await ctx.send("A clear is in progress. Try again later :D")
                     return
-                # clear in progress
+                    # clear in progress
+                await ctx.message.delete()
                 self.channels.append(str(ctx.channel.id))
                 messages = await ctx.channel.purge(limit=number)
                 
@@ -32,11 +34,12 @@ class Clear(commands.Cog):
                 await asyncio.sleep(3)
                 await msg.delete()
             elif member is not None and number is not None:
+                
                 if str(ctx.channel.id) in self.channels:
                     await ctx.send("A clear is in progress. Try again later :D")
                     return
                     # clear in progress
-                
+                await ctx.message.delete()
                 def check(m):
                     return m.author == member and m.channel == ctx.channel
                 self.channels.append(str(ctx.channel.id))
