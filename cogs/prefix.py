@@ -72,7 +72,7 @@ class Prefix(commands.Cog):
         data["prefix"].append(prefix)
         self.db.collection("servers").document(str(ctx.guild.id)).update(data)
         await ctx.reply(
-            discord.Embed(
+            embed=discord.Embed(
                 title="New prefix added",
                 description=f"{prefix} is now a MaxiGames prefix.",
                 colour = self.client.primary_colour
@@ -109,7 +109,7 @@ class Prefix(commands.Cog):
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
         data["prefix"] = [self.client.primary_prefix]
         self.db.collection("servers").document(str(ctx.guild.id)).update(data)
-        await ctx.reply(discord.Embed(title="Prefixes reset."))
+        await ctx.reply(embed=discord.Embed(title="Prefixes reset.", description="The bot prefix for this server has been reset.", colour=self.client.primary_colour))
 
     @check.is_admin()
     @prefix.command()
