@@ -533,9 +533,13 @@ class General(commands.Cog):
     @cooldown(1, 10, BucketType.user)
     async def kawaii(self, ctx, *msg: str):
         words = " ".join(msg)
+        upper_or_lower = []
+        
         final = ""
         previous_char = ""
         for i in words:
+            i = i.lower()
+
             if i == "s" == previous_char:
                 continue
             elif i == "h" and previous_char == "s":
