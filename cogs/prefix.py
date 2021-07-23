@@ -40,7 +40,7 @@ class Prefix(commands.Cog):
 
 
 
-    @commands.group(invoke_without_subcommands=True)
+    @commands.group(invoke_without_command=True)
     async def prefix(self, ctx):
         """Prefix commands"""
         description = "```"
