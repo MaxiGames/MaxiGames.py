@@ -8,7 +8,7 @@ class Clear(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.channels = []
-        self.hidden = True
+        self.hidden = False
 
     @check.is_admin()
     @commands.group(invoke_without_subcommands=False)

@@ -54,6 +54,7 @@ class Init(commands.Cog):
                     u"counting_channels": {
                     },
                     u"name": str(ctx.guild.name),
+                    u"prefix": [self.client.primary_prefix],
                 }
             )
 

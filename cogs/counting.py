@@ -17,7 +17,7 @@ class Counting(commands.Cog):
         for doc in docs:
             self.data[doc.id] = doc.to_dict()
             self.cooldown[doc.id] = {}
-            for channel in self.data[doc.id]["countingChannels"]:
+            for channel in self.data[doc.id]["counting_channels"]:
                 self.cooldown[doc.id][channel] = time.time() - 5
         self.hidden = False
 
@@ -184,6 +184,7 @@ class Counting(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, msg):
+        
         data = self.db.collection("servers").document(str(msg.guild.id)).get().to_dict()
 
         # check if things exists; initialise where it makes sense
