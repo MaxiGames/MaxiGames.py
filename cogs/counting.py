@@ -14,11 +14,6 @@ class Counting(commands.Cog):
         self.cooldown = {}
         self.init = self.client.get_cog("Init")
         docs = self.db.collection("servers").stream()
-        for doc in docs:
-            self.data[doc.id] = doc.to_dict()
-            self.cooldown[doc.id] = {}
-            for channel in self.data[doc.id]["counting_channels"]:
-                self.cooldown[doc.id][channel] = time.time() - 5
         self.hidden = False
 
     @check.is_admin()
