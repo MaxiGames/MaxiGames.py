@@ -422,10 +422,10 @@ class Economy(commands.Cog):
             await ctx.send(embed=embed)
     @check.is_banned()
     @commands.command(
-        name="snake eyes",
+        name="snakeeyes",
         description="A random dice game that everyone loves.",
         usage="snakeeyes",
-        aliases=["se", "snakeyes"],
+        aliases=["se"],
     )
     @cooldown(1, 10, BucketType.user)
     async def se(self, ctx, amount: int):
