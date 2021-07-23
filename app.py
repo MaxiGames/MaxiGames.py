@@ -44,4 +44,4 @@ keep_alive()
 
 with open("config.json", "r") as file:
     data = json.load(file)
-    client.run(data["tokenId"]
+    client.run(data["tokenId"])
