@@ -106,7 +106,20 @@ class Prefix(commands.Cog):
 
     @check.is_admin()
     @prefix.command()
-    async def set(self, ctx, 
+    async def set(self, ctx, *prefixes):
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
+        data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
+        data["prefix"] = list(prefixes)
+        self.db.collection("servers").document(str(ctx.guild.id)).update(data)
+
+        embed = discord.Embed(
+            title="Prefixes set :D",
+            description = f"Prefixes set to {', '.join(prefixes)}",
+            colour = self.client.primary_colour
+        )
+        await ctx.send(embed=embed)
+
     
 
 def setup(client):
