@@ -5,7 +5,7 @@ import os
 import time
 from client import Client
 
-# from start import keep_alive
+from start import keep_alive
 import firebase_admin
 from firebase_admin import firestore
 from firebase_admin import credentials
@@ -40,8 +40,8 @@ async def on_ready():
     print("We have logged in as {0.user}".format(client))
 
 
-# keep_alive()
+keep_alive()
 
 with open("config.json", "r") as file:
     data = json.load(file)
-    client.run(data["tokenId"])
+    client.run(data["tokenId"]
