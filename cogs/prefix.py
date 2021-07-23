@@ -61,7 +61,7 @@ class Prefix(commands.Cog):
             embed.set_footer(text = f"{len(prefixes)} prefixes")
         else:
             embed.set_footer(text = "1 prefix")
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
 
     @check.is_admin()
     @prefix.command()
@@ -71,7 +71,7 @@ class Prefix(commands.Cog):
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
         data["prefix"].append(prefix)
         self.db.collection("servers").document(str(ctx.guild.id)).update(data)
-        await ctx.send(
+        await ctx.reply(
             discord.Embed(
                 title="New prefix added",
                 description=f"{prefix} is now a MaxiGames prefix.",
@@ -86,19 +86,20 @@ class Prefix(commands.Cog):
         await self.init.checkserver(ctx)
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
         if prefix not in data["prefix"]:
-            embed = discord.Embed(
-                title="Prefix not found",
-                description=f"Please make sure that the prefix to be removed is to be correct. Check valid prefixes using {ctx.prefix}prefix",
-                colour = self.client.primary_colour
+            await ctx.reply(
+                embed=discord.Embed(
+                    title="Prefix not found",
+                    description=f"Please make sure that the prefix to be removed is to be correct. Check valid prefixes using {ctx.prefix}prefix",
+                    colour = self.client.primary_colour
+                )
             )
-            await ctx.send(embed=embed)
             return
         
         if len(data["prefix"]) == 1:
-            await ctx.send("Are you sure that you want to remove the las the only prefix?")
+            await ctx.reply("Are you sure that you want to remove the last and only prefix?")
         data["prefix"].remove(prefix)
         self.db.collection("servers").document(str(ctx.guild.id)).update(data)
-        await ctx.send(f"Prefix {prefix} removed :D")
+        await ctx.reply(f"Prefix {prefix} removed :D")
     
     @check.is_admin()
     @prefix.command()
@@ -108,7 +109,7 @@ class Prefix(commands.Cog):
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
         data["prefix"] = [self.client.primary_prefix]
         self.db.collection("servers").document(str(ctx.guild.id)).update(data)
-        await ctx.send(discord.Embed(title="Prefixes reset."))
+        await ctx.reply(discord.Embed(title="Prefixes reset."))
 
     @check.is_admin()
     @prefix.command()
@@ -119,7 +120,7 @@ class Prefix(commands.Cog):
         data["prefix"] = list(prefixes)
         self.db.collection("servers").document(str(ctx.guild.id)).update(data)
 
-        ctx.send(
+        await ctx.reply(
             embed=discord.Embed(
                 title="Prefixes set :D",
                 description = f"Prefixes set to {', '.join(prefixes)}",
