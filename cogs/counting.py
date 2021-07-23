@@ -115,13 +115,12 @@ class Counting(commands.Cog):
         ):
             del data["counting_channels"][str(ctx.guild.id)][str(channel)]
             await ctx.reply(
-                embed=discord.Embed(title="Success! Channel is **not** a counting channel anymore!")
+                embed=discord.Embed(title="Channel is no longer a counting channel.")
             )
         else:
             await ctx.reply(
                 embed=discord.Embed(
-                    title="Channel is already already a counting channel or doesn't exist. "
-                    + "If it exists, check if MaxiGames has the permissions to view it."
+                    title="Channel never was a counting channel or doesn't exist. "
                 )
             )
 
