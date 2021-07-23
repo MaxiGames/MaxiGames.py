@@ -27,9 +27,20 @@ class Autoresponse(commands.Cog):
 
         col_query = self.db.collection(u'servers')
         query_watch = col_query.on_snapshot(on_snapshot)
+    
+
+    @commands.Cog.listener()
+    async def on_message(self, msg):
+        if msg.author.bot:
+            return
+        if str(msg.guild.id) in self.autoresponse:
+            for trigger in self.autoresponse[str(msg.guild.id)]:
+                if trigger in msg.content:
+                    await msg.channel.send(self.autoresponse[str(msg.guild.id)][trigger])
+                    return
 
     @check.is_admin()
-    @commands.group(name="autoresponse", invoke_without_command=True)
+    @commands.group(name="autoresponse", invoke_without_command=True, aliases=["ar"])
     async def auto_response(self, ctx):
         responses = self.autoresponse[str(ctx.guild.id)]
         description = ""
@@ -43,14 +54,34 @@ class Autoresponse(commands.Cog):
         await ctx.send(embed=embed)
     
     @check.is_admin()
-    @auto_response.command(name="add")
+    @auto_response.command(name="add", aliases=["edit"])
     async def add_subcommand(self, ctx, trigger: str, *, response: str):
         self.init = self.client.get_cog("Init")
-        self.init.checkserver(ctx)
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
         data = doc_ref.get().to_dict()
         data["autoresponses"][trigger] = response
         doc_ref.update(data)
+
+        await ctx.send(f"{trigger} added.")
+    
+
+    @check.is_admin()
+    @auto_response.command(name="remove")
+    async def remove_subcommand(self, ctx, trigger: str):
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
+        doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
+        data = doc_ref.get().to_dict()
+
+        if trigger not in data["autoresponses"]:
+            await ctx.send("That trigger does not exist.")
+            return
+        else:
+            data["autoresponses"].pop(trigger)
+        
+        doc_ref.update(data)
+        await ctx.send(f"{trigger} removed.")
 
         
 
