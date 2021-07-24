@@ -23,7 +23,7 @@ class Autoresponse(commands.Cog):
         def on_snapshot(col_snapshot, changes, read_time):
             for change in changes:
                 self.autoresponse[str(change.document.id)] = change.document.to_dict()["autoresponses"]
-            callback_done.set()
+            callback_done.set() 
 
         col_query = self.db.collection(u'servers')
         query_watch = col_query.on_snapshot(on_snapshot)
