@@ -6,5 +6,9 @@ ban.py
 /env
 main.exe
 main.cpp
+<<<<<<< HEAD
 serviceAccountKey.json
 serviceAccountKey2.json
+tux.py
+data.py
+test.py
