@@ -1,5 +1,3 @@
-config.json 
-serviceAccountKey.json
 cogs/__pycache__
 __pycache__
 .replit
@@ -8,4 +6,6 @@ ban.py
 /env
 main.exe
 main.cpp
+serviceAccountKey.json
 serviceAccountKey2.json
+config.json
