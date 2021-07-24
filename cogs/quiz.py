@@ -168,14 +168,17 @@ class Games(commands.Cog):
         second = random.randint(1, 100)
         operandation = random.randint(1, 100)
         oper = "+"
+        bonus = 1
         if operandation < 9:
             oper = "*"
             theanswer = str(first * second)
             timehehe = 8 + (first + second - 69) / 20
+            bonus = 4
         elif operandation < 40:
             oper = "-"
             theanswer = str(first - second)
             timehehe = 6 + (first + second - 49) / 30
+            bonus = 2
         else:
             timehehe = 4 + (first + second - 69) / 60
             theanswer = str(first + second)
@@ -212,7 +215,7 @@ class Games(commands.Cog):
                 return
             dict1 = doc.to_dict()
             if msgcontent == theanswer:
-                added = random.randint(1, 3)
+                added = random.randint(1, 3*bonus)
                 embed = discord.Embed(
                     title="Your answer " + theanswer + " was correct!",
                     description=f"You are veery beeg brain! U gained {added}",
