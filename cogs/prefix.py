@@ -119,7 +119,6 @@ class Prefix(commands.Cog):
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
         data["prefix"] = list(prefixes)
         self.db.collection("servers").document(str(ctx.guild.id)).update(data)
-
         await ctx.reply(
             embed=discord.Embed(
                 title="Prefixes set :D",

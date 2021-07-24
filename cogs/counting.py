@@ -13,7 +13,7 @@ class Counting(commands.Cog):
         self.data = {}
         self.cooldown = {}
         self.init = self.client.get_cog("Init")
-        self.hidden = False
+        docs = self.db.collection("servers").stream()
 
     @check.is_admin()
     @commands.command(
