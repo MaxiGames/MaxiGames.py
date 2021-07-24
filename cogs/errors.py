@@ -60,6 +60,16 @@ class Errors(commands.Cog):
             await channel.send(embed=embed)
 
         else:
+            # embed = discord.Embed(
+            #     title="Incorrect Argument",
+            #     description="There is an error with your command statement. Please check your command syntax through `n!help <command>`.",
+            #     colour=self.client.primary_colour,
+            # )
+            # channel = self.client.get_channel(866526918484164668)
+            # embed.set_author(
+            #     name=ctx.author.display_name, icon_url=ctx.author.avatar_url
+            # )
+            # await channel.send(embed=embed)
             raise error
 
 

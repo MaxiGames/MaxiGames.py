@@ -15,7 +15,7 @@ class Suggestions(commands.Cog):
         name="Suggestions",
         description="Suggest anything that you want us to know about!!! Be it a game that you really want to be implemented, or some comments you have on what can be improved :D",
         usage="suggest <suggestion>",
-        aliases=["suggest"],
+        aliases=["suggest", "sug"],
     )
     async def suggest(self, ctx, *msg):
         suggestion = " ".join(msg[:])

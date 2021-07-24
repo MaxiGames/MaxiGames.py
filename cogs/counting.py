@@ -14,7 +14,6 @@ class Counting(commands.Cog):
         self.cooldown = {}
         self.init = self.client.get_cog("Init")
         docs = self.db.collection("servers").stream()
-        self.hidden = False
 
     @check.is_admin()
     @commands.command(
@@ -127,7 +126,7 @@ class Counting(commands.Cog):
         name="counting-leaderboard-user",
         description="Show the leaderboard for users in this server and your position",
         usage="counting-leaderboard-user",
-        aliases=["countlu"],
+        aliases=["countlu","countleaderboard"],
     )
     async def counting_leaderboard_user(self, ctx):
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
@@ -141,7 +140,7 @@ class Counting(commands.Cog):
             )
         )
         if list(filter(lambda x: x[0] == str(ctx.author.id), sortedUR)) == []:
-            ctx.reply(
+            await ctx.reply(
                 embed=discord.Embed(
                     title="You haven't counted yet!",
                 )

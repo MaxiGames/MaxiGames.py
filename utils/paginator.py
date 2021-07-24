@@ -23,8 +23,8 @@ class Paginator:
         message: discord.Message,
         pages: List[discord.Embed],
         buttons: List[List[Button]] = [[]],
-        previous_symbol: str = "⬅️ Previous",
-        next_symbol: str = "Next ➡️",
+        previous_symbol: str = "Back",
+        next_symbol: str = "Next",
         timeout: int = 60,
         start_page: int = 0,
     ):
@@ -53,7 +53,8 @@ class Paginator:
             Button(style=ButtonStyle.green, label=self.next_symbol),
         ]
         component = copy.copy(self.buttons)
-        component[0] = add_on_buttons + component[0]
+        component.append(add_on_buttons)
+        # component[0] = add_on_buttons + component[0]
 
         # print(component)
         components = [add_on_buttons]
@@ -91,7 +92,8 @@ class Paginator:
                         ]
 
                         component = copy.copy(self.buttons)
-                        component[0] = add_on_buttons + component[0]
+                        component.append(add_on_buttons)
+                        # component[0] = add_on_buttons + component[0]
 
                         # print(component)
                         components = [add_on_buttons]
@@ -105,7 +107,8 @@ class Paginator:
                             Button(style=ButtonStyle.green, label=self.next_symbol),
                         ]
                         component = copy.copy(self.buttons)
-                        component[0] = add_on_buttons + component[0]
+                        component.append(add_on_buttons)
+                        # component[0] = add_on_buttons + component[0]
 
                         # print(component)
                         components = [add_on_buttons]
@@ -126,7 +129,8 @@ class Paginator:
                             ),
                         ]
                         component = copy.copy(self.buttons)
-                        component[0] = add_on_buttons + component[0]
+                        component.append(add_on_buttons)
+                        # component[0] = add_on_buttons + component[0]
 
                         # print(component)
                         components = [add_on_buttons]
@@ -141,7 +145,8 @@ class Paginator:
                             Button(style=ButtonStyle.green, label=self.next_symbol),
                         ] + self.buttons[0]
                         component = copy.copy(self.buttons)
-                        component[0] = add_on_buttons + component[0]
+                        component.append(add_on_buttons)
+                        # component[0] = add_on_buttons + component[0]
 
                         # print(component)
                         components = [add_on_buttons]

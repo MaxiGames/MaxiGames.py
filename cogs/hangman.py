@@ -16,6 +16,8 @@ from utils.paginator import Paginator
 import firebase_admin
 from firebase_admin import firestore
 
+from discord_components import Button, ButtonStyle
+
 alpha = "abcdefghijklmnopqrstuvwxyz"
 
 
@@ -351,7 +353,14 @@ class Hangman(commands.Cog):
         msg = await ctx.send(
             embed=pages[page_num],
         )
-        page = Paginator(self.client, ctx, msg, pages, timeout=120)
+        buttons = [[
+            Button(
+                style=ButtonStyle.URL,
+                label="Invite the bot!",
+                url="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=8&scope=bot%20applications.commands",
+            )
+        ]]
+        page = Paginator(self.client, ctx, msg, pages,buttons=buttons ,timeout=120)
         await page.start()
 
 
