@@ -140,7 +140,7 @@ class Counting(commands.Cog):
             )
         )
         if list(filter(lambda x: x[0] == str(ctx.author.id), sortedUR)) == []:
-            ctx.reply(
+            await ctx.reply(
                 embed=discord.Embed(
                     title="You haven't counted yet!",
                 )

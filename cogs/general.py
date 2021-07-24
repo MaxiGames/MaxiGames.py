@@ -128,6 +128,8 @@ class General(commands.Cog):
     @commands.command()
     @cooldown(1, 15, BucketType.user)
     async def hallolong(self, ctx, num: int):
+        if num > 1996:
+            await ctx.send(f'Too long!')
         await ctx.send(f'Hall{"o"*num}')
 
     @commands.command()
