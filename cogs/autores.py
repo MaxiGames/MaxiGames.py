@@ -33,6 +33,8 @@ class Autoresponse(commands.Cog):
     async def on_message(self, msg):
         if msg.author.bot:
             return
+        if msg.author == self.client.user:
+            return
         if str(msg.guild.id) in self.autoresponse:
             for trigger in self.autoresponse[str(msg.guild.id)]:
                 if trigger.lower() in msg.content.lower():
