@@ -355,12 +355,12 @@ class Hangman(commands.Cog):
         )
         buttons = [[
             Button(
-                    style=ButtonStyle.URL,
-                    label="Invite the bot!",
-                    url="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=8&scope=bot%20applications.commands",
-                )
+                style=ButtonStyle.URL,
+                label="Invite the bot!",
+                url="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=8&scope=bot%20applications.commands",
+            )
         ]]
-        page = Paginator(self.client, ctx, msg, pages, timeout=120)
+        page = Paginator(self.client, ctx, msg, pages,buttons=buttons ,timeout=120)
         await page.start()
 
 

@@ -216,8 +216,6 @@ class General(commands.Cog):
         # await ctx.send(embed=page)
 
         page_num = 0
-        previous_symbol = "⬅️ Previous"
-        next_symbol = "Next ➡️"
         msg = await ctx.send(
             embed=pages[page_num],
         )
