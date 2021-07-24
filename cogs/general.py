@@ -27,6 +27,26 @@ class General(commands.Cog):
         self.client = client
         self.db = firestore.client()
         self.init = self.client.get_cog("Init")
+    
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        doc_ref = self.db.collection(u'servers').document(str(guild.id))
+        data = {
+            u"users": {},
+            u"all": {},
+            u"starboard_threshold": 1,
+            u"counting_channels": {},
+            u"name": str(guild.name),
+            u"prefix": [self.client.primary_prefix],
+            u'autoresponses': {}
+        }
+        doc_ref.set(data)
+    
+    @commands.Cog.listener()
+    async def on_guild_remove(self, guild):
+        doc_ref = self.db.collection(u'servers').document(str(guild.id))
+        doc_ref.delete()
+        
 
     @commands.command()
     @cooldown(1, 60, BucketType.user)

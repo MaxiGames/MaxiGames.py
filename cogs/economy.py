@@ -9,6 +9,7 @@ import math
 import asyncio
 import time
 from discord_slash import SlashContext, cog_ext
+import threading
 
 
 class Economy(commands.Cog):
@@ -17,6 +18,8 @@ class Economy(commands.Cog):
         self.db = firestore.client()
         self.initation = self.client.get_cog("Init")
         self.hidden = False
+
+
 
     # Curb gambling addiction
     @check.is_banned()
@@ -302,11 +305,8 @@ class Economy(commands.Cog):
             dict3[i] = dict1["money"]
         description = ""
         count = 1
-        print(dict3)
         for i in sorted(dict3.items(), key=lambda kv: (kv[1]), reverse=True):
-            print(int(i[0]))
-            user = self.client.get_user(int(i[0]))
-            print(user)
+            user = await self.client.fetch_user(int(i[0]))
             description += f"{count}) {user.mention} - {i[1]} points\n"
             count += 1
             if count > 10:
