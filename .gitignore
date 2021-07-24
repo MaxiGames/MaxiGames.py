@@ -6,6 +6,4 @@ ban.py
 /env
 main.exe
 main.cpp
-serviceAccountKey.json
 serviceAccountKey2.json
-config.json
