@@ -126,7 +126,7 @@ class Counting(commands.Cog):
         name="counting-leaderboard-user",
         description="Show the leaderboard for users in this server and your position",
         usage="counting-leaderboard-user",
-        aliases=["countlu"],
+        aliases=["countlu","countleaderboard"],
     )
     async def counting_leaderboard_user(self, ctx):
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
