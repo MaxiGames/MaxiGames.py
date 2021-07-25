@@ -9,7 +9,7 @@ import math
 import asyncio
 import time
 
-mastermind_prefix = "1: :red_circle:  2: :green_circle: 3: :blue_circle: 4: :purple_circle: 5: :brown_circle: 6: :white_circle: 7: :yellow_circle: 8: :orange_circle:\n\n"
+
 
 class Mastermind(commands.Cog):
     def __init__(self, client):
@@ -24,10 +24,10 @@ class Mastermind(commands.Cog):
         usage = "mastermind",
         alias = ["mm"]
     )
-    #@cooldown(1,120,BucketType.user)
-    @cooldown(1,1,BucketType.user)
+    @cooldown(1,60,BucketType.user)
     async def mastermind(self,ctx):
         player = ctx.author.id
+        player_name = ctx.author
         this_channel = ctx.channel.id
         code = []
         colors = ["red","green","blue","purple","brown","white","yellow","orange"]
@@ -35,6 +35,7 @@ class Mastermind(commands.Cog):
         
         prev_boards = []
         set_of_code = [1,2,3,4,5,6,7,8]
+        emojies = [":one:",":two:",":three:",":four:",":five:",":six:",":seven:",":eight:"]
         for i in range(4):
             elem = random.choice(set_of_code)
             code.append(elem)
@@ -43,9 +44,14 @@ class Mastermind(commands.Cog):
         message = board
 
         embed = discord.Embed(
-            title = mastermind_prefix,
+            title = str(player_name) + "\'s mastermind game\n12 guesses left",
             description=message,
             color = self.client.primary_colour
+        )
+        embed.add_field(
+            name="Tip:",
+            value="Guess using 4 space-separated integers from 1 to 8!",
+            inline=True
         )
         await ctx.reply(embed=embed)
 
@@ -70,7 +76,6 @@ class Mastermind(commands.Cog):
                 #check if message contains 4 space-separated 
                 #integers between 1 and 8
                 choices = guess.content.split(" ")
-                print(choices)
                 transfer = True
                 if len(choices) == 4:
                     try:
@@ -116,9 +121,8 @@ class Mastermind(commands.Cog):
                     whites = 0
                     guess_string = ""
                     for g in range(4):
-                        guess_string += ":"
-                        guess_string += colors[int(choices[g])-1]
-                        guess_string += "_circle: "
+                        guess_string += emojies[int(choices[g])-1]
+                        guess_string += " "
                         ref = ["n","n","n","n"]
                         for g in range(4):
                             for j in range(4):
@@ -151,7 +155,7 @@ class Mastermind(commands.Cog):
                     
                     
                     prev_boards.append(prelimwhites + guess_string + prelimreds)
-                    print(prev_boards)
+                    
             except asyncio.TimeoutError:
                 embed=discord.Embed(
                     title="You took too long to respond!",
@@ -166,7 +170,7 @@ class Mastermind(commands.Cog):
                 message += i
                 message += "\n"
             embed = discord.Embed(
-                title = mastermind_prefix,
+                title = str(player_name) + "\'s mastermind game\n" + str(12-guesses) + " guesses left",
                 description=message+board,
                 color = self.client.primary_colour
             )
