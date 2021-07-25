@@ -22,7 +22,7 @@ with open("config.json", "r") as file:
     data = json.load(file)
     client = Client(command_prefix=(get_prefix), help_command=None)
 
-cred = credentials.Certificate("serviceAccountKey.json")
+cred = credentials.Certificate("serviceAccountKey2.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
@@ -48,9 +48,6 @@ async def on_ready():
     )
     print("We have logged in as {0.user}".format(client))
 
-
-keep_alive()
-
 with open("config.json", "r") as file:
     data = json.load(file)
-    client.run(data["tokenId"])
+    client.run(data["tokenIdBeta"])
