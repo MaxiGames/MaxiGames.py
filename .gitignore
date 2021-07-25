@@ -1,11 +1,5 @@
-cogs/__pycache__
-__pycache__
-.replit
-ban.py
-.vscode
-/env
-main.exe
-main.cpp
+# IMPORTANT!
+config.json
 serviceAccountKey.json
 serviceAccountKey2.json
-config.json
+**/__pycache__/
