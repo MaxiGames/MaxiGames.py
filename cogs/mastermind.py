@@ -24,10 +24,17 @@ class Mastermind(commands.Cog):
         usage = "mastermind",
         alias = ["mm"]
     )
+<<<<<<< HEAD
     @cooldown(1,60,BucketType.user)
     async def mastermind(self,ctx):
         player = ctx.author.id
         player_name = ctx.author
+=======
+    #@cooldown(1,120,BucketType.user)
+    @cooldown(1,1,BucketType.user)
+    async def mastermind(self,ctx):
+        player = ctx.author.id
+>>>>>>> d9f27a8 (more improved mastermind :D)
         this_channel = ctx.channel.id
         code = []
         colors = ["red","green","blue","purple","brown","white","yellow","orange"]
@@ -37,9 +44,14 @@ class Mastermind(commands.Cog):
         set_of_code = [1,2,3,4,5,6,7,8]
         emojies = [":one:",":two:",":three:",":four:",":five:",":six:",":seven:",":eight:"]
         for i in range(4):
+<<<<<<< HEAD
             elem = random.choice(set_of_code)
             code.append(elem)
             set_of_code.remove(elem)
+=======
+            elem = random.randint(1,8)
+            code.append(elem)
+>>>>>>> d9f27a8 (more improved mastermind :D)
         print(code)
         message = board
 
@@ -57,9 +69,57 @@ class Mastermind(commands.Cog):
 
         def check(ctx):
             return ctx.author.id == player and this_channel == ctx.channel.id
+<<<<<<< HEAD
         guess = ctx
         guesses = 0
         while True:
+=======
+
+        while True:
+            guess = await self.client.wait_for("message", timeout=60,check=check)
+            #check if message contains 4 space-separated 
+            #integers between 1 and 8
+            choices = guess.content.split(" ")
+            print(choices)
+            if len(choices) == 4:
+                try:
+                    for i in range(4):
+                        choices[i] = int(choices[i])
+                        transfer = choices[i] >= 1 and choices[i] <= 8
+                        if not transfer:
+                            embed=discord.Embed(
+                                title="That is not a valid guess! Use integers from 1 to 8!",
+                                description="",
+                                color = 0xff0000
+                            )
+                            await guess.reply(embed=embed)
+                            break
+                        else:
+                            guess_string = ""
+                            for g in range(4):
+                                guess_string += ":"
+                                guess_string += colors[int(choices[g])-1]
+                                guess_string += "_circle: "
+                            await guess.reply(guess_string)
+                            
+                        
+                except ValueError:
+                    embed=discord.Embed(
+                        title="You need to enter space-separated integers between 1 and 8.",
+                        description="",
+                        color=0xff0000
+                    )
+                    await guess.reply(embed=embed)
+
+                
+            else:
+                embed=discord.Embed(
+                    title="You did not enter the right number of arguments for a guess!",
+                    description="You need to input 4 space-separated integers between 1 and 8!",
+                    color=0xff0000
+                )
+                await guess.reply(embed=embed)
+>>>>>>> d9f27a8 (more improved mastermind :D)
             
                 
             if guesses > 11:
