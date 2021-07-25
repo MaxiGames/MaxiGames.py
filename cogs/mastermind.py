@@ -1,21 +1,24 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import cooldown, BucketType
+import random
+import requests
+import math
+import json
+import asyncio
 import firebase_admin
 from firebase_admin import firestore
+import os
+import copy
 from utils import check
-import random 
-import math
 import asyncio
-import time
-
 
 
 class Mastermind(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.db = firestore.client()
-        self.initation = self.client.get_cog("Init")
+        self.init = self.client.get_cog("Init")
         self.hidden = False
 
     @commands.command(
@@ -26,6 +29,7 @@ class Mastermind(commands.Cog):
     )
     @cooldown(1,60,BucketType.user)
     async def mastermind(self,ctx):
+        self.init = self.client.get_cog("Init")
         player = ctx.author.id
         player_name = ctx.author
         this_channel = ctx.channel.id
@@ -169,11 +173,18 @@ class Mastermind(commands.Cog):
             for i in prev_boards:
                 message += i
                 message += "\n"
-            embed = discord.Embed(
-                title = str(player_name) + "\'s mastermind game\n" + str(12-guesses) + " guesses left",
-                description=message+board,
-                color = self.client.primary_colour
-            )
+            if guesses != 11:
+                embed = discord.Embed(
+                    title = str(player_name) + "\'s mastermind game\n" + str(12-guesses) + " guesses left",
+                    description=message+board,
+                    color = self.client.primary_colour
+                )
+            else:
+                embed = discord.Embed(
+                    title = str(player_name) + "\'s mastermind game\n" + str(12-guesses) + " guess left",
+                    description=message+board,
+                    color = self.client.primary_colour
+                )
             
             await guess.reply(embed=embed)
             correct_guess = True
@@ -182,12 +193,32 @@ class Mastermind(commands.Cog):
                     correct_guess = False
                     break
             if correct_guess:
-                embed=discord.Embed(
-                    title="You won the game!",
-                    description="You guessed the code! The answer was: "+str(guess.content)+"!",
-                    color=self.client.primary_colour
+                self.initation = self.client.get_cog("Init")
+                await self.init.checkserver(ctx)
+                doc_ref = self.db.collection("users").document(
+                    "{}".format(str(ctx.author.id))
                 )
-                await ctx.reply(embed=embed)
+                doc = doc_ref.get()
+                if doc.exists:
+                    dict1 = doc.to_dict()
+                    dict1["money"] = dict1["money"] + (13-guesses)
+                    money_now = dict1["money"]
+                    doc_ref.set(dict1)
+                
+                    embed=discord.Embed(
+                        title="You won the game!",
+                        description="You guessed the code! The answer was: "+str(guess.content)+"!\nYou gained " + str(13-guesses) + " money and you now have " + str(money_now) + " money!",
+                        color=self.client.primary_colour
+                    )
+                    
+                else:
+                    embed=discord.Embed(
+                        title="Hey, it looks like you don't have an account yet!",
+                        description="Initiate your account with ```m!money```",
+                        color=0xff0000
+                    )
+                await guess.reply(embed=embed)
+                break
 
         
 def setup(client):
