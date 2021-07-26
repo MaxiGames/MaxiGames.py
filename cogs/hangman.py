@@ -295,6 +295,7 @@ class Hangman(commands.Cog):
             )
             await message.reply(embed=embed)
             doc_ref.set(data)
+            
     @commands.command(title="hangmanLB", description="The leaderboard for hangman", aliases=["hangmanleaderboard"])
     @cooldown(1, 15, BucketType.user)
     async def hangmanLB(self, ctx):

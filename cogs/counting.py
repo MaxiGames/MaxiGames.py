@@ -182,6 +182,9 @@ class Counting(commands.Cog):
         
         data = self.db.collection("servers").document(str(msg.guild.id)).get().to_dict()
 
+        if "counting_channels" not in data:
+            return
+
         # check if things exists; initialise where it makes sense
         if "counterUR" not in data["counting_channels"][str(msg.guild.id)]:
             data["counting_channels"][str(msg.guild.id)]["counterUR"] = {}
