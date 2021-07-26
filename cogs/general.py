@@ -93,7 +93,12 @@ class General(commands.Cog):
         await ctx.send(
             str(round(time.time())) + " seconds have passed since the epoch!"
         )
-    @commands.command()
+    @commands.command(
+        name="ns",
+        description="Makes an intriguing triangle made of ^ symbols.",
+        usage = "ns",
+        aliases = ["triangle","notstonks"]
+    )
     @cooldown(1, 15, BucketType.user)
     async def ns(self, ctx, num: int):
         if num < 1 or num > 50:
@@ -111,8 +116,12 @@ class General(commands.Cog):
 
                 n += 1
             await ctx.send(answer)
-    @commands.command()
-    @cooldown(1, 10, BucketType.user)
+    @commands.command(
+        name="invite",
+        description="Gives you a link for you to invite the bot to your server!",
+        usage="invite"
+    )
+    @cooldown(1, 20, BucketType.user)
     async def invite(self, ctx):
         embed = discord.Embed(
             title="Invite Link to invite the bot",
@@ -120,7 +129,11 @@ class General(commands.Cog):
             color=self.client.primary_colour,
         )
         await ctx.send(embed=embed)
-    @commands.command()
+    @commands.command(
+        name="official",
+        description="Gives you a discord invite link to the bot's official server!",
+        usage = "official"
+    )
     @cooldown(1, 20, BucketType.user)
     async def official(self, ctx):
         embed = discord.Embed(
@@ -130,8 +143,12 @@ class General(commands.Cog):
         )
         await ctx.send(embed=embed)
 
-    @commands.command()
-    @cooldown(1, 180, BucketType.user)
+    @commands.command(
+        name="whoami",
+        description="Gives a bit of information about you",
+        usage="whoami"
+    )
+    @cooldown(1, 60, BucketType.user)
     async def whoami(self, ctx):
         embed = discord.Embed(
             title="You are " + str(ctx.author) + " :D",
@@ -164,7 +181,11 @@ class General(commands.Cog):
             await ctx.send(f'Too long!')
         await ctx.send(f'Hall{"o"*num}')
 
-    @commands.command()
+    @commands.command(
+        name="servercount",
+        description="Shows how many servers the bot is in :D",
+        usage = "servercount"
+    )
     @cooldown(1, 60, BucketType.user)
     async def servercount(self, ctx):
         embed = discord.Embed(

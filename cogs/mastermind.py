@@ -25,7 +25,7 @@ class Mastermind(commands.Cog):
         name="mastermind",
         description="Play a game of mastermind :D",
         usage = "mastermind",
-        alias = ["mm"]
+        aliases = ["mm"]
     )
     @cooldown(1,60,BucketType.user)
     async def mastermind(self,ctx):
