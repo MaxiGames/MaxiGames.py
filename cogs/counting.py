@@ -37,7 +37,7 @@ class Counting(commands.Cog):
 
             if "counting_channels" not in data:
                 data["counting_channels"] = {}
-
+            
             ##
             chann = discord.utils.get(ctx.guild.channels, id=channel)
             if chann == None or not isinstance(chann, discord.channel.TextChannel):
@@ -182,6 +182,9 @@ class Counting(commands.Cog):
         
         data = self.db.collection("servers").document(str(msg.guild.id)).get().to_dict()
 
+        if "counting_channels" not in data:
+            return
+
         # check if things exists; initialise where it makes sense
         if "counterUR" not in data["counting_channels"][str(msg.guild.id)]:
             data["counting_channels"][str(msg.guild.id)]["counterUR"] = {}
@@ -240,7 +243,6 @@ class Counting(commands.Cog):
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] = None
 
         self.db.collection("servers").document(str(msg.guild.id)).set(data)
-
         return
 
 
