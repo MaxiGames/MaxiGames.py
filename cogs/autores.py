@@ -29,7 +29,7 @@ class Autoresponse(commands.Cog):
         query_watch = col_query.on_snapshot(on_snapshot)
     
 
-    @commands.Cog.listener()
+    @commands.Cog.listener() 
     async def on_message(self, msg):
         if msg.author.bot:
             return
