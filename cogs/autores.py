@@ -8,7 +8,7 @@ from utils import check
 class Autoresponse(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.hidden = True
+        self.hidden = False
         self.autoresponse = {}
         self.db = firestore.client()
         self.init = self.client.get_cog("Init")
