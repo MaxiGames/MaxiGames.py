@@ -1,4 +1,5 @@
-config.json
+#! IMPORTANT
 serviceAccountKey.json
 serviceAccountKey2.json
+config.json
 **/__pycache__/
