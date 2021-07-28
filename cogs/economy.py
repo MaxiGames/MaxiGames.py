@@ -11,7 +11,6 @@ import time
 from discord_slash import SlashContext, cog_ext
 import threading
 
-
 class Economy(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -240,7 +239,7 @@ class Economy(commands.Cog):
             )
             embed.add_field(name="New Balance", value=f'{dict1["money"]}', inline=True)
             embed.set_footer(
-                text="Find our more about how to use other currency functions by typing 'n!help currency' :D"
+                text="Find our more about how to use other currency functions by typing 'm!help currency' :D"
             )
             await ctx.reply(
                 embed=embed, allowed_mentions=discord.AllowedMentions.none()

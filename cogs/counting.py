@@ -181,6 +181,9 @@ class Counting(commands.Cog):
     async def on_message(self, msg):
         
         data = self.db.collection("servers").document(str(msg.guild.id)).get().to_dict()
+        
+        if "counting_channels" not in data:
+            return
 
         if "counting_channels" not in data:
             return
