@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ext.commands import cooldown, BucketType
 import random
 import requests
+from discord_components import *
 import math
 import json
 import asyncio
@@ -13,6 +14,7 @@ import os
 import copy
 from utils import check
 import asyncio
+from firebase_admin import firestore
 
 alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -114,7 +116,6 @@ class Games(commands.Cog):
             await ctx.reply(embed=embed)
 
         else:
-            # find which option is correct????
             index = None
             if reaction.emoji == "1️⃣":
                 index = 0
@@ -153,7 +154,7 @@ class Games(commands.Cog):
                         title="Wrong Answer! You lost 1 money!",
                         description=f"You now have "
                         + str(dict1["money"])
-                        + f" money! The correct answer was {results['correct_answer']} :",
+                        + f" money! The correct answer was {results['correct_answer']}",
                         color=self.client.primary_colour,
                     )
                     await ctx.reply(embed=embed)
@@ -162,8 +163,6 @@ class Games(commands.Cog):
     @commands.command(name="triviaLB", description="retrieves the trivia leaderboard", aliases=["trivialeaderboard"], usage="triviaLB")
     @cooldown(1, 10, BucketType.user)
     async def trivia_leaderboard(self, ctx):
-        print("HI")
-        #! Hangman Firebase Initalisation
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection(u'users')
@@ -172,15 +171,15 @@ class Games(commands.Cog):
         userWinData = []
         for doc in collection:
             dictionary = doc.to_dict()
-            if "hangmanWins" in dictionary:
-                userWinData.append({"wins":dictionary["hangmanWins"], "name": await self.client.fetch_user(doc.id)})
+            if "triviaWins" in dictionary:
+                userWinData.append({"wins":dictionary["triviaWins"], "name": await self.client.fetch_user(doc.id)})
 
         userWinData = sorted(userWinData, key=lambda k: k['wins'], reverse=True)
         #! PAGES
         pages = []
         page = discord.Embed(
             title="Leaderboard!",
-            description="Hangman leaderboard",
+            description="Trivia leaderboard",
             colour=self.client.primary_colour
         )
         page.set_author(name=self.client.user.name,
@@ -218,6 +217,7 @@ class Games(commands.Cog):
         msg = await ctx.send(
             embed=pages[page_num],
         )
+        #why is this here ?!?!
         buttons = [[
             Button(
                 style=ButtonStyle.URL,
