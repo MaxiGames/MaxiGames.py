@@ -12,6 +12,7 @@ from firebase_admin import credentials
 from discord_components import *
 from discord_slash import SlashCommand, SlashContext
 import threading
+import topgg
 
 def get_prefix(client, message): ##first we define get_prefix
     with open('prefix.json', 'r') as f: ##we open and read the prefixes.json, assuming it's in the same file
@@ -21,6 +22,7 @@ def get_prefix(client, message): ##first we define get_prefix
 with open("config.json", "r") as file:
     data = json.load(file)
     client = Client(command_prefix=(get_prefix), help_command=None)
+    client.topggpy = topgg.DBLClient(client, data["topggId"], autopost=True)
 
 cred = credentials.Certificate("serviceAccountKey2.json")
 firebase_admin.initialize_app(cred)
@@ -33,6 +35,7 @@ DiscordComponents(client)
 slash = SlashCommand(
     client, sync_commands=True, sync_on_cog_reload=True, override_type=True
 )
+
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
         client.load_extension(f"cogs.{filename[:-3]}")
