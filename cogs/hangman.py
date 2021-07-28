@@ -78,7 +78,7 @@ class Hangman(commands.Cog):
         await page.start()
     
     @commands.command(name="hangman", description="Play a hangman game and potentially win points!", usage="hangman")
-    @cooldown(1, 150, BucketType.user)
+    @cooldown(1, 30, BucketType.user)
     async def hangman(self, ctx):
         #! Hangman Firebase Initalisation
         self.init = self.client.get_cog("Init")
