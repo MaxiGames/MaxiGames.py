@@ -85,8 +85,8 @@ class Suggestions(commands.Cog):
         reaction, user = await self.client.wait_for("reaction_add", check=check)
         await message.delete()
 
-        toDelete = await ctx.reply("You have 1 minute to write a message to the user that submitted this bug report!")
-        toDelete2 = toDelete
+        toDelete = await channel.send("You have 1 minute to write a message to the user that submitted this bug report!")
+        toDelete2 = 0
         messageToUser = "Fixed!"
         def check(message):
             return message.author == ctx.author
@@ -94,10 +94,11 @@ class Suggestions(commands.Cog):
             newMessage = await self.client.wait_for(
                 "message", timeout=60, check=check
             )
-            toDelete2 = newMessage.reply("Messaged received, sending reply")
+            toDelete2 = await newMessage.reply("Messaged received, sending reply")
             messageToUser = newMessage.content
+            await newMessage.delete()
         except asyncio.TimeoutError:
-            toDelete2 = ctx.reply("1 minute is up, sending default message")
+            toDelete2 = await ctx.reply("1 minute is up, sending default message")
         
         await toDelete.delete()
         await ctx.author.send(embed = discord.Embed(title="Bug Report Fixed!", description = f"Your bug report about {suggestion} has been fixed! The developer's reply: `{messageToUser}`"))
