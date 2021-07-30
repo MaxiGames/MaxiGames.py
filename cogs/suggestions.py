@@ -37,27 +37,19 @@ class Suggestions(commands.Cog):
         )
         await ctx.reply(embed=acknowledgement)
 
-        def is_staff(ctx1):
-            if(str(ctx1.author.id) == "863419048041381920"):
-                return False
+        def is_admin(uid):
             doc_ref = self.db.collection(u"admin").document(u"{}".format("authorised"))
             doc = doc_ref.get()
             people = doc.to_dict()
             allowed = people["owner"] + people["staff"]
-            if (
-                str(ctx.author.id) not in allowed
-                and not ctx1.message.author.guild_permissions.administrator
-            ):
-                raise False
+            if str(uid) not in allowed:
+                return False
             else:
                 return True
-            
+
         def check(reaction, user):
             return (
-                is_staff(ctx)
-                and reaction.message == message
-                and (reaction.emoji == "❌"
-                or reaction.emoji == "✅")
+                (user == ctx.author or is_admin(user.id))and reaction.message == message and reaction.emoji == "❌"
             )
 
         await message.add_reaction("⬆️")
@@ -68,22 +60,13 @@ class Suggestions(commands.Cog):
         reaction, user = await self.client.wait_for("reaction_add", check=check)
         await message.delete()
 
-        if reaction.emoji == "❌":
-            await ctx.author.send(embed=discord.Embed(title="Suggestion declined", description=f"A moderator declined your suggestion {suggestion}", colour=self.client.primary_colour))
-            doc_ref = self.db.collection(u"declined_suggestions").document(u"{}".format(ctx.guild.id))
-            dictionary = doc_ref.get().to_dict()
-            if dictionary == None:
-                dictionary = []
-            dictionary.append(suggestion)
-            doc_ref.set(dictionary)
-        elif reaction.emoji == "✅":
-            await ctx.author.send(embed=discord.Embed(title="Suggestion accepted", description=f"Thank you for your suggestion {suggestion}, it has been accepted and currently being implemented. Keep a look out for when it releases!", colour=self.client.primary_colour))
-            doc_ref = self.db.collection(u"accepted_suggestions").document(u"{}".format(ctx.guild.id))
-            dictionary = doc_ref.get().to_dict()
-            if dictionary == None:
-                dictionary = []
-            dictionary.append(suggestion)
-            doc_ref.set(dictionary)
+        delete_channel = self.client.get_channel(866339642075775058)
+        await delete_channel.send(embed=embed)
+
+    # @commands.Cog.listener()
+    # async def on_raw_reaction_add(self, payload):
+        
+
 
 def setup(client):
     client.add_cog(Suggestions(client))
