@@ -66,6 +66,8 @@ class Starboard(commands.Cog):
         doc_ref = self.db.collection("servers").document(str(reaction.message.guild.id))
         doc = doc_ref.get()
         data = doc.to_dict()
+        if "starboard" not in data:
+            return
         channel = self.client.get_channel(int(data["starboard"]["channel"]))
         await self.init.checkserver(reaction.message)
 

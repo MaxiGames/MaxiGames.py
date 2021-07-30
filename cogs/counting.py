@@ -179,10 +179,15 @@ class Counting(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, msg):
-        
         data = self.db.collection("servers").document(str(msg.guild.id)).get().to_dict()
+        if data == None:
+            return
         
         if "counting_channels" not in data:
+            return
+
+        #check if the specific channel exists
+        if str(msg.guild.id) not in data["counting_channels"]:
             return
 
         # check if things exists; initialise where it makes sense
