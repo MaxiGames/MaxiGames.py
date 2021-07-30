@@ -21,6 +21,7 @@ class Init(commands.Cog):
                 u"money": 0,
                 u"countingsaves": 0,
                 u"name": str(ctx.author.name),
+                u"seboosted": False,
             }
         )
         await self.serverinit(ctx)
@@ -55,6 +56,7 @@ class Init(commands.Cog):
                     u"name": str(ctx.guild.name),
                     u"prefix": [self.client.primary_prefix],
                     u'autoresponses': {}
+                    
                 }
             )
 

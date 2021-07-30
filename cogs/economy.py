@@ -421,6 +421,43 @@ class Economy(commands.Cog):
             await ctx.send(embed=embed)
     @check.is_banned()
     @commands.command(
+        name="seboost",
+        description="Experimental function that boosts ur se luck :o",
+        usage="seboost",
+        aliases=["seb"] 
+    )
+    @cooldown(1,100,BucketType.user)
+    async def seboost(self,ctx):
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
+        doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
+        doc = doc_ref.get()
+        if doc.exists:
+            dict1 = doc.to_dict()
+            if dict1["money"] < 100:
+                embed=discord.Embed(
+                    title="You don't have enough money to boost your luck :(",
+                    description="Come back when you have 100 :D",
+                    color=0xff0000
+                )
+                await ctx.reply(embed=embed)
+            else:
+                embed=discord.Embed(
+                    title="Yay! You boosted your se luck.",
+                    description="",
+                    color=self.client.primary_colour
+                )
+                await ctx.reply(embed=embed)
+                dict1["money"] -= 100
+                dict1["seboosted"] = True
+                doc_ref.set(dict1)
+                await asyncio.sleep(50)
+                dict1["seboosted"] = False
+                await ctx.author.send("Your se boost ended D:")
+                doc_ref.set(dict1)
+                time.sleep
+    @check.is_banned()
+    @commands.command(
         name="snake eyes",
         description="A random dice game that everyone loves.",
         usage="snakeeyes",
@@ -486,9 +523,18 @@ class Economy(commands.Cog):
                     + " money.",
                     color=0xFF0000,
                 )
+                if dict1["seboosted"]:
+                    embed.add_field(
+                        name="Snake eyes boost active",
+                        value="This boost expires 50 seconds after activation",
+                        inline=True
+                    )
                 await messagec.edit(embed=embed)
             elif dice1 == 1 and dice2 != 1:
-                earnt = math.floor(1.8 * amount)
+                if dict1["seboosted"] == True:
+                    earnt = math.floor(2.3*amount)
+                else:
+                    earnt = math.floor(1.8 * amount)
                 dict1["money"] += earnt
                 doc_ref.set(dict1)
                 nowmoney = dict1["money"]
@@ -499,9 +545,18 @@ class Economy(commands.Cog):
                     + " money.",
                     color=self.client.primary_colour,
                 )
+                if dict1["seboosted"]:
+                    embed.add_field(
+                        name="Snake eyes boost active",
+                        value="This boost expires 50 seconds after activation",
+                        inline=True
+                    )
                 await messagec.edit(embed=embed)
             elif dice1 != 1 and dice2 == 1:
-                earnt = math.floor(1.8 * amount)
+                if dict1["seboosted"] == True:
+                    earnt = math.floor(2.3*amount)
+                else:
+                    earnt = math.floor(1.8 * amount)
                 dict1["money"] += earnt
                 nowmoney = dict1["money"]
                 doc_ref.set(dict1)
@@ -512,9 +567,18 @@ class Economy(commands.Cog):
                     + " money.",
                     color=self.client.primary_colour,
                 )
+                if dict1["seboosted"]:
+                    embed.add_field(
+                        name="Snake eyes boost active",
+                        value="This boost expires 50 seconds after activation",
+                        inline=True
+                    )
                 await messagec.edit(embed=embed)
             else:
-                earnt = 10 * amount
+                if dict1["seboosted"] == True:
+                    earnt = math.floor(12*amount)
+                else:
+                    earnt = math.floor(10 * amount)
                 dict1["money"] += earnt
                 nowmoney = dict1["money"]
                 doc_ref.set(dict1)
@@ -525,6 +589,12 @@ class Economy(commands.Cog):
                     + " money. Woo!",
                     color=self.client.primary_colour,
                 )
+                if dict1["seboosted"]:
+                    embed.add_field(
+                        name="Snake eyes boost active",
+                        value="This boost expires 50 seconds after activation",
+                        inline=True
+                    )
                 await messagec.edit(embed=embed)
         else:
             await self.init.init(ctx)
