@@ -1,6 +1,6 @@
 # MaxiGames
 
-Your one and only discord bot that includes all forms of mini games u will ever want. Have a suggestion for another? Open an issue!
+Your one and only discord bot that includes all forms of mini games you will ever want. Have a suggestion for another minigame? Open an issue!
 
 ## Future Implementations
 
