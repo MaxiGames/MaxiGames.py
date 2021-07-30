@@ -37,14 +37,14 @@ class Suggestions(commands.Cog):
         await ctx.reply(embed=acknowledgement)
 
         def is_staff(ctx1):
-            if(str(ctx1.author.id) == "863419048041381920"):
+            if(str(ctx1.id) == "863419048041381920"):
                 return False
             doc_ref = self.db.collection(u"admin").document(u"{}".format("authorised"))
             doc = doc_ref.get()
             people = doc.to_dict()
             allowed = people["owner"] + people["staff"]
             if (
-                str(ctx.author.id) not in allowed
+                str(ctx1.id) not in allowed
                 and not ctx1.message.author.guild_permissions.administrator
             ):
                 raise False
@@ -53,7 +53,7 @@ class Suggestions(commands.Cog):
             
         def check(reaction, user):
             return (
-                is_staff(ctx)
+                is_staff(user)
                 and reaction.message == message
                 and (reaction.emoji == "❌"
                 or reaction.emoji == "✅")
@@ -68,20 +68,20 @@ class Suggestions(commands.Cog):
         await message.delete()
 
         if reaction.emoji == "❌":
-            await ctx.author.send(embed=discord.Embed(title="Suggestion declined", description=f"A moderator declined your suggestion {suggestion}", colour=self.client.primary_colour))
+            await ctx.author.send(embed=discord.Embed(title="Suggestion declined", description=f"A moderator declined your suggestion `{suggestion}`.", colour=self.client.primary_colour))
             doc_ref = self.db.collection(u"declined_suggestions").document(u"{}".format(ctx.guild.id))
             dictionary = doc_ref.get().to_dict()
             if dictionary == None:
-                dictionary = []
+                dictionary["arr"] = {"arr": []}
             dictionary.append(suggestion)
             doc_ref.set(dictionary)
         elif reaction.emoji == "✅":
-            await ctx.author.send(embed=discord.Embed(title="Suggestion accepted", description=f"Thank you for your suggestion {suggestion}, it has been accepted and currently being implemented. Keep a look out for when it releases!", colour=self.client.primary_colour))
+            await ctx.author.send(embed=discord.Embed(title="Suggestion accepted", description=f"Thank you for your suggestion `{suggestion}`, it has been accepted and currently being implemented. Keep a look out for when it releases!", colour=self.client.primary_colour))
             doc_ref = self.db.collection(u"accepted_suggestions").document(u"{}".format(ctx.guild.id))
             dictionary = doc_ref.get().to_dict()
             if dictionary == None:
-                dictionary = []
-            dictionary.append(suggestion)
+                dictionary = {"arr": []}
+            dictionary["arr"].append(suggestion)
             doc_ref.set(dictionary)
 
     @check.is_banned()
