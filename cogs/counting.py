@@ -180,10 +180,9 @@ class Counting(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, msg):
         data = self.db.collection("servers").document(str(msg.guild.id)).get().to_dict()
-        
-        if "counting_channels" not in data:
+        if data == None:
             return
-
+        
         if "counting_channels" not in data:
             return
 

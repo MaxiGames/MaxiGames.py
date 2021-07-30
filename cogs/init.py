@@ -25,8 +25,8 @@ class Init(commands.Cog):
         )
         await self.serverinit(ctx)
         embed = discord.Embed(
-            title="Account Init",
-            description="Your account has been initd. Now you can start running currency commands :D",
+            title="Account Initiated",
+            description="Your account has been initiated. Now you can start running currency commands :D",
             colour=self.client.primary_colour,
         )
         if isinstance(ctx, discord.Message):

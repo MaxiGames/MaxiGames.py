@@ -372,7 +372,7 @@ class Economy(commands.Cog):
             doc_ref.set(dict1)
             embed = discord.Embed(
                 title="Daily claimed :D",
-                description="Money gained from saying daily!",
+                description="Daily money",
                 colour=self.client.primary_colour,
             )
             embed.set_author(
@@ -414,8 +414,8 @@ class Economy(commands.Cog):
 
         else:
             embed = discord.Embed(
-                title="User not initd",
-                description="This user is not initd. Please make sure that the person has used hallo bot before :D",
+                title="User's account not initiated.",
+                description="This user has not initiated an account. Please make sure that the person has used hallo bot before :D",
                 color=self.client.primary_colour,
             )
             await ctx.send(embed=embed)
