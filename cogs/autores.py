@@ -69,6 +69,9 @@ class Autoresponse(commands.Cog):
         if len(response) > 1000:
             await ctx.send("Response must be less than 1000 characters, this is to avoid spam.")
             return
+        if "<@" in response:
+            await ctx.send("Response cannot contain mentions")
+            return
         data["autoresponses"][trigger] = response
         doc_ref.update(data)
 
