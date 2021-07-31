@@ -88,7 +88,7 @@ class General(commands.Cog):
         )
         await ctx.send(embed=embed)
     @commands.command()
-    @cooldown(1, 30, BucketType.user)
+    @cooldown(1, 100, BucketType.user)
     async def seconds(self, ctx):
         await ctx.send(
             str(round(time.time())) + " seconds have passed since the epoch!"
