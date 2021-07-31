@@ -10,7 +10,7 @@ from firebase_admin import firestore
 class Ticket(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.hidden = True
+        self.hidden = False
         self.db = firestore.client()
         doc_ref = self.db.collection("tickets").document("ticket-ref")
         doc = doc_ref.get()
@@ -25,7 +25,7 @@ class Ticket(commands.Cog):
     
 
     @commands.command(
-        name="newticket", description="Creates a new message that responds to "
+        name="newticket", description="Creates a new message that reacts so one can make a ticket", usage="newticket", alias=["nt","ticket"]
     )
     async def newticket(self, ctx):
         embed = discord.Embed(

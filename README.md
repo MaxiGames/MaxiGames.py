@@ -1,24 +1,19 @@
 # MaxiGames
 
-Your one and only discord bot that includes all forms of mini games you will ever want. Have a suggestion for another minigame? Open an issue!
+Your one and only discord bot that includes all forms of mini games you will ever want. Have a suggestion for another MiniGame? Open an issue!
 
 ## Future Implementations
 
 ### Commands
 
-- tictactoe (implementing)
+- tictactoe (implemented)
 - typeracer
 - blackjack 
-- fastword (greentea/blacktea?)
-- moreword (yellowtea)
-- longword (redtea)
-- highlow?
-- snake and ladder
 - chess? wow so hard
 - uno?????
 - pictionary!
 - that telephone game?
 - google snake game with button
-- let me google that for you (DONE)
+- let me google that for you (implemented)
 - guess the song
-- random guessing
+- random guessing (well kind of :D)

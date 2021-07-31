@@ -4,6 +4,7 @@ from firebase_admin import firestore
 import threading
 import json
 from utils import check
+from discord.ext.commands import cooldown, BucketType
 
 class Autoresponse(commands.Cog):
     def __init__(self, client):
@@ -29,7 +30,7 @@ class Autoresponse(commands.Cog):
         query_watch = col_query.on_snapshot(on_snapshot)
     
 
-    @commands.Cog.listener() 
+    @commands.Cog.listener()
     async def on_message(self, msg):
         if msg.author.bot:
             return
@@ -62,6 +63,12 @@ class Autoresponse(commands.Cog):
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
         data = doc_ref.get().to_dict()
+        if len(trigger) < 2:
+            await ctx.send("Trigger must be at least 2 characters, this is to avoid spam.")
+            return
+        if len(response) > 1000:
+            await ctx.send("Response must be less than 1000 characters, this is to avoid spam.")
+            return
         data["autoresponses"][trigger] = response
         doc_ref.update(data)
 
