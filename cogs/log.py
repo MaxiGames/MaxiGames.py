@@ -58,7 +58,7 @@ def check_if_log_exists(self, ctx, log_type):
 class Log(commands.Cog):
 		def __init__(self, client):
 				self.client = client
-				self.hidden = False
+				self.hidden = True
 		
 		@commands.command(name='log', description="lists the logs that are present on the server", aliases=['logs'])
 		@commands.cooldown(1, 5, commands.BucketType.user)

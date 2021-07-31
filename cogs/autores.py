@@ -65,6 +65,10 @@ class Autoresponse(commands.Cog):
         data = doc_ref.get().to_dict()
         if len(trigger) < 2:
             await ctx.send("Trigger must be at least 2 characters, this is to avoid spam.")
+            return
+        if len(response) > 1000:
+            await ctx.send("Response must be less than 1000 characters, this is to avoid spam.")
+            return
         data["autoresponses"][trigger] = response
         doc_ref.update(data)
 
