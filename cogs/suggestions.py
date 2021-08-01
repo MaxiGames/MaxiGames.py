@@ -4,6 +4,7 @@ from discord.ext.commands import cooldown, BucketType
 import os
 from utils import check
 from firebase_admin import firestore
+import asyncio
 
 
 class Suggestions(commands.Cog):
@@ -18,7 +19,7 @@ class Suggestions(commands.Cog):
         name="suggest",
         description="Suggest anything that you want us to know about!!! Be it a game that you really want to be implemented, or some comments you have on what can be improved :D",
         usage="suggest <suggestion>",
-        aliases=["sug", "s", "suggestadd","suggestion"],
+        aliases=["sug", "suggestadd","suggestion"],
     )
     @cooldown(1,60,BucketType.user)
     async def suggest(self, ctx, *msg):
