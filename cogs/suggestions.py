@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands import cooldown, BucketType
 import os
 from utils import check
 from firebase_admin import firestore
@@ -19,6 +20,7 @@ class Suggestions(commands.Cog):
         usage="suggest <suggestion>",
         aliases=["suggest", "sug", "s", "suggestadd"],
     )
+    @cooldown(1,60,BucketType.user)
     async def suggest(self, ctx, *msg):
         suggestion = " ".join(msg[:])
         channel = self.client.get_channel(865821669730156544)
