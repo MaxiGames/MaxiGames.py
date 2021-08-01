@@ -702,5 +702,19 @@ class General(commands.Cog):
             color=self.client.primary_colour
         )
         await ctx.reply(embed=embed)
+
+    @commands.command(
+        name="vote",
+        description="Voting link to vote the bot",
+        usage="vote",
+        aliases=["v","upvote"]
+    )
+    @cooldown(1, 10, BucketType.user)
+    async def vote(self, ctx):
+        await ctx.send(
+            "**Vote**\n"
+            "https://top.gg/bot/863419048041381920/vote"
+        )
+
 def setup(client):
     client.add_cog(General(client))
