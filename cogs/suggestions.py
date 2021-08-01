@@ -74,7 +74,7 @@ class Suggestions(commands.Cog):
             doc_ref = self.db.collection(u"declined_suggestions").document(u"{}".format(ctx.guild.id))
             dictionary = doc_ref.get().to_dict()
             if dictionary == None:
-                dictionary["arr"] = {"arr": []}
+                dictionary = {"arr": []}
             dictionary.append(suggestion)
             doc_ref.set(dictionary)
         elif reaction.emoji == "✅":
