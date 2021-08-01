@@ -79,6 +79,14 @@ class Mastermind(commands.Cog):
                 guess = await self.client.wait_for("message", timeout=90,check=check)
                 #check if message contains 4 space-separated 
                 #integers between 1 and 8
+                if guess.content.lower() == "exit" or guess.content.lower() == "exitgame":
+                    embed=discord.Embed(
+                        title="Mastermind game aborted.",
+                        description="",
+                        color=0xff0000
+                    )
+                    await guess.reply(embed=embed)
+                    return
                 choices = guess.content.split(" ")
                 transfer = True
                 if len(choices) == 4:
