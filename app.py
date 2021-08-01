@@ -14,9 +14,9 @@ from discord_slash import SlashCommand, SlashContext
 import threading
 import topgg
 
-def get_prefix(client, message): ##first we define get_prefix
-    with open('prefix.json', 'r') as f: ##we open and read the prefixes.json, assuming it's in the same file
-        prefixes = json.load(f) #load the json as prefixes
+def get_prefix(client, message):
+    with open('prefix.json', 'r') as f: 
+        prefixes = json.load(f) 
     return prefixes[str(message.guild.id)]
 
 with open("config.json", "r") as file:

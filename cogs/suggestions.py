@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands import cooldown, BucketType
 import os
 from utils import check
 import asyncio
@@ -13,11 +14,12 @@ class Suggestions(commands.Cog):
 
     @check.is_banned()
     @commands.command(
-        name="suggestions",
+        name="suggest",
         description="Suggest anything that you want us to know about!!! Be it a game that you really want to be implemented, or some comments you have on what can be improved :D",
         usage="suggest <suggestion>",
-        aliases=["suggest", "sug", "s", "suggestadd"],
+        aliases=["suggest", "sug", "s", "suggestadd","suggestion"],
     )
+    @cooldown(1,60,BucketType.user)
     async def suggest(self, ctx, *msg):
         suggestion = " ".join(msg[:])
         channel = self.client.get_channel(865821669730156544)
@@ -50,7 +52,7 @@ class Suggestions(commands.Cog):
                 raise False
             else:
                 return True
-            
+
         def check(reaction, user):
             return (
                 is_staff(user)

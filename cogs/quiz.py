@@ -13,7 +13,6 @@ import os
 import copy
 from utils import check
 from utils.leaderboard import leaderboard_generate
-import asyncio
 from discord_components import Button, ButtonStyle
 
 alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
