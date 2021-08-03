@@ -114,7 +114,8 @@ class Suggestions(commands.Cog):
 
         def check(reaction, user):
             return (
-                reaction.message == message
+                user.id != 863419048041381920
+                and reaction.message == message
                 and reaction.emoji == "❌"
             )
         await message.add_reaction("❌")
