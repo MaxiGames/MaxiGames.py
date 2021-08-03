@@ -50,26 +50,26 @@ class Errors(commands.Cog):
         elif isinstance(error, commands.BadArgument):
             embed = discord.Embed(
                 title="Incorrect Argument",
-                description="There is an error with your command statement. Please check your command syntax through `n!help <command>`.",
+                description="There is an error with your command statement. Please check your command syntax through `m!help <command>`.",
                 colour=self.client.primary_colour,
             )
-            channel = self.client.get_channel(866526918484164668)
             embed.set_author(
                 name=ctx.author.display_name, icon_url=ctx.author.avatar_url
             )
-            await channel.send(embed=embed)
+            await ctx.channel.send(embed=embed)
+        
+        elif isinstance(error, commands.MissingRequiredArgument):
+            embed = discord.Embed(
+                title="Missing required argument",
+                description="You are missing required arguments. Please check your command syntax through `m!help <command>`.",
+                colour=self.client.error_colour
+            )
+
+            embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+            await ctx.reply(embed=embed)
+
 
         else:
-            # embed = discord.Embed(
-            #     title="Incorrect Argument",
-            #     description="There is an error with your command statement. Please check your command syntax through `n!help <command>`.",
-            #     colour=self.client.primary_colour,
-            # )
-            # channel = self.client.get_channel(866526918484164668)
-            # embed.set_author(
-            #     name=ctx.author.display_name, icon_url=ctx.author.avatar_url
-            # )
-            # await channel.send(embed=embed)
             raise error
 
 

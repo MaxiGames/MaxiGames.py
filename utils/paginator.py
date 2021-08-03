@@ -22,9 +22,11 @@ class Paginator:
         ctx: commands.Context,
         message: discord.Message,
         pages: List[discord.Embed],
-        buttons: List[List[Button]] = [[]],
-        previous_symbol: str = "Back",
-        next_symbol: str = "Next",
+        buttons: List[List[Button]] = [],
+        first_symbol: str = "«",
+        previous_symbol: str = "‹",
+        next_symbol: str = "›",
+        last_symbol: str = "»",
         timeout: int = 60,
         start_page: int = 0,
     ):
@@ -33,8 +35,10 @@ class Paginator:
         self.message = message
         self.pages = pages
         self.buttons: List[List[Button]] = buttons
+        self.first_symbol = first_symbol
         self.previous_symbol = previous_symbol
         self.next_symbol = next_symbol
+        self.last_symbol = last_symbol
         self.timeout = timeout
         self.page_num = start_page
 
@@ -49,8 +53,11 @@ class Paginator:
 
     async def start(self):
         add_on_buttons: List[Button] = [
+            Button(style=ButtonStyle.green, label=self.first_symbol, disabled=True),
             Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
+            Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
             Button(style=ButtonStyle.green, label=self.next_symbol),
+            Button(style=ButtonStyle.green, label=self.last_symbol)
         ]
         component = copy.copy(self.buttons)
         component.append(add_on_buttons)
@@ -78,17 +85,44 @@ class Paginator:
                     type=InteractionType.DeferredUpdateMessage  # , content=f"{res.component.label} pressed"
                 )
 
-                if res.component.label == self.previous_symbol:
+                if res.component.label == self.first_symbol:
+                    self.page_num = 0
+                    add_on_buttons = [
+                        Button(
+                            style=ButtonStyle.green,
+                            label=self.first_symbol,
+                            disabled=True,
+                        ),
+                        Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
+                        Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
+                        Button(style=ButtonStyle.green, label=self.next_symbol),
+                        Button(style=ButtonStyle.green, label=self.last_symbol)
+                    ]
+
+                    component = copy.copy(self.buttons)
+                    component.append(add_on_buttons)
+                    # component[0] = add_on_buttons + component[0]
+
+                    # print(component)
+                    components = [add_on_buttons]
+                    await self.message.edit(
+                        embed=self.pages[self.page_num],
+                        components=copy.copy(component),
+                    )
+                elif res.component.label == self.previous_symbol:
                     self.page_num -= 1
                     if self.page_num <= 0:
                         self.page_num = 0
                         add_on_buttons = [
                             Button(
                                 style=ButtonStyle.green,
-                                label=self.previous_symbol,
+                                label=self.first_symbol,
                                 disabled=True,
                             ),
+                            Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
+                        Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
                             Button(style=ButtonStyle.green, label=self.next_symbol),
+                            Button(style=ButtonStyle.green, label=self.last_symbol)
                         ]
 
                         component = copy.copy(self.buttons)
@@ -103,8 +137,11 @@ class Paginator:
                         )
                     else:
                         add_on_buttons = [
-                            Button(style=ButtonStyle.green, label=self.previous_symbol),
+                            Button(style=ButtonStyle.green, label=self.first_symbol, disabled=True),
+                            Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
+                        Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
                             Button(style=ButtonStyle.green, label=self.next_symbol),
+                            Button(style=ButtonStyle.green, label=self.last_symbol)
                         ]
                         component = copy.copy(self.buttons)
                         component.append(add_on_buttons)
@@ -121,12 +158,16 @@ class Paginator:
                     if self.page_num >= len(self.pages) - 1:
                         self.page_num = len(self.pages) - 1
                         add_on_buttons = [
+                            Button(style=ButtonStyle.green, label=self.first_symbol),
                             Button(style=ButtonStyle.green, label=self.previous_symbol),
+                        Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
+                            Button(style=ButtonStyle.green, label=self.next_symbol, disabled=True),
                             Button(
                                 style=ButtonStyle.green,
-                                label=self.next_symbol,
+                                label=self.last_symbol,
                                 disabled=True,
                             ),
+                            Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True)
                         ]
                         component = copy.copy(self.buttons)
                         component.append(add_on_buttons)
@@ -141,9 +182,12 @@ class Paginator:
                     else:
 
                         add_on_buttons = [
-                            Button(style=ButtonStyle.green, label=self.previous_symbol),
+                            Button(style=ButtonStyle.green, label=self.first_symbol, disabled=True),
+                            Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
+                        Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
                             Button(style=ButtonStyle.green, label=self.next_symbol),
-                        ] + self.buttons[0]
+                            Button(style=ButtonStyle.green, label=self.last_symbol)
+                        ]
                         component = copy.copy(self.buttons)
                         component.append(add_on_buttons)
                         # component[0] = add_on_buttons + component[0]
@@ -154,10 +198,45 @@ class Paginator:
                             embed=self.pages[self.page_num],
                             components=copy.copy(component),
                         )
+                elif res.component.label == self.last_symbol:
+                    self.page_num = len(self.pages) - 1
+                    add_on_buttons = [
+                        Button(style=ButtonStyle.green, label=self.first_symbol),
+                        Button(style=ButtonStyle.green, label=self.previous_symbol),
+                        Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
+                        Button(style=ButtonStyle.green, label=self.next_symbol, disabled=True),
+                        Button(
+                            style=ButtonStyle.green,
+                            label=self.last_symbol,
+                            disabled=True,
+                        )
+                    ]
+                    component = copy.copy(self.buttons)
+                    component.append(add_on_buttons)
+                    # component[0] = add_on_buttons + component[0]
+
+                    # print(component)
+                    components = [add_on_buttons]
+                    await self.message.edit(
+                        embed=self.pages[self.page_num],
+                        components=copy.copy(component),
+                    )
 
             except asyncio.TimeoutError:
                 # print("Times up")
+                add_on_buttons = [
+                    Button(style=ButtonStyle.green, label=self.first_symbol, disabled=True),
+                    Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
+                    Button(style=ButtonStyle.green, label=self.next_symbol, disabled=True),
+                    Button(
+                        style=ButtonStyle.green,
+                        label=self.last_symbol,
+                        disabled=True,
+                    ),
+                    Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True)
+                ]
                 component = copy.copy(self.buttons)
+                component.append(add_on_buttons)
                 if component != [[]]:
                     await self.message.edit(
                         embed=self.pages[self.page_num], components=copy.copy(component)
