@@ -71,7 +71,7 @@ class Suggestions(commands.Cog):
         name="bugreport",
         description="Report bugs!",
         usage="bugreport <suggestion>",
-        aliases=["report", "br", "bug"],
+        aliases=["report", "br", "bug","reportbug"],
     )
     async def report(self, ctx, *msg):
         suggestion = " ".join(msg[:])
@@ -93,8 +93,7 @@ class Suggestions(commands.Cog):
 
         def check(reaction, user):
             return (
-                user == ctx.author
-                and reaction.message == message
+                reaction.message == message
                 and reaction.emoji == "❌"
             )
         await message.add_reaction("❌")
@@ -119,8 +118,12 @@ class Suggestions(commands.Cog):
         await toDelete.delete()
         await ctx.author.send(embed = discord.Embed(title="Bug Report Fixed!", description = f"Your bug report about {suggestion} has been fixed! The developer's reply: `{messageToUser}`"))
         await toDelete2.delete()
-        
-
+    
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction, user):
+        if reaction.message.channel.id == 869960880631218196:
+            if reaction.emoji == "❌":
+                await reaction.message.delete()
 
 def setup(client):
     client.add_cog(Suggestions(client))
