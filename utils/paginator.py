@@ -174,8 +174,6 @@ class Paginator:
 
                         # print(component)
                         components = [add_on_buttons]
-                        print(self.buttons)
-                        print(component)
                         await self.message.edit(
                             embed=self.pages[self.page_num],
                             components=copy.copy(component),
