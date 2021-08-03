@@ -143,9 +143,12 @@ class Suggestions(commands.Cog):
     
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
-        if reaction.message.channel.id == 869960880631218196:
+        if reaction.message.channel.id == 869960880631218196 and user.id != 863419048041381920:
             if reaction.emoji == "❌":
-                await reaction.message.delete()
+                try:
+                    await reaction.message.delete()
+                except:
+                    pass
 
 def setup(client):
     client.add_cog(Suggestions(client))
