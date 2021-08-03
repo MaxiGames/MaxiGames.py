@@ -68,6 +68,7 @@ class Errors(commands.Cog):
             embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
             await ctx.reply(embed=embed)
 
+
         else:
             raise error
 
