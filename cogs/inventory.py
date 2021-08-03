@@ -13,6 +13,7 @@ class Inventory (commands.Cog):
         self.db = firestore.client()
         self.utility = self.client.get_cog("Utility")
         self.initation = self.client.get_cog("Initiation")
+        self.hidden = False
 
     @check.is_admin()
     @commands.command(aliases=["addshop", "additem", "newitem"])
