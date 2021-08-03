@@ -660,45 +660,36 @@ class General(commands.Cog):
     @cooldown(1,10,BucketType.user)
     @commands.command(
         name="ship",
-        description="How well do two alphanumeric things (names, objects, discord tags without the # etc.) fit together based on complements, similarity and length difference",
+        description="How well do two things (names, objects, discord tags etc.) fit together based on complements, similarity and length difference",
         usage="ship [name1] [name2]",
         aliases=["matchmake","matchmaking","match"]
     )
-    async def ship(self,ctx,fn:str,sn:str):
-        fn=fn.lower().replace("0","a").replace("1","b").replace("2","c").replace("3","d").replace("4","e").replace("5","f").replace("6","g").replace("7","h").replace("8","i").replace("9","j")
-        sn=sn.lower().replace("0","a").replace("1","b").replace("2","c").replace("3","d").replace("4","e").replace("5","f").replace("6","g").replace("7","h").replace("8","i").replace("9","j")
-        #replace digits with nice letters :D
-        for i in fn:
-            if i not in "abcdefghijklmnopqrstuvwxyz":
-                embed=discord.Embed(
-                    title="Your first argument is not alphanumeric!",
-                    description="Try again!",
-                    color=0xff0000
-                )
-                await ctx.reply(embed=embed)
-                return
-        for i in sn:
-            if i not in "abcdefghijklmnopqrstuvwxyz":
-                embed=discord.Embed(
-                    title="Your second argument is not alphanumeric!",
-                    description="Try again!",
-                    color=0xff0000
-                )
-                await ctx.reply(embed=embed)
-                return
-        total_mismatch = 0
-        alpha="abcdefghijklmnopqrstuvwxyz"
+    async def ship(self,ctx,fne:str,sne:str):
         
+        fn=""
+        sn=""
+        alpha = "abcdefghijklmnopqrstuvwxyz0123456789"
+        for i in fne:
+            if i not in "abcdefghijklmnopqrstuvwxyz0123456789":
+                i = alpha[ord(i)%36]
+                
+            fn += i
+        for i in sne:
+            if i not in "abcdefghijklmnopqrstuvwxyz0123456789":
+                i = alpha[ord(i)%36]
+                
+            sn += i
+        total_mismatch = 0
         length_to_do = min(len(fn),len(sn))
         for i in range(length_to_do):
             alpha_index = alpha.index(fn[i])
-            distance = min(alpha.index(sn[i])-alpha_index,abs(26-alpha.index(sn[i])-alpha_index))
+            distance = min(alpha.index(sn[i])-alpha_index,abs(35-alpha.index(sn[i])-alpha_index))
             total_mismatch += distance
-        percentage_match = round((26*length_to_do - total_mismatch)/(26*length_to_do)*100*min(len(fn),len(sn))/max(len(fn),len(sn)))
+        percentage_match = round((35*length_to_do - total_mismatch)/(35*length_to_do)*100*min(len(fn),len(sn))/max(len(fn),len(sn)))
         
         embed=discord.Embed(
             title="Ship results",
-            description="Ship between " + str(fn) + " and " + str(sn) + ":\n**" + str(percentage_match) + "%**!",
+            description="Ship between " + str(fne) + " and " + str(sne) + ":\n**" + str(percentage_match) + "%**!",
             color=self.client.primary_colour
         )
         await ctx.reply(embed=embed)

@@ -43,7 +43,8 @@ class Counting(commands.Cog):
             if chann == None or not isinstance(chann, discord.channel.TextChannel):
                 await ctx.reply(
                     embed=discord.Embed(
-                        title="Error: channel does not exist, or is not a text channel."
+                        title="Error: channel does not exist, or is not a text channel.",
+                        colour=self.client.primary_colour
                     )
                 )
                 return
@@ -51,7 +52,8 @@ class Counting(commands.Cog):
         except ValueError:
             await ctx.reply(
                 embed=discord.Embed(
-                    title="Error: channel does not exist, or is not a text channel."
+                    title="Error: channel does not exist, or is not a text channel.",
+                    colour=self.client.primary_colour
                 )
             )
             return
@@ -64,7 +66,8 @@ class Counting(commands.Cog):
             else:
                 await ctx.reply(
                     embed=discord.Embed(
-                        title="Error: channel is already a counting channel."
+                        title="Error: channel is already a counting channel.",
+                        colour=self.client.primary_colour
                     )
                 )
 
@@ -110,12 +113,14 @@ class Counting(commands.Cog):
         ):
             del data["counting_channels"][str(ctx.guild.id)][str(channel)]
             await ctx.reply(
-                embed=discord.Embed(title="Channel is no longer a counting channel.")
+                embed=discord.Embed(title="Channel is no longer a counting channel."),
+                colour=self.client.primary_colour
             )
         else:
             await ctx.reply(
                 embed=discord.Embed(
-                    title="Channel never was a counting channel or doesn't exist. "
+                    title="Channel never was a counting channel or doesn't exist.",
+                    colour=self.client.primary_colour
                 )
             )
 
@@ -144,6 +149,7 @@ class Counting(commands.Cog):
             await ctx.reply(
                 embed=discord.Embed(
                     title="You haven't counted yet!",
+                    colour = self.client.primary_colour
                 )
             )
         else:
@@ -170,7 +176,8 @@ class Counting(commands.Cog):
             await ctx.reply(
                 embed = discord.Embed(
                     title=f"Your counting userrank is {rank}!",
-                    description="".join(toprint)
+                    description="".join(toprint),
+                    colour = self.client.primary_colour
                 )
             )
 
@@ -236,6 +243,7 @@ class Counting(commands.Cog):
                     embed=discord.Embed(
                         title="Wrong count",
                         description=f"{msg.author.mention} messed up the count at {ccount}. The next count for this server is 1.",
+                        colour=self.client.primary_colour
                     )
                 )
             else:
@@ -243,6 +251,7 @@ class Counting(commands.Cog):
                     embed=discord.Embed(
                         title="You cannot count twice in a row",
                         description=f"{msg.author.mention} messed up the count at {ccount}. The next count for this server is 1.",
+                        colour=self.client.primary_colour
                     )
                 )
 

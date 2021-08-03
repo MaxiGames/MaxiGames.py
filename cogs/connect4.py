@@ -22,6 +22,7 @@ class Connect4(commands.Cog):
     @cooldown(1, 75, BucketType.user)
     async def connect4(self, ctx):
         player1 = ctx.author
+        game_channel = ctx.channel
         message = await ctx.reply(
             "React on this message to start a Connect 4 game. Another person is needed to start the game!"
         )
@@ -58,7 +59,6 @@ class Connect4(commands.Cog):
         await ctx.reply(
             f"2 players have joined, connect4 game starting... <@{player1.id}>, <@{player2.id}>"
         )
-        time.sleep(0.5)
         board = [
             ["□", "□", "□", "□", "□", "□"],
             ["□", "□", "□", "□", "□", "□"],
@@ -71,6 +71,7 @@ class Connect4(commands.Cog):
         print(board)
         curmax = [0, 0, 0, 0, 0, 0, 0]
         turn = 0
+        success = 0
         number_of_counter_left = 42
         while True:
             print(number_of_counter_left)
@@ -82,14 +83,13 @@ class Connect4(commands.Cog):
                 return
             if turn == 0:
                 turn = 1
-                success = 0
                 await ctx.send(
                     f"{player1.mention}'s turn! Type a number from 1 to 7, the column you want to place a marker on!"
                 )
                 while True:
                     try:
                         message = await self.client.wait_for(
-                            "message", timeout=30, check=lambda m: m.author == player1
+                            "message", timeout=30, check=lambda m: m.author == player1 and m.channel == game_channel
                         )
                         try:
                             selected = int(message.content) - 1
@@ -106,9 +106,9 @@ class Connect4(commands.Cog):
                             curmax[selected] += 1
                             print(board)
                             success = 1
-                            board_display = "```|1 2 3 4 5 6 7 "
+                            board_display = "```| 1 2 3 4 5 6 7 "
                             for i in range(6):
-                                board_display += "|\n|"
+                                board_display += "|\n| "
                                 for j in range(7):
                                     board_display += board[j][5 - i]
                                     board_display += " "
@@ -188,11 +188,8 @@ class Connect4(commands.Cog):
                     except asyncio.TimeoutError:
                         await message.reply("Time out")
                         return
-                    if success == 1:
-                        break
             else:
                 turn = 0
-                success = 0
                 print(number_of_counter_left)
                 if number_of_counter_left == 0:
                     embed = discord.Embed(
@@ -204,9 +201,10 @@ class Connect4(commands.Cog):
                     f"{player2.mention}'s turn! Type a number from 1 to 7, the column you want to place a marker on!"
                 )
                 while True:
+                    
                     try:
                         message = await self.client.wait_for(
-                            "message", timeout=30, check=lambda m: m.author == player2
+                            "message", timeout=30, check=lambda m: m.author == player2 and m.channel == game_channel
                         )
                         try:
                             selected = int(message.content) - 1
@@ -250,7 +248,7 @@ class Connect4(commands.Cog):
                                         )
                                         await message.reply(embed=embed)
                                         return
-                            break
+                            
                             for i in range(4):
                                 for j in range(3):
                                     if (
@@ -337,15 +335,13 @@ class Connect4(commands.Cog):
                                         await message.reply(embed=embed)
                                         return
                             break
-
                         except ValueError:
                             await message.reply("Please enter a number from 1 to 7")
                             continue
                     except asyncio.TimeoutError:
                         await message.reply("Time out")
                         return
-                    if success == 1:
-                        break
+                    
 
 
 def setup(client):
