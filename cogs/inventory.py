@@ -13,6 +13,7 @@ class Inventory (commands.Cog):
         self.db = firestore.client()
         self.utility = self.client.get_cog("Utility")
         self.initation = self.client.get_cog("Initiation")
+        self.hidden = False
 
     @check.is_admin()
     @commands.command(aliases=["addshop", "additem", "newitem"])
@@ -94,16 +95,15 @@ class Inventory (commands.Cog):
         await ctx.send(embed=self.embed, allowed_mentions=discord.AllowedMentions.none())
 
     @commands.command(aliases=["bp", "inv", "backpack", "bag", "inventory"])
-    async def _inv(self, ctx, user: str = "self"):
-        if user == "self":
-            uid = str(ctx.author.id)
-        else:
-            uid = user[3:-1]
+    async def _inv(self, ctx, user: discord.Member = None):
+        if user is None:
+            user = ctx.author
+        print(user)
         doc_ref = self.db.collection(u'servers').document(u'{}'.format(str(ctx.guild.id)))
         doc = doc_ref.get()
         dict2 = doc.to_dict()["users"]
         items = []
-        if uid not in dict2:
+        if str(user.id) not in dict2:
             embed=discord.Embed(
                 title="User not in server",
                 description="The user you specified is not found in this server. Please make sure you are mentioning the right person.",
@@ -112,13 +112,13 @@ class Inventory (commands.Cog):
             await ctx.reply(embed=embed)
             return
         
-        for i in dict2[uid]:
+        for i in dict2[str(user.id)]:
             items.append(i)
         items.sort()
-        user = self.client.get_user(int(uid))
+        description = "\n".join(items)
         embed = discord.Embed(
             title=f"Inventory of {user.display_name}",
-            description=items,
+            description=description,
             colour=self.client.primary_colour
         )
         
