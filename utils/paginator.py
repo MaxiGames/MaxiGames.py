@@ -160,14 +160,13 @@ class Paginator:
                         add_on_buttons = [
                             Button(style=ButtonStyle.green, label=self.first_symbol),
                             Button(style=ButtonStyle.green, label=self.previous_symbol),
-                        Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
+                            Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
                             Button(style=ButtonStyle.green, label=self.next_symbol, disabled=True),
                             Button(
                                 style=ButtonStyle.green,
                                 label=self.last_symbol,
                                 disabled=True,
-                            ),
-                            Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True)
+                            )
                         ]
                         component = copy.copy(self.buttons)
                         component.append(add_on_buttons)
@@ -175,6 +174,8 @@ class Paginator:
 
                         # print(component)
                         components = [add_on_buttons]
+                        print(self.buttons)
+                        print(component)
                         await self.message.edit(
                             embed=self.pages[self.page_num],
                             components=copy.copy(component),
@@ -184,7 +185,7 @@ class Paginator:
                         add_on_buttons = [
                             Button(style=ButtonStyle.green, label=self.first_symbol, disabled=True),
                             Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
-                        Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
+                            Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
                             Button(style=ButtonStyle.green, label=self.next_symbol),
                             Button(style=ButtonStyle.green, label=self.last_symbol)
                         ]
