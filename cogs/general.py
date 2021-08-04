@@ -706,6 +706,5 @@ class General(commands.Cog):
             "**Vote**\n"
             "https://top.gg/bot/863419048041381920/vote"
         )
-
 def setup(client):
     client.add_cog(General(client))
