@@ -102,6 +102,27 @@ class Clear(commands.Cog):
         msg = await ctx.send(embed=embed)
         await asyncio.sleep(3)
         await msg.delete()
+
+    @clear.command()
+    async def human(self, ctx, search: int=100):
+        if str(ctx.channel.id) in self.channels:
+            await ctx.send("A clear is in progress. Try again later :D")
+            return
+            # clear in progress
+        def check(message):
+            return not message.author.bot
+        self.channels.append(str(ctx.channel.id))
+        messages = await ctx.channel.purge(limit=search, check=check)
+        
+        self.channels.remove(str(ctx.channel.id))
+        embed = discord.Embed(
+            title=f"Messages deleted :D",
+            description=f"{len(messages)} messages has been deleted from {ctx.channel.name}.",
+            colour = self.client.primary_colour
+        )
+        msg = await ctx.send(embed=embed)
+        await asyncio.sleep(3)
+        await msg.delete()
     
     @check.is_admin()
     @clear.command()
