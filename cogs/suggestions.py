@@ -140,15 +140,36 @@ class Suggestions(commands.Cog):
         await toDelete.delete()
         await ctx.author.send(embed = discord.Embed(title="Bug Report Fixed!", description = f"Your bug report about {suggestion} has been fixed! The developer's reply: `{messageToUser}`"))
         await toDelete2.delete()
-    
-    @commands.Cog.listener()
-    async def on_reaction_add(self, reaction, user):
-        if reaction.message.channel.id == 869960880631218196 and user.id != 863419048041381920:
-            if reaction.emoji == "❌":
-                try:
-                    await reaction.message.delete()
-                except:
-                    pass
+
+    @check.is_staff()
+    @commands.command(
+        name="pmBugReport",
+        description="Pm a user",
+        usage="pm-user <user> <suggestion> <message>",
+        aliases=["pmuser", "pmuser-message"],
+        hidden=True,
+    )
+    async def pm_user(self, ctx, user: discord.Member, *suggestion):
+        suggestion = " ".join(suggestion[:])
+        toDelete = await ctx.send("You have 1 minute to write a message to the user that submitted this bug report!")
+        toDelete2 = 0
+        messageToUser = "Fixed!"
+        def check(message):
+            return message.author == ctx.author
+        try: 
+            newMessage = await self.client.wait_for(
+                "message", timeout=60, check=check
+            )
+            toDelete2 = await newMessage.reply("Messaged received, sending reply")
+            messageToUser = newMessage.content
+            await newMessage.delete()
+        except asyncio.TimeoutError:
+            toDelete2 = await ctx.reply("1 minute is up, sending default message")
+        
+        await toDelete.delete()
+        await ctx.author.send(embed = discord.Embed(title="Bug Report Fixed!", description = f"Your bug report about {suggestion} has been fixed! The developer's reply: `{messageToUser}`"))
+        await toDelete2.delete()
+
 
 def setup(client):
     client.add_cog(Suggestions(client))
