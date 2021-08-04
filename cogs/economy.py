@@ -599,6 +599,48 @@ class Economy(commands.Cog):
         else:
             await self.init.init(ctx)
     
-
+    @commands.command(
+        name="search",
+        description="Look for stuff! Who knows what you might get.",
+        usage="search",
+        aliases=["scout","find"]
+    )
+    @cooldown(1,60,BucketType.user)
+    async def search(self,ctx):
+        num = random.randint(1,1000)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
+        doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
+        doc = doc_ref.get()
+        if doc.exists:
+            dict1 = doc.to_dict()
+            if num < 30:
+                dict1["money"] = 0
+                embed = discord.Embed(
+                    title="You were so depressed at not being able to find anything that you died.",
+                    description="You lost all your money!",
+                    color=0xff0000
+                )
+                ctx.reply(embed=embed)
+            elif num < 130:
+                dict1["money"] += 5
+                embed=discord.Embed(
+                    title="You found a 5 dollar note on the floor!",
+                    description="Money +5",
+                    color=self.client.primary_colour
+                )
+                ctx.reply(embed=embed)
+            elif num < 160:
+                dict1["maxigamespins"] += 1
+                randm = "in a mall!"
+                if (random.randint(1,2) == 2):
+                    randm="on the floor!"
+                embed=discord.Embed(
+                    title="You found a Maxigames pin " + randm,
+                    description="View how many pins you have [idk, add to inventory?]",
+                    color=self.client.primary_colour
+                )
+                ctx.reply(embed=embed)
+            
 def setup(client):
     client.add_cog(Economy(client))
