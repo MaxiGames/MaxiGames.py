@@ -12,4 +12,4 @@ class Topgg(commands.Cog):
         print(data)
 
 def setup(client):
-    client.add_cog(Topgg(client))
+    client.add_cog(Topgg(client))  
