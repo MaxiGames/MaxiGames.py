@@ -143,8 +143,7 @@ class Inventory (commands.Cog):
             await ctx.reply(embed=embed)
             return
 
-
-        await self.initation.checkserver(ctx)
+        self.client.get_cog("Initiation").checkserver(ctx)
         user_ref = self.db.collection(u'users').document(u'{}'.format(uid))
         user = user_ref.get()
         user_dict = user.to_dict()
