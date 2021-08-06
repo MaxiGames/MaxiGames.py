@@ -8,7 +8,7 @@ Your one and only discord bot that includes all forms of mini games you will eve
 
 - tictactoe (implemented)
 - typeracer
-- blackjack 
+- blackjack
 - chess? wow so hard
 - uno?????
 - pictionary!

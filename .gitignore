@@ -3,3 +3,4 @@ serviceAccountKey.json
 serviceAccountKey2.json
 config.json
 **/__pycache__/
+node_modules
