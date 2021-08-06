@@ -455,7 +455,6 @@ class Economy(commands.Cog):
                 dict1["seboosted"] = False
                 await ctx.author.send("Your se boost ended D:")
                 doc_ref.set(dict1)
-                time.sleep
     @check.is_banned()
     @commands.command(
         name="snake eyes",
