@@ -274,8 +274,6 @@ class General(commands.Cog):
             if count > 20:
                 #! if amount of commands on its own is too much to fit in one page, have its own page
                 pages.append(page)
-                totalCount = count
-
                 # give it its on page
                 page = discord.Embed(
                     title="Commands",
@@ -293,6 +291,7 @@ class General(commands.Cog):
                     colour=self.client.primary_colour,
                 )
                 page.set_thumbnail(url=self.client.user.avatar_url)
+                totalCount = 0
             elif totalCount + count > 20:
                 #! if amount of commands is too much to fit in one page, make a new page
                 pages.append(page)
