@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
-
+from discord.ext.commands import cooldown, BucketType
 
 class TicTacToe(commands.Cog):
     def __init__(self, client):
@@ -12,7 +12,9 @@ class TicTacToe(commands.Cog):
         name="ttt",
         description="tic tac toe game u can play with your friend!",
         usage="ttt",
+        alias=["tictactoe"],
     )
+    @cooldown(1, 25, BucketType.user)
     async def ttt(self, ctx):
         player1 = ""
         player2 = ""

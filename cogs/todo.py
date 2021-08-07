@@ -3,7 +3,7 @@ from discord.ext import commands
 import firebase_admin
 from firebase_admin import firestore
 from utils import check
-
+from discord.ext.commands import cooldown, BucketType
 
 class Todo(commands.Cog):
     def __init__(self, client):
@@ -13,8 +13,9 @@ class Todo(commands.Cog):
         self.hidden = True
 
     @check.is_staff()
-    @commands.command()
-    async def todoADD(self, ctx, *msg):
+    @commands.command(name="todoAdd", description="Add an item to the todo list!", alias=["tAdd", "todoNew"], usage="todoAdd <task>")
+    @cooldown(1, 3, BucketType.user)
+    async def todoAdd(self, ctx, *msg):
         task = " ".join(msg)
         self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
@@ -29,7 +30,8 @@ class Todo(commands.Cog):
         await ctx.send("Added")
 
     @check.is_staff()
-    @commands.command()
+    @commands.command(name="todoList", description="Show your current todo list!", alias=["todo", "listTodo"], usage="todoList")
+    @cooldown(1, 3, BucketType.user)
     async def todo(self, ctx):
         self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
@@ -49,8 +51,9 @@ class Todo(commands.Cog):
         await ctx.send(embed=embed)
 
     @check.is_staff()
-    @commands.command()
-    async def todoREM(self, ctx, number):
+    @commands.command(name="todoRemove", description="Remove an item to the todo list!", alias=["todoRem", "todoR", "tRem"], usage="todoRem <task>")
+    @cooldown(1, 3, BucketType.user)
+    async def todoRem(self, ctx, number):
         self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))

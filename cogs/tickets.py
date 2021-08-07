@@ -25,7 +25,7 @@ class Ticket(commands.Cog):
     
 
     @commands.command(
-        name="newticket", description="Creates a new message that reacts so one can make a ticket", usage="newticket", alias=["nt","ticket"]
+        name="newTicket", description="Creates a new message that reacts so one can make a ticket", usage="newTicket", alias=["nt","ticket"]
     )
     async def newticket(self, ctx):
         embed = discord.Embed(
@@ -168,11 +168,6 @@ class Ticket(commands.Cog):
                     break
                 else:
                     await confirm.delete()
-
-    @check.is_staff()
-    @commands.command()
-    async def deletechannel(self, ctx):
-        await ctx.channel.delete()
 
 
 def setup(client):

@@ -4,6 +4,7 @@ from firebase_admin import firestore
 import threading
 import json
 from utils import check
+from discord.ext.commands import cooldown, BucketType
 
 class Prefix(commands.Cog):
     def __init__(self, client):
@@ -65,6 +66,7 @@ class Prefix(commands.Cog):
 
     @check.is_admin()
     @prefix.command()
+    @cooldown(1, 15, BucketType.user)
     async def add(self, ctx, prefix: str):
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
@@ -81,6 +83,7 @@ class Prefix(commands.Cog):
 
     @check.is_admin()
     @prefix.command()
+    @cooldown(1, 15, BucketType.user)
     async def remove(self, ctx, prefix: str):
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
@@ -103,6 +106,7 @@ class Prefix(commands.Cog):
     
     @check.is_admin()
     @prefix.command()
+    @cooldown(1, 15, BucketType.user)
     async def reset(self, ctx):
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
@@ -113,6 +117,7 @@ class Prefix(commands.Cog):
 
     @check.is_admin()
     @prefix.command()
+    @cooldown(1, 15, BucketType.user)
     async def set(self, ctx, *prefixes):
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)

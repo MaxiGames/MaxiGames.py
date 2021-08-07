@@ -16,9 +16,9 @@ class Suggestions(commands.Cog):
     @check.is_banned()
     @commands.command(
         name="suggest",
-        description="Suggest anything that you want us to know about!!! Be it a game that you really want to be implemented, or some comments you have on what can be improved :D",
+        description="Suggest anything that you want us to know about!!! Be it a game that you really want to be implemented, or some comments you have on what can be improved :D. Do note that if this is a bug, please do `m!bugReport` instead!",
         usage="suggest <suggestion>",
-        aliases=["sug", "suggestadd","suggestion"],
+        aliases=["sug", "suggestadd","suggestion", "newSuggestion", "suggestions"],
     )
     @cooldown(1,60,BucketType.user)
     async def suggest(self, ctx, *msg):
@@ -89,10 +89,10 @@ class Suggestions(commands.Cog):
 
     @check.is_banned()
     @commands.command(
-        name="bugreport",
+        name="bugReport",
         description="Report bugs!",
         usage="bugreport <suggestion>",
-        aliases=["report", "br", "bug","reportbug"],
+        aliases=["report", "br", "bug","reportBug"],
     )
     async def report(self, ctx, *msg):
         suggestion = " ".join(msg[:])
@@ -143,10 +143,10 @@ class Suggestions(commands.Cog):
 
     @check.is_staff()
     @commands.command(
-        name="pmbugreport",
+        name="pmBugReport",
         description="Pm a user",
-        usage="pmbugreport <user> <suggestion>",
-        aliases=["pmuser", "pmuser-message"],
+        usage="pmBugReport <user> <suggestion>",
+        aliases=["dmUser", "pmUserMessage"],
         hidden=True,
     )
     async def pm_bugreport(self, ctx, user: discord.Member, *suggestion):
@@ -172,10 +172,10 @@ class Suggestions(commands.Cog):
 
     @check.is_staff()
     @commands.command(
-        name="pmsuggestion",
+        name="pmSuggestion",
         description="Pm a user",
-        usage="pmsuggest <user> <suggestion>",
-        aliases=["pmsuggest", "pms"],
+        usage="pmSuggest <user> <yes/no> <suggestion>",
+        aliases=["pmSuggest", "pms"],
         hidden=True,
     )
     async def pm_suggestion(self, ctx, user: discord.Member, approval, *suggestion):

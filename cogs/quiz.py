@@ -17,7 +17,6 @@ from discord_components import Button, ButtonStyle
 
 alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-
 class Games(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -27,8 +26,9 @@ class Games(commands.Cog):
     
     @commands.command(
         name="trivia",
-        description="Answer a trivia question using reactions! Provide a number from 1 to 3 specifying the difficulty of the trivia question you want.",
+        description="Answer a trivia question using reactions! Provide a number from 1 to 3 specifying the difficulty of the trivia question you want. Note that this is taken from https://opentdb.com/",
         usage="trivia <difficulty>",
+        alias=["funfact", "fact"]
     )
     @cooldown(1, 15, BucketType.user)
     async def trivia(self, ctx, difficulty=100000000000):

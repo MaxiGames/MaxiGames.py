@@ -2,11 +2,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import cooldown, BucketType
 import random
-import requests
-import math
-import json
 import asyncio
-import firebase_admin
 from firebase_admin import firestore
 import os
 import copy
@@ -27,7 +23,7 @@ class Mastermind(commands.Cog):
         usage = "mastermind",
         aliases = ["mm"]
     )
-    @cooldown(1,60,BucketType.user)
+    @cooldown(1,30,BucketType.user)
     async def mastermind(self,ctx):
         self.init = self.client.get_cog("Init")
         player = ctx.author.id

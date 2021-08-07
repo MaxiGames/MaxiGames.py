@@ -3,7 +3,7 @@ from discord.ext import commands
 import firebase_admin
 from firebase_admin import firestore
 from utils import check
-
+from discord.ext.commands import cooldown, BucketType
 
 class Starboard(commands.Cog):
     def __init__(self, client):
@@ -14,11 +14,12 @@ class Starboard(commands.Cog):
 
     @check.is_admin()
     @commands.command(
-        name="starboard-threshold",
+        name="starboardThresh",
         description="Starts a starboard",
-        usage="m!starboard #starboard",
-        aliases=["starthresh", "starcount"]
+        usage="starboard <number of stars required>",
+        aliases=["startThresh", "starCount", "starboardCount", "starboardLimit"]
     )
+    @cooldown(1, 15, BucketType.user)
     async def starboard_threshold(self, ctx, thresh: int = None):
         self.initation = self.client.get_cog("Init")
         await self.initation.checkserver(ctx)
@@ -40,9 +41,11 @@ class Starboard(commands.Cog):
     @check.is_admin()
     @commands.command(
         name="starboard",
-        description="Starts a starboard",
-        usage="m!starboard #starboard",
+        description="Sets the starboard to the current channel or the specified one",
+        usage="starboard <channel>",
+        alias=["star", "starboardSet"]
     )
+    @cooldown(1, 15, BucketType.user)
     async def starboard(self, ctx, channel: discord.TextChannel = None):
         if channel == None:
             await ctx.reply("You need to specify a channel")
