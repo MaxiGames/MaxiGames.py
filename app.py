@@ -24,7 +24,7 @@ with open("config.json", "r") as file:
     client = Client(command_prefix=(get_prefix), help_command=None)
     client.topggpy = topgg.DBLClient(client, data["topggId"], autopost=True)
 
-cred = credentials.Certificate("serviceAccountKey.json")
+cred = credentials.Certificate("serviceAccountKey2.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
@@ -53,4 +53,4 @@ async def on_ready():
 
 with open("config.json", "r") as file:
     data = json.load(file)
-    client.run(data["tokenId"])
+    client.run(data["tokenIdBeta"])
