@@ -206,6 +206,7 @@ class General(commands.Cog):
             command = " ".join(cmd)
             command = self.client.get_command(command.lower())
             if not command:
+                # ! Specified command not found
                 await ctx.send(
                     embed=discord.Embed(
                         title="Non-existant command",
@@ -214,6 +215,7 @@ class General(commands.Cog):
                     )
                 )
                 return
+            #! Command found 
             embed = discord.Embed(
                 title=f"Command `{command.name}`",
                 description=command.description,
@@ -231,6 +233,7 @@ class General(commands.Cog):
                 embed.add_field(name="Alias", value=f"`{command.aliases[0]}`")
             await ctx.send(embed=embed)
             return
+        #! No command specified, thus giving a list of all the commands
         pages = []
         page = discord.Embed(
             title="Help",
@@ -251,6 +254,8 @@ class General(commands.Cog):
             colour=self.client.primary_colour,
         )
         page.set_thumbnail(url=self.client.user.avatar_url)
+
+        totalCount = 0
         for _, cog_name in enumerate(self.client.cogs):
             cog = self.client.get_cog(cog_name)
             if cog.hidden is True:
@@ -258,15 +263,50 @@ class General(commands.Cog):
             cog_commands = cog.get_commands()
             if len(cog_commands) == 0:
                 continue
+            count  = 0
             cmds = "```\n"
             for cmd in cog_commands:
+                count += 1
                 if cmd.hidden is False:
                     cmds += cmd.name + "\n"
             cmds += "```"
-            page.add_field(name=cog_name, value=cmds)
-        pages.append(page)
 
-        # await ctx.send(embed=page)
+            if count > 20:
+                #! if amount of commands on its own is too much to fit in one page, have its own page
+                pages.append(page)
+                totalCount = count
+
+                # give it its on page
+                page = discord.Embed(
+                    title="Commands",
+                    description="See all commands that MaxiGame has to offer",
+                    colour=self.client.primary_colour,
+                )
+                page.add_field(name=cog_name, value=cmds)
+                page.set_thumbnail(url=self.client.user.avatar_url)
+                pages.append(page)
+                
+                # reset page
+                page = discord.Embed(
+                    title="Commands",
+                    description="See all commands that MaxiGame has to offer",
+                    colour=self.client.primary_colour,
+                )
+                page.set_thumbnail(url=self.client.user.avatar_url)
+            elif totalCount + count > 20:
+                #! if amount of commands is too much to fit in one page, make a new page
+                pages.append(page)
+                totalCount = count
+                page = discord.Embed(
+                    title="Commands",
+                    description="See all commands that MaxiGame has to offer",
+                    colour=self.client.primary_colour,
+                )
+                page.add_field(name=cog_name, value=cmds)
+                page.set_thumbnail(url=self.client.user.avatar_url)
+            else:
+                page.add_field(name=cog_name, value=cmds)
+                totalCount += count
 
         page_num = 0
         msg = await ctx.send(
