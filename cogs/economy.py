@@ -613,23 +613,23 @@ class Economy(commands.Cog):
         doc = doc_ref.get()
         if doc.exists:
             dict1 = doc.to_dict()
-            if num < 30:
+            if num < 8:
                 dict1["money"] = 0
                 embed = discord.Embed(
                     title="You were so depressed at not being able to find anything that you died.",
                     description="You lost all your money!",
                     color=0xff0000
                 )
-                ctx.reply(embed=embed)
-            elif num < 130:
+                await ctx.reply(embed=embed)
+            elif num < 190:
                 dict1["money"] += 5
                 embed=discord.Embed(
                     title="You found a 5 dollar note on the floor!",
                     description="Money +5",
                     color=self.client.primary_colour
                 )
-                ctx.reply(embed=embed)
-            elif num < 160:
+                await ctx.reply(embed=embed)
+            elif num < 250:
                 dict1["maxigamespins"] += 1
                 randm = "in a mall!"
                 if (random.randint(1,2) == 2):
@@ -639,7 +639,49 @@ class Economy(commands.Cog):
                     description="View how many pins you have [idk, add to inventory?]",
                     color=self.client.primary_colour
                 )
-                ctx.reply(embed=embed)
-            
+                await ctx.reply(embed=embed)
+            elif num < 380:
+                dict1["money"] += 10
+                embed=discord.Embed(
+                    title="You found a crumpled ten dollar bill on the floor!",
+                    description="Money +10",
+                    color=self.client.primary_colour
+                )
+                await ctx.reply(embed=embed)
+                
+            else:
+                await ctx.reply("I need to code this...")
+    @commands.command(
+        name="lottery",
+        description="Buy as many lottery tickets as you want :D",
+        usage="lottery [num num num num num num] (number between 1 and 35)",
+        aliases=["raffle","lotto"]
+    )
+    @cooldown(1,60,BucketType.user)
+    async def lottery(self,ctx,*msg:int):
+        if len(msg) != 6:
+            embed=discord.Embed(
+                title="You didn't enter 6 arguments!",
+                description="",
+                color=0xff0000
+            )
+            await ctx.reply(embed=embed)
+            return
+        for i in msg:
+            if int(i) > 35 or int(i) < 1:
+                embed=discord.Embed(
+                    title="Invalid option for lottery!",
+                    description="Your guess " + str(i) + " was invalid\nYou need to input 6 space-separated integers between 1 and 35 :D",
+                    color=0xff0000
+                )
+                await ctx.reply(embed=embed)
+                return
+        correct=[]
+        curr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]
+        for i in range(6):
+            elem = random.choice(curr)
+            correct.append(elem)
+            curr.remove(elem)
+
 def setup(client):
     client.add_cog(Economy(client))
