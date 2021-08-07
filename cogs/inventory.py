@@ -99,7 +99,7 @@ class Inventory (commands.Cog):
         self.embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
         await ctx.send(embed=self.embed, allowed_mentions=discord.AllowedMentions.none())
 
-    @commands.command(name="inventory", description="shows the user's inventory", usage="inventory", aliases=["bp", "inv", "backpack", "bag", "inventory"])
+    @commands.command(name="inventory", description="shows the user's inventory", usage="inventory", aliases=["bp", "inv", "backpack", "bag"])
     @cooldown(1, 15, BucketType.user)
     async def _inv(self, ctx, user: discord.Member = None):
         if user is None:
@@ -131,7 +131,7 @@ class Inventory (commands.Cog):
         embed.set_author(name=user.display_name, icon_url=user.avatar_url)
         await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
 
-    @commands.command(name="buy", description="buy an item from the guild's shop", usage="buy <item>", aliases=["b", "purchase", "p", "buyItem", "pItem", "pi", "purchaseItem", "pItem"])
+    @commands.command(name="buy", description="buy an item from the guild's shop", usage="buy <item>", aliases=["purchase", "p", "buyItem", "pItem", "pi", "purchaseItem"])
     @cooldown(1, 15, BucketType.user)
     async def buy(self, ctx, *hi):
         item = " ".join(hi[:])

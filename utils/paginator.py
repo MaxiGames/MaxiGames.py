@@ -137,8 +137,8 @@ class Paginator:
                         )
                     else:
                         add_on_buttons = [
-                            Button(style=ButtonStyle.green, label=self.first_symbol, disabled=True),
-                            Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
+                            Button(style=ButtonStyle.green, label=self.first_symbol),
+                            Button(style=ButtonStyle.green, label=self.previous_symbol),
                         Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
                             Button(style=ButtonStyle.green, label=self.next_symbol),
                             Button(style=ButtonStyle.green, label=self.last_symbol)
@@ -181,8 +181,8 @@ class Paginator:
                     else:
 
                         add_on_buttons = [
-                            Button(style=ButtonStyle.green, label=self.first_symbol, disabled=True),
-                            Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
+                            Button(style=ButtonStyle.green, label=self.first_symbol),
+                            Button(style=ButtonStyle.green, label=self.previous_symbol),
                             Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
                             Button(style=ButtonStyle.green, label=self.next_symbol),
                             Button(style=ButtonStyle.green, label=self.last_symbol)
