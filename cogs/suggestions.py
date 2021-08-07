@@ -76,7 +76,7 @@ class Suggestions(commands.Cog):
             dictionary = doc_ref.get().to_dict()
             if dictionary == None:
                 dictionary = {"arr": []}
-            dictionary.append(suggestion)
+            dictionary["arr"].append(suggestion)
             doc_ref.set(dictionary)
         elif reaction.emoji == "✅":
             await ctx.author.send(embed=discord.Embed(title="Suggestion accepted", description=f"Thank you for your suggestion `{suggestion}`, it has been accepted and currently being implemented. Be sure to follow <#871401628987686912> for updates if it does!", colour=self.client.primary_colour))
@@ -186,8 +186,9 @@ class Suggestions(commands.Cog):
             dictionary = doc_ref.get().to_dict()
             if dictionary == None:
                 dictionary = {"arr": []}
-            dictionary.append(suggestion)
+            dictionary["arr"].append(suggestion)
             doc_ref.set(dictionary)
+            await ctx.author.send(embed=discord.Embed(title="Suggestion declined", description=f"Your suggestion `{suggestion}` has been declined by a moderator.", colour=self.client.primary_colour))
         elif approval == "no":
             await user.send(embed=discord.Embed(title="Suggestion accepted", description=f"Thank you for your suggestion `{suggestion}`, it has been accepted and currently being implemented. Be sure to follow <#871401628987686912> for updates if it does!", colour=self.client.primary_colour))
             doc_ref = self.db.collection(u"accepted_suggestions").document(u"{}".format(ctx.guild.id))
@@ -196,6 +197,7 @@ class Suggestions(commands.Cog):
                 dictionary = {"arr": []}
             dictionary["arr"].append(suggestion)
             doc_ref.set(dictionary)
+            await ctx.send(f"Suggestion `{suggestion}` has been accepted and will be implemented soon!")
         else:
             await ctx.reply("Please enter with either `yes` or `no`")
 
