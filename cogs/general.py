@@ -271,6 +271,7 @@ class General(commands.Cog):
                     cmds += cmd.name + "\n"
             cmds += "```"
 
+            print(cog_name)
             if count > 20:
                 #! if amount of commands on its own is too much to fit in one page, have its own page
                 pages.append(page)
@@ -307,6 +308,7 @@ class General(commands.Cog):
                 page.add_field(name=cog_name, value=cmds)
                 totalCount += count
 
+        pages.append(page)
         page_num = 0
         msg = await ctx.send(
             embed=pages[page_num],

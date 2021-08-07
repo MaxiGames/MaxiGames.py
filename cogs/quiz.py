@@ -135,6 +135,8 @@ class Games(commands.Cog):
             doc = doc_ref.get()
             if doc.exists:
                 dict1 = doc.to_dict()
+                if dict1 == None:
+                    dict1 = {}
                 if ans == str(results["correct_answer"]):
                     dict1["money"] = dict1["money"] + random.randint(0, moneyToAdd)
                     if "trivia" in dict1.keys():
@@ -220,10 +222,9 @@ class Games(commands.Cog):
                 "{}".format(str(ctx.author.id))
             )
             doc = doc_ref.get()
-            if doc.exists == False:
-                print("Nonexistant database")
-                return
             dict1 = doc.to_dict()
+            if dict1 == None:
+                dict1 = {}
             if msgcontent == theanswer:
                 added = random.randint(1, 3*bonus)
                 embed = discord.Embed(
