@@ -204,6 +204,7 @@ class General(commands.Cog):
     async def help(self, ctx, *cmd):
         if len(cmd) > 0:
             command = " ".join(cmd)
+            print(command)
             command = self.client.get_command(command.lower())
             if not command:
                 # ! Specified command not found
@@ -216,6 +217,10 @@ class General(commands.Cog):
                 )
                 return
             #! Command found 
+
+            if (isinstance(command, commands.Group)):
+                print(command.name)
+                print(command.commands)
             embed = discord.Embed(
                 title=f"Command `{command.name}`",
                 description=command.description,
@@ -266,6 +271,7 @@ class General(commands.Cog):
             count  = 0
             cmds = "```\n"
             for cmd in cog_commands:
+                # print(type(cmd))
                 count += 1
                 if cmd.hidden is False:
                     cmds += cmd.name + "\n"

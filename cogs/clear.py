@@ -11,7 +11,7 @@ class Clear(commands.Cog):
         self.hidden = False
 
     @check.is_admin()
-    @commands.group(invoke_without_subcommands=False)
+    @commands.group(invoke_without_subcommands=False, name="Clear", description="Deletes multiple messages at once", usage="clear <member> <search>")
     async def clear(self, ctx, member:typing.Optional[discord.Member]=None, number:typing.Optional[int]=None):  
         if ctx.invoked_subcommand is None:
             if member is None and number is not None:
@@ -61,6 +61,8 @@ class Clear(commands.Cog):
                 msg = await ctx.send(embed=embed)
                 await asyncio.sleep(3)
                 await msg.delete()
+            else:
+                pass
     
     @check.is_staff()
     @clear.command()

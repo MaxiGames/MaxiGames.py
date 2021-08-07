@@ -31,10 +31,10 @@ class Init(commands.Cog):
             description="Your account has been initiated. Now you can start running currency commands :D",
             colour=self.client.primary_colour,
         )
-        if isinstance(ctx, discord.Message):
-            await ctx.channel.send(embed=embed)
-        else:
-            await ctx.send(embed=embed)
+        # if isinstance(ctx, discord.Message):
+            # await ctx.channel.send(embed=embed)
+        # else:
+            # await ctx.send(embed=embed)
 
     async def serverinit(self, ctx):
         self.doc_ref = self.db.collection(u"servers").document(
