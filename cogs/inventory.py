@@ -16,7 +16,7 @@ class Inventory (commands.Cog):
         self.hidden = False
 
     @check.is_admin()
-    @commands.command(aliases=["addshop", "additem", "newitem"])
+    @commands.command(name="addShop", description = "Add an item to shop. Only admins can use this command.", usage = "addShop <item-name>", aliases=["addToShop", "addItem", "newItem"])
     async def _add_to_shop(self, ctx, price: int, *name):
         self.item = " ".join(name[:])
         self.doc_ref = self.db.collection(u'servers').document(u'{}'.format(str(ctx.guild.id)))
@@ -41,7 +41,7 @@ class Inventory (commands.Cog):
         else:
             await self.initation.serverinitiate(ctx)
     @check.is_admin()
-    @commands.command(aliases=["rs", "rshop", "removeitem", "ritem", "deleteitem", "ditem", "di"])
+    @commands.command(name="removeShop", aliases=["rs", "rShop", "removeItem", "rItem", "deleteItem", "dItem", "di"], usage="removeShop <item>", description="removes an item fromm the shop")
     async def removeshop(self, ctx, *msg):
         item = " ".join(msg[:])
         self.doc_ref = self.db.collection(u'servers').document(u'{}'.format(str(ctx.guild.id)))
@@ -72,7 +72,7 @@ class Inventory (commands.Cog):
         else:
             await self.initation.serverinitiate(ctx)
 
-    @commands.command(aliases=['shop', 's'])
+    @commands.command(name="shop", aliases=['shopList', 's'], description="lists the items in the shop", usage="shop")
     async def _shop(self, ctx):
         self.doc_ref = self.db.collection(u'servers').document(u'{}'.format(str(ctx.guild.id)))
         self.doc = self.doc_ref.get()
@@ -94,7 +94,7 @@ class Inventory (commands.Cog):
         self.embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
         await ctx.send(embed=self.embed, allowed_mentions=discord.AllowedMentions.none())
 
-    @commands.command(aliases=["bp", "inv", "backpack", "bag", "inventory"])
+    @commands.command(name="inventory", description="shows the user's inventory", usage="inventory", aliases=["bp", "inv", "backpack", "bag", "inventory"])
     async def _inv(self, ctx, user: discord.Member = None):
         if user is None:
             user = ctx.author
@@ -125,7 +125,7 @@ class Inventory (commands.Cog):
         embed.set_author(name=user.display_name, icon_url=user.avatar_url)
         await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
 
-    @commands.command()
+    @commands.command(name="buy", description="buy an item from the guild's shop", usage="buy <item>", aliases=["b", "purchase", "p", "buyItem", "pItem", "pi", "purchaseItem", "pItem"])
     async def buy(self, ctx, *hi):
         item = " ".join(hi[:])
         uid = str(ctx.author.id)
