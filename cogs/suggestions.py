@@ -180,7 +180,7 @@ class Suggestions(commands.Cog):
     )
     async def pm_suggestion(self, ctx, user: discord.Member, approval, *suggestion):
         suggestion = " ".join(suggestion[:])
-        if approval == "yes":
+        if approval == "no":
             await user.send(embed=discord.Embed(title="Suggestion declined", description=f"A moderator declined your suggestion `{suggestion}`.", colour=self.client.primary_colour))
             doc_ref = self.db.collection(u"declined_suggestions").document(u"{}".format(ctx.guild.id))
             dictionary = doc_ref.get().to_dict()
@@ -189,7 +189,7 @@ class Suggestions(commands.Cog):
             dictionary["arr"].append(suggestion)
             doc_ref.set(dictionary)
             await ctx.author.send(embed=discord.Embed(title="Suggestion declined", description=f"Your suggestion `{suggestion}` has been declined by a moderator.", colour=self.client.primary_colour))
-        elif approval == "no":
+        elif approval == "yes":
             await user.send(embed=discord.Embed(title="Suggestion accepted", description=f"Thank you for your suggestion `{suggestion}`, it has been accepted and currently being implemented. Be sure to follow <#871401628987686912> for updates if it does!", colour=self.client.primary_colour))
             doc_ref = self.db.collection(u"accepted_suggestions").document(u"{}".format(ctx.guild.id))
             dictionary = doc_ref.get().to_dict()
