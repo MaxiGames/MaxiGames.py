@@ -79,7 +79,7 @@ class Suggestions(commands.Cog):
             dictionary.append(suggestion)
             doc_ref.set(dictionary)
         elif reaction.emoji == "✅":
-            await ctx.author.send(embed=discord.Embed(title="Suggestion accepted", description=f"Thank you for your suggestion `{suggestion}`, it has been accepted and currently being implemented. Keep a look out for when it releases!", colour=self.client.primary_colour))
+            await ctx.author.send(embed=discord.Embed(title="Suggestion accepted", description=f"Thank you for your suggestion `{suggestion}`, it has been accepted and currently being implemented. Be sure to follow <#871401628987686912> for updates if it does!", colour=self.client.primary_colour))
             doc_ref = self.db.collection(u"accepted_suggestions").document(u"{}".format(ctx.guild.id))
             dictionary = doc_ref.get().to_dict()
             if dictionary == None:
@@ -143,13 +143,13 @@ class Suggestions(commands.Cog):
 
     @check.is_staff()
     @commands.command(
-        name="pmBugReport",
+        name="pmbugreport",
         description="Pm a user",
-        usage="pm-user <user> <suggestion> <message>",
+        usage="pmbugreport <user> <suggestion>",
         aliases=["pmuser", "pmuser-message"],
         hidden=True,
     )
-    async def pm_user(self, ctx, user: discord.Member, *suggestion):
+    async def pm_bugreport(self, ctx, user: discord.Member, *suggestion):
         suggestion = " ".join(suggestion[:])
         toDelete = await ctx.send("You have 1 minute to write a message to the user that submitted this bug report!")
         toDelete2 = 0
@@ -167,8 +167,37 @@ class Suggestions(commands.Cog):
             toDelete2 = await ctx.reply("1 minute is up, sending default message")
         
         await toDelete.delete()
-        await ctx.author.send(embed = discord.Embed(title="Bug Report Fixed!", description = f"Your bug report about {suggestion} has been fixed! The developer's reply: `{messageToUser}`"))
+        await user.send(embed = discord.Embed(title="Bug Report Fixed!", description = f"Your bug report about {suggestion} has been fixed! The developer's reply: `{messageToUser}`"))
         await toDelete2.delete()
+
+    @check.is_staff()
+    @commands.command(
+        name="pmsuggestion",
+        description="Pm a user",
+        usage="pmsuggest <user> <suggestion>",
+        aliases=["pmsuggest", "pms"],
+        hidden=True,
+    )
+    async def pm_suggestion(self, ctx, user: discord.Member, approval, *suggestion):
+        suggestion = " ".join(suggestion[:])
+        if approval == "yes":
+            await user.send(embed=discord.Embed(title="Suggestion declined", description=f"A moderator declined your suggestion `{suggestion}`.", colour=self.client.primary_colour))
+            doc_ref = self.db.collection(u"declined_suggestions").document(u"{}".format(ctx.guild.id))
+            dictionary = doc_ref.get().to_dict()
+            if dictionary == None:
+                dictionary = {"arr": []}
+            dictionary.append(suggestion)
+            doc_ref.set(dictionary)
+        elif approval == "no":
+            await user.send(embed=discord.Embed(title="Suggestion accepted", description=f"Thank you for your suggestion `{suggestion}`, it has been accepted and currently being implemented. Be sure to follow <#871401628987686912> for updates if it does!", colour=self.client.primary_colour))
+            doc_ref = self.db.collection(u"accepted_suggestions").document(u"{}".format(ctx.guild.id))
+            dictionary = doc_ref.get().to_dict()
+            if dictionary == None:
+                dictionary = {"arr": []}
+            dictionary["arr"].append(suggestion)
+            doc_ref.set(dictionary)
+        else:
+            await ctx.reply("Please enter with either `yes` or `no`")
 
 
 def setup(client):
