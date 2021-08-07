@@ -125,7 +125,7 @@ class General(commands.Cog):
     async def invite(self, ctx):
         embed = discord.Embed(
             title="Invite Link to invite the bot",
-            description="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=8&scope=bot",
+            description="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=261188091120&scope=bot%20applications.commands",
             color=self.client.primary_colour,
         )
         await ctx.send(embed=embed)
@@ -318,7 +318,7 @@ class General(commands.Cog):
                 Button(
                     style=ButtonStyle.URL,
                     label="Invite the bot!",
-                    url="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=8&scope=bot%20applications.commands",
+                    url="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=261188091120&scope=bot%20applications.commands",
                 ),
                 Button(
                     style=ButtonStyle.URL,
