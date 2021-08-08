@@ -1,17 +1,13 @@
 import json
 import discord
-from discord.ext import commands
 import os
-import time
 from client import Client
 
-from start import keep_alive
 import firebase_admin
 from firebase_admin import firestore
 from firebase_admin import credentials
-from discord_components import *
-from discord_slash import SlashCommand, SlashContext
-import threading
+from discord_components import DiscordComponents
+from discord_slash import SlashCommand
 import topgg
 
 def get_prefix(client, message):
