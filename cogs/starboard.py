@@ -106,6 +106,51 @@ class Starboard(commands.Cog):
 
         doc_ref.set(data)
 
+    @commands.Cog.listener()
+    async def on_reaction_remove(self, reaction, user):
+        self.init = self.client.get_cog("Init")
+        doc_ref = self.db.collection("servers").document(str(reaction.message.guild.id))
+        doc = doc_ref.get()
+        data = doc.to_dict()
+
+        if "starboard" not in data:
+            return
+
+        channel = self.client.get_channel(int(data["starboard"]["channel"]))
+        await self.init.checkserver(reaction.message)
+
+        if channel is None or reaction.count + 1 < data["starboard_threshold"] or reaction.emoji != "⭐":
+            return
+
+        msg = await channel.fetch_message(
+            data["starboard"][str(reaction.message.id)]
+        )
+
+        if reaction.count < data["starboard_threshold"]:
+            await msg.delete()  # just delete it; it is now below the threshold
+            return
+
+        e = (
+            discord.Embed(
+                title=f"Starred {reaction.count} times!",
+                description=f"[Click to jump to message]({reaction.message.jump_url})\n\n{reaction.message.content}",
+                color=0x00FF00,
+            )
+            .set_footer(text=f"React with {'⭐'} to star this message")
+            .set_author(
+                name=reaction.message.author.name,
+                icon_url=reaction.message.author.avatar_url,
+            )
+        )
+        if reaction.message.attachments != []:
+            for c in reaction.message.attachments:
+                e.set_image(url=c)
+
+        await msg.edit(embed=e)
+
+        doc_ref.set(data)
+        return
+
 
 def setup(client):
     client.add_cog(Starboard(client))
