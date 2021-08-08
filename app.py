@@ -10,7 +10,6 @@ from discord_components import DiscordComponents
 from discord_slash import SlashCommand
 import topgg
 
-print("hallo")
 def get_prefix(client, message):
     with open('prefix.json', 'r') as f: 
         prefixes = json.load(f) 
