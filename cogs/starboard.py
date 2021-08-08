@@ -17,7 +17,7 @@ class Starboard(commands.Cog):
         name="starboardThresh",
         description="Starts a starboard",
         usage="starboard <number of stars required>",
-        aliases=["startThresh", "starCount", "starboardCount", "starboardLimit"]
+        aliases=["starThresh", "starCount", "starboardCount", "starboardLimit"]
     )
     @cooldown(1, 15, BucketType.user)
     async def starboard_threshold(self, ctx, thresh: int = None):
