@@ -81,7 +81,7 @@ class Starboard(commands.Cog):
 
         e = (
             discord.Embed(
-                title=f"starred {reaction.count} times!",
+                title=f"Starred {reaction.count} times!",
                 description=f"[Click to jump to message]({reaction.message.jump_url})\n\n{reaction.message.content}",
                 color=0x00FF00,
             )
