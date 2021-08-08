@@ -21,7 +21,7 @@ def get_prefix(client, message):
 
 with open("config.json", "r") as file:
     data = json.load(file)
-    client = Client(command_prefix=(get_prefix), help_command=None)
+    client = Client(command_prefix=(get_prefix))
     client.topggpy = topgg.DBLClient(client, data["topggId"], autopost=True)
 
 cred = credentials.Certificate("serviceAccountKey.json")
