@@ -629,18 +629,7 @@ class Economy(commands.Cog):
                     color=self.client.primary_colour
                 )
                 await ctx.reply(embed=embed)
-            elif num < 250:
-                dict1["maxigamespins"] += 1
-                randm = "in a mall!"
-                if (random.randint(1,2) == 2):
-                    randm="on the floor!"
-                embed=discord.Embed(
-                    title="You found a Maxigames pin " + randm,
-                    description="View how many pins you have [idk, add to inventory?]",
-                    color=self.client.primary_colour
-                )
-                await ctx.reply(embed=embed)
-            elif num < 380:
+            elif num < 360:
                 dict1["money"] += 10
                 embed=discord.Embed(
                     title="You found a crumpled ten dollar bill on the floor!",
@@ -648,14 +637,36 @@ class Economy(commands.Cog):
                     color=self.client.primary_colour
                 )
                 await ctx.reply(embed=embed)
-                
-            else:
-                await ctx.reply("I need to code this...")
+            elif num < 390:
+                dict1["money"] += 69
+                embed=discord.Embed(
+                    title="You found a HUGE pile of coins on the floor, totaling to 69 dollars!",
+                    description="Money +69",
+                    color=self.client.primary_colour
+                )
+                await ctx.reply(embed=embed)
+            elif num < 465:
+                moneynow = dict1["money"]
+                to_remove = math.floor(moneynow/3)
+                dict1["money"] -= to_remove
+                embed=discord.Embed(
+                    title="A policeman caught you rummaging through the dumps and fined you a third of your money!",
+                    description="Money -" + str(to_remove),
+                    color=0xff0000
+                )
+                await ctx.reply(embed=embed)
+            elif num < 610:
+                embed=discord.Embed(
+                    title="Welp. You didn't find anything, but at least you didn't die :D",
+                    description="Money ±0",
+                    color=0xffff00
+                )
+                await ctx.reply(embed=embed)
         doc_ref.set(dict1)
     @commands.command(
         name="lottery",
-        description="Buy as many lottery tickets as you want :D",
-        usage="lottery [num num num num num num] (6 distinct numbers between 1 and 35)",
+        description="Buy as many lottery tickets as you want :D\nEach cost 10 dollars and you can win up to 900000 dollars.",
+        usage="lottery [num1 num2 num3 num4 num5 num6] (6 distinct numbers between 1 and 35)",
         aliases=["raffle","lotto"]
     )
     @cooldown(1,60,BucketType.user)
@@ -702,7 +713,7 @@ class Economy(commands.Cog):
             for j in range(6):
                 if msg[i] == correct[j]:
                     count += 1
-        win = [0,2,6,24,100,500,5000]
+        win = [0,2,60,600,2000,10000,90000]
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
@@ -730,19 +741,19 @@ class Economy(commands.Cog):
                 )
                 await ctx.reply(embed=embed)
             elif count == 1:
-                dict1["money"] += 40
+                dict1["money"] += 15
                 moneynow = dict1["money"]
                 embed=discord.Embed(
-                    title="You got 1 number correct! You won 2x your bet! You now have " + str(moneynow) + " money.",
+                    title="You got 1 number correct! You won 1.5x (15 coins)! You now have " + str(moneynow) + " money.",
                     description="Your guess was: " + " ".join(msg) + "\nThe correct guess was: " + " ".join(correct),
                     color=0xffff00
                 )
                 await ctx.reply(embed=embed)
             else:
-                dict1["money"] += win[count]
+                dict1["money"] += win[count]*10
                 moneynow = dict1["money"]
                 embed=discord.Embed(
-                    title="You got " + str(count) + " numbers correct! You won " + win[count] + "x your bet! You now have " + str(moneynow) + " money.",
+                    title="You got " + str(count) + " numbers correct! You won " + str(win[count]) + "x (" + str(win[count]) + "0 money)! You now have " + str(moneynow) + " money.",
                     description="Your guess was: " + " ".join(msg) + "\nThe correct guess was: " + " ".join(correct),
                     color=self.client.primary_colour
                 )
