@@ -76,42 +76,32 @@ class Starboard(commands.Cog):
         channel = self.client.get_channel(int(data["starboard"]["channel"]))
         await self.init.checkserver(reaction.message)
 
-        if channel is None:
+        if channel is None or reaction.count < data["starboard_threshold"] or reaction.emoji != "⭐":
             return
 
-        if reaction.count >= data["starboard_threshold"] and reaction.emoji == "⭐":
-            try:
-                msg = await channel.fetch_message(
-                    data["starboard"][str(reaction.message.id)]
-                )
-                await msg.edit(
-                    embed=discord.Embed(
-                        title=f"Starboard: {reaction.count}",
-                        description=reaction.message.content,
-                        color=0x00FF00,
-                    )
-                    .set_footer(text=f"React with {'⭐'} to star this message")
-                    .set_author(
-                        name=reaction.message.author.name,
-                        icon_url=reaction.message.author.avatar_url,
-                    )
-                )
-                doc_ref.set(data)
-            except KeyError:
-                message = await channel.send(
-                    embed=discord.Embed(
-                        title=f"Starboard: {reaction.count}",
-                        description=reaction.message.content,
-                        color=0x00FF00,
-                    )
-                    .set_footer(text=f"React with {'⭐'} to star this message")
-                    .set_author(
-                        name=reaction.message.author.name,
-                        icon_url=reaction.message.author.avatar_url,
-                    )
-                )
-                data["starboard"][str(reaction.message.id)] = message.id
-                doc_ref.set(data)
+        e = (
+            discord.Embed(
+                title=f"Starboard: {reaction.count}",
+                description=reaction.message.content,
+                color=0x00FF00,
+            )
+            .set_footer(text=f"React with {'⭐'} to star this message")
+            .set_author(
+                name=reaction.message.author.name,
+                icon_url=reaction.message.author.avatar_url,
+            )
+        )
+
+        if str(reaction.message.id) not in data["starboard"]:
+            message = await channel.send(embed=e)
+            data["starboard"][str(reaction.message.id)] = message.id
+        else:
+            msg = await channel.fetch_message(
+                data["starboard"][str(reaction.message.id)]
+            )
+            await msg.edit(embed=e)
+
+        doc_ref.set(data)
 
 
 def setup(client):
