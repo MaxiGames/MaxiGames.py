@@ -16,7 +16,12 @@ class Suggestions(commands.Cog):
     @check.is_banned()
     @commands.command(
         name="suggest",
-        description="Suggest anything that you want us to know about!!! Be it a game that you really want to be implemented, or some comments you have on what can be improved :D. Do note that if this is a bug, please do `m!bugReport` instead!",
+        description=(
+            "Suggest anything that you want us to know about!!! " +
+            "Be it a game that you really want to be implemented, " +
+            "or some comments you have on what can be improved :D. " +
+            "Do note that if this is a bug, please do `m!bugReport` instead!"
+        ),
         usage="suggest <suggestion>",
         aliases=["sug", "suggestadd","suggestion", "newSuggestion", "suggestions"],
     )
