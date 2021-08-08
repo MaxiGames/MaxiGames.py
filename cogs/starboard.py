@@ -92,7 +92,7 @@ class Starboard(commands.Cog):
                         description=reaction.message.content,
                         color=0x00FF00,
                     )
-                    .set_footer(text=f"React with {'🌟'} to star this message")
+                    .set_footer(text=f"React with {'⭐'} to star this message")
                     .set_author(
                         name=reaction.message.author.name,
                         icon_url=reaction.message.author.avatar_url,
@@ -106,7 +106,7 @@ class Starboard(commands.Cog):
                         description=reaction.message.content,
                         color=0x00FF00,
                     )
-                    .set_footer(text=f"React with {'🌟'} to star this message")
+                    .set_footer(text=f"React with {'⭐'} to star this message")
                     .set_author(
                         name=reaction.message.author.name,
                         icon_url=reaction.message.author.avatar_url,
