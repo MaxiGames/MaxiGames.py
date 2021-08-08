@@ -1,12 +1,8 @@
 import discord
 from discord.ext import commands
-import firebase_admin
-from firebase_admin import credentials
 from firebase_admin import firestore
 from utils import check
 from discord.ext.commands import cooldown, BucketType
-# import initiation
-# from utility import Utility
 
 class Inventory (commands.Cog):
     def __init__(self, client):
