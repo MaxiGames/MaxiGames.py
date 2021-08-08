@@ -651,14 +651,16 @@ class Economy(commands.Cog):
                 
             else:
                 await ctx.reply("I need to code this...")
+        doc_ref.set(dict1)
     @commands.command(
         name="lottery",
         description="Buy as many lottery tickets as you want :D",
-        usage="lottery [num num num num num num] (number between 1 and 35)",
+        usage="lottery [num num num num num num] (6 distinct numbers between 1 and 35)",
         aliases=["raffle","lotto"]
     )
     @cooldown(1,60,BucketType.user)
-    async def lottery(self,ctx,*msg:int):
+    async def lottery(self,ctx,*msgg:int):
+        msg = list(msgg)
         if len(msg) != 6:
             embed=discord.Embed(
                 title="You didn't enter 6 arguments!",
@@ -676,12 +678,75 @@ class Economy(commands.Cog):
                 )
                 await ctx.reply(embed=embed)
                 return
+        for i in range(6):
+            for j in range(i+1,6):
+                if msg[i] == msg[j]:
+                    embed=discord.Embed(
+                        title="You can't use the same number twice!",
+                        description="",
+                        color=0xff0000
+                    )
+                    await ctx.reply(embed=embed)
+                    return
+                    
         correct=[]
+        count = 0
         curr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]
         for i in range(6):
             elem = random.choice(curr)
             correct.append(elem)
             curr.remove(elem)
-
+        correct.sort()
+        msg.sort()
+        for i in range(6):
+            for j in range(6):
+                if msg[i] == correct[j]:
+                    count += 1
+        win = [0,2,6,24,100,500,5000]
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
+        doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
+        doc = doc_ref.get()
+        for i in range(6):
+            msg[i] = str(msg[i])
+            correct[i] = str(correct[i])
+        if doc.exists:
+            dict1 = doc.to_dict()
+            if dict1["money"] < 10:
+                embed=discord.Embed(
+                    title="You don't have enough money! You need 10 money.",
+                    description="",
+                    color=0xff0000
+                )
+                await ctx.reply(embed=embed)
+            
+            if count == 0:
+                dict1["money"] -= 10
+                moneynow = dict1["money"]
+                embed=discord.Embed(
+                    title="You didn't get any numbers correct! You lost your bet and now have " + str(moneynow) + " money.",
+                    description="Your guess was: " + " ".join(msg) + "\nThe correct guess was: " + " ".join(correct),
+                    color=0xff0000
+                )
+                await ctx.reply(embed=embed)
+            elif count == 1:
+                dict1["money"] += 40
+                moneynow = dict1["money"]
+                embed=discord.Embed(
+                    title="You got 1 number correct! You won 2x your bet! You now have " + str(moneynow) + " money.",
+                    description="Your guess was: " + " ".join(msg) + "\nThe correct guess was: " + " ".join(correct),
+                    color=0xffff00
+                )
+                await ctx.reply(embed=embed)
+            else:
+                dict1["money"] += win[count]
+                moneynow = dict1["money"]
+                embed=discord.Embed(
+                    title="You got " + str(count) + " numbers correct! You won " + win[count] + "x your bet! You now have " + str(moneynow) + " money.",
+                    description="Your guess was: " + " ".join(msg) + "\nThe correct guess was: " + " ".join(correct),
+                    color=self.client.primary_colour
+                )
+                await ctx.reply(embed=embed)
+        doc_ref.set(dict1)
 def setup(client):
     client.add_cog(Economy(client))
