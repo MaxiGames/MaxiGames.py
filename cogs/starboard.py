@@ -91,6 +91,9 @@ class Starboard(commands.Cog):
                 icon_url=reaction.message.author.avatar_url,
             )
         )
+        if reaction.message.attachments != []:
+            for c in reaction.message.attachments:
+                e.set_image(url=c)
 
         if str(reaction.message.id) not in data["starboard"]:
             message = await channel.send(embed=e)
