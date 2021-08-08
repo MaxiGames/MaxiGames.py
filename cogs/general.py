@@ -195,151 +195,151 @@ class General(commands.Cog):
         )
         await ctx.send(embed=embed)
 
-    @commands.command(
-        name="help",
-        description="Shows this help menu or information about a specific command if specified",
-        usage="help <command (optional)> ",
-    )
-    @cooldown(1, 5, BucketType.user)
-    async def help(self, ctx, *cmd):
-        if len(cmd) > 0:
-            command = " ".join(cmd)
-            print(command)
-            command = self.client.get_command(command.lower())
-            if not command:
-                # ! Specified command not found
-                await ctx.send(
-                    embed=discord.Embed(
-                        title="Non-existant command",
-                        description="This command cannot be found. Please make sure that everything is spelled correctly :D",
-                        colour=self.client.primary_colour,
-                    )
-                )
-                return
-            #! Command found 
+    # @commands.command(
+    #     name="help",
+    #     description="Shows this help menu or information about a specific command if specified",
+    #     usage="help <command (optional)> ",
+    # )
+    # @cooldown(1, 5, BucketType.user)
+    # async def help(self, ctx, *cmd):
+    #     if len(cmd) > 0:
+    #         command = " ".join(cmd)
+    #         print(command)
+    #         command = self.client.get_command(command.lower())
+    #         if not command:
+    #             # ! Specified command not found
+    #             await ctx.send(
+    #                 embed=discord.Embed(
+    #                     title="Non-existant command",
+    #                     description="This command cannot be found. Please make sure that everything is spelled correctly :D",
+    #                     colour=self.client.primary_colour,
+    #                 )
+    #             )
+    #             return
+    #         #! Command found 
 
-            if (isinstance(command, commands.Group)):
-                print(command.name)
-                print(command.commands)
-            embed = discord.Embed(
-                title=f"Command `{command.name}`",
-                description=command.description,
-                colour=self.client.primary_colour,
-            )
-            usage = "\n".join(
-                [ctx.prefix + x.strip() for x in command.usage.split("\n")]
-            )
-            embed.add_field(name="Usage", value=f"```{usage}```", inline=False)
-            if len(command.aliases) > 1:
-                embed.add_field(
-                    name="Aliases", value=f"`{'`, `'.join(command.aliases)}`"
-                )
-            elif len(command.aliases) > 0:
-                embed.add_field(name="Alias", value=f"`{command.aliases[0]}`")
-            await ctx.send(embed=embed)
-            return
-        #! No command specified, thus giving a list of all the commands
-        pages = []
-        page = discord.Embed(
-            title="Help",
-            description="""Hallo! Thank you for using Maxigames, a fun, random, cheerful and gambling-addiction-curbing bot developed as part of an initiative to curb gambling addiction and fill everyones' lives with bad puns, minigames and happiness!!!
+    #         if (isinstance(command, commands.Group)):
+    #             print(command.name)
+    #             print(command.commands)
+    #         embed = discord.Embed(
+    #             title=f"Command `{command.name}`",
+    #             description=command.description,
+    #             colour=self.client.primary_colour,
+    #         )
+    #         usage = "\n".join(
+    #             [ctx.prefix + x.strip() for x in command.usage.split("\n")]
+    #         )
+    #         embed.add_field(name="Usage", value=f"```{usage}```", inline=False)
+    #         if len(command.aliases) > 1:
+    #             embed.add_field(
+    #                 name="Aliases", value=f"`{'`, `'.join(command.aliases)}`"
+    #             )
+    #         elif len(command.aliases) > 0:
+    #             embed.add_field(name="Alias", value=f"`{command.aliases[0]}`")
+    #         await ctx.send(embed=embed)
+    #         return
+    #     #! No command specified, thus giving a list of all the commands
+    #     pages = []
+    #     page = discord.Embed(
+    #         title="Help",
+    #         description="""Hallo! Thank you for using Maxigames, a fun, random, cheerful and gambling-addiction-curbing bot developed as part of an initiative to curb gambling addiction and fill everyones' lives with bad puns, minigames and happiness!!!
 
-            Feel free to invite this bot to your own server from the link below, or even join our support server, if you have any questions or suggestions :D""",
-            colour=self.client.primary_colour,
-        )
-        page.set_author(
-            name=self.client.user.name, icon_url=self.client.user.avatar_url
-        )
-        page.set_footer(text="Press Next to see the commands")
-        pages.append(page)
+    #         Feel free to invite this bot to your own server from the link below, or even join our support server, if you have any questions or suggestions :D""",
+    #         colour=self.client.primary_colour,
+    #     )
+    #     page.set_author(
+    #         name=self.client.user.name, icon_url=self.client.user.avatar_url
+    #     )
+    #     page.set_footer(text="Press Next to see the commands")
+    #     pages.append(page)
 
-        page = discord.Embed(
-            title="Commands",
-            description="See all commmands that MaxiGame has to offer",
-            colour=self.client.primary_colour,
-        )
-        page.set_thumbnail(url=self.client.user.avatar_url)
+    #     page = discord.Embed(
+    #         title="Commands",
+    #         description="See all commmands that MaxiGame has to offer",
+    #         colour=self.client.primary_colour,
+    #     )
+    #     page.set_thumbnail(url=self.client.user.avatar_url)
 
-        totalCount = 0
-        for _, cog_name in enumerate(self.client.cogs):
-            cog = self.client.get_cog(cog_name)
-            if cog.hidden is True:
-                continue
-            cog_commands = cog.get_commands()
-            if len(cog_commands) == 0:
-                continue
-            count  = 0
-            cmds = "```\n"
-            for cmd in cog_commands:
-                # print(type(cmd))
-                count += 1
-                if cmd.hidden is False:
-                    cmds += cmd.name + "\n"
-            cmds += "```"
+    #     totalCount = 0
+    #     for _, cog_name in enumerate(self.client.cogs):
+    #         cog = self.client.get_cog(cog_name)
+    #         if cog.hidden is True:
+    #             continue
+    #         cog_commands = cog.get_commands()
+    #         if len(cog_commands) == 0:
+    #             continue
+    #         count  = 0
+    #         cmds = "```\n"
+    #         for cmd in cog_commands:
+    #             # print(type(cmd))
+    #             count += 1
+    #             if cmd.hidden is False:
+    #                 cmds += cmd.name + "\n"
+    #         cmds += "```"
 
-            print(cog_name)
-            if count > 20:
-                #! if amount of commands on its own is too much to fit in one page, have its own page
-                pages.append(page)
-                # give it its on page
-                page = discord.Embed(
-                    title="Commands",
-                    description="See all commands that MaxiGame has to offer",
-                    colour=self.client.primary_colour,
-                )
-                page.add_field(name=cog_name, value=cmds)
-                page.set_thumbnail(url=self.client.user.avatar_url)
-                pages.append(page)
+    #         print(cog_name)
+    #         if count > 20:
+    #             #! if amount of commands on its own is too much to fit in one page, have its own page
+    #             pages.append(page)
+    #             # give it its on page
+    #             page = discord.Embed(
+    #                 title="Commands",
+    #                 description="See all commands that MaxiGame has to offer",
+    #                 colour=self.client.primary_colour,
+    #             )
+    #             page.add_field(name=cog_name, value=cmds)
+    #             page.set_thumbnail(url=self.client.user.avatar_url)
+    #             pages.append(page)
                 
-                # reset page
-                page = discord.Embed(
-                    title="Commands",
-                    description="See all commands that MaxiGame has to offer",
-                    colour=self.client.primary_colour,
-                )
-                page.set_thumbnail(url=self.client.user.avatar_url)
-                totalCount = 0
-            elif totalCount + count > 20:
-                #! if amount of commands is too much to fit in one page, make a new page
-                pages.append(page)
-                totalCount = count
-                page = discord.Embed(
-                    title="Commands",
-                    description="See all commands that MaxiGame has to offer",
-                    colour=self.client.primary_colour,
-                )
-                page.add_field(name=cog_name, value=cmds)
-                page.set_thumbnail(url=self.client.user.avatar_url)
-            else:
-                page.add_field(name=cog_name, value=cmds)
-                totalCount += count
+    #             # reset page
+    #             page = discord.Embed(
+    #                 title="Commands",
+    #                 description="See all commands that MaxiGame has to offer",
+    #                 colour=self.client.primary_colour,
+    #             )
+    #             page.set_thumbnail(url=self.client.user.avatar_url)
+    #             totalCount = 0
+    #         elif totalCount + count > 20:
+    #             #! if amount of commands is too much to fit in one page, make a new page
+    #             pages.append(page)
+    #             totalCount = count
+    #             page = discord.Embed(
+    #                 title="Commands",
+    #                 description="See all commands that MaxiGame has to offer",
+    #                 colour=self.client.primary_colour,
+    #             )
+    #             page.add_field(name=cog_name, value=cmds)
+    #             page.set_thumbnail(url=self.client.user.avatar_url)
+    #         else:
+    #             page.add_field(name=cog_name, value=cmds)
+    #             totalCount += count
 
-        pages.append(page)
-        page_num = 0
-        msg = await ctx.send(
-            embed=pages[page_num],
-        )
-        buttons = [
-            [
-                Button(
-                    style=ButtonStyle.URL,
-                    label="Invite the bot!",
-                    url="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=261188091120&scope=bot%20applications.commands",
-                ),
-                Button(
-                    style=ButtonStyle.URL,
-                    label="Join support server!",
-                    url="https://discord.gg/BNm87Cvdx3",
-                ),
-                Button(
-                    style=ButtonStyle.URL,
-                    label="Vote for us!",
-                    url="https://top.gg/bot/863419048041381920",
-                ),
-            ]
-        ]
-        page = Paginator(self.client, ctx, msg, pages, buttons=buttons, timeout=60)
-        await page.start()
+    #     pages.append(page)
+    #     page_num = 0
+    #     msg = await ctx.send(
+    #         embed=pages[page_num],
+    #     )
+    #     buttons = [
+    #         [
+    #             Button(
+    #                 style=ButtonStyle.URL,
+    #                 label="Invite the bot!",
+    #                 url="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=261188091120&scope=bot%20applications.commands",
+    #             ),
+    #             Button(
+    #                 style=ButtonStyle.URL,
+    #                 label="Join support server!",
+    #                 url="https://discord.gg/BNm87Cvdx3",
+    #             ),
+    #             Button(
+    #                 style=ButtonStyle.URL,
+    #                 label="Vote for us!",
+    #                 url="https://top.gg/bot/863419048041381920",
+    #             ),
+    #         ]
+    #     ]
+    #     page = Paginator(self.client, ctx, msg, pages, buttons=buttons, timeout=60)
+    #     await page.start()
 
     @commands.command(
         name="randnum",
