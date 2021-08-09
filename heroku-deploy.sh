@@ -1,4 +1,4 @@
-#! /usr/bin/sh
+#! /bin/sh
 
 if [ ! $(git branch --show-current) = "main" ]; then
     echo "Can only deploy from branch main."
