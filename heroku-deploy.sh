@@ -37,8 +37,7 @@ git commit --allow-empty -m heroku >/dev/null 2>&1  # please just shut up as wel
 git stash >/dev/null 2>&1
 
 if [ $s1 -eq 0 ]; then
-    heroku restart >/dev/null 2>&1 
-    heroku buildpacks:clear >/dev/null 2>&1 
+    heroku builds:clear >/dev/null 2>&1 
     git push -fq heroku main 2>&1 | sed 's/^remote: //g; s/^-----//g; s/^     //g; /^[ \t]*$/d'
     cleanup
     exit 0
