@@ -39,7 +39,7 @@ git stash >/dev/null 2>&1
 if [ $s1 -eq 0 ]; then
     heroku restart >/dev/null 2>&1 
     heroku buildpacks:clear >/dev/null 2>&1 
-    git push -fq heroku main 2>&1 | sed 's/^remote: //g'
+    git push -fq heroku main 2>&1 | sed 's/^remote: //g; s/^-----//g; s/^     //g; /^[ \t]*$/d'
     cleanup
     exit 0
 else
