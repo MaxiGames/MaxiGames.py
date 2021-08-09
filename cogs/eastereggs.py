@@ -10,7 +10,7 @@ class EasterEggs(commands.Cog):
         self.client = client
         self.hidden = True
    
-    @commands.command(hidden=True, aliases=["whoareu"])
+    @commands.command(hidden=True, aliases=["whoareu"], help="Easter eggs?")
     async def whoru(self, ctx):
         embed = discord.Embed(
             title="Hey! Looks like you found this easter egg!",
@@ -26,7 +26,7 @@ class EasterEggs(commands.Cog):
             name="Are there more easter eggs?", value="Yes of course ^_^.", inline=False
         )
         await ctx.author.send(embed=embed)
-    @commands.command(hidden=True,aliases=["gamblingisbad"])
+    @commands.command(hidden=True,aliases=["gamblingisbad"], help="Easter eggs?")
     async def gamblingbad(self,ctx):
         embed=discord.Embed(
             title = "EASTER EGG FOUND! Glad you realised that gambling is bad :D",

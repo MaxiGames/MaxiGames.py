@@ -7,7 +7,7 @@ error_colour = discord.Colour.teal()
 
 with open("config.json", "r") as file:
     data = json.load(file)
-    prefix = data["prefixBeta"]
+    prefix = data["prefix"]
     file.close()
 
 icon_url = "www.google.com"

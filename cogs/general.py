@@ -343,7 +343,7 @@ class General(commands.Cog):
 
     @commands.command(
         name="randnum",
-        description="Gives you a random number between the two numbers you specified.",
+        help="Gives you a random number between the two numbers you specified.",
         usage="randnum <minimum number> <maximum number>",
     )
     @cooldown(1, 5, BucketType.user)
@@ -353,7 +353,7 @@ class General(commands.Cog):
 
     @commands.command(
         name = "empty",
-        description = "Gives you an empty unicode character.",
+        help = "Gives you an empty unicode character.",
         usage = "empty"
     )
     @cooldown(1, 5, BucketType.user)
@@ -362,7 +362,7 @@ class General(commands.Cog):
 
     @commands.command(
         name="fibo",
-        description="Returns the nth fibonacci number, where n is the number you input.",
+        help="Returns the nth fibonacci number, where n is the number you input.",
         usage="fibo <number>",
     )
     @cooldown(1, 5, BucketType.user)
@@ -411,7 +411,7 @@ class General(commands.Cog):
 
     @commands.command(
         name="bigdice",
-        description="rolls a specified number of dice with a specified number of faces that you can specify.",
+        help="rolls a specified number of dice with a specified number of faces that you can specify.",
         usage="bigdice <number of faces for each dice> <number of dice>",
     )
     @cooldown(1, 10, BucketType.user)
@@ -460,7 +460,7 @@ class General(commands.Cog):
 
     @commands.command(
         name="dice",
-        description="rolls the number of dice you specify.",
+        help="rolls the number of dice you specify.",
         usage="dice <number of dice>",
     )
     @cooldown(1, 10, BucketType.user)
@@ -489,7 +489,7 @@ class General(commands.Cog):
 
     @commands.command(
         name="numprop",
-        description="tells you the property of a number you specify!",
+        help="tells you the property of a number you specify!",
         usage="numprop <number>",
     )
     @cooldown(1, 5, BucketType.user)
@@ -590,7 +590,7 @@ class General(commands.Cog):
 
     @commands.command(
         name="lmgtfy",
-        description="Command that creats a Let Me Google That For You link for all your queries!",
+        help="Command that creats a Let Me Google That For You link for all your queries!",
         usage="lmgtfy",
     )
     @cooldown(1, 30, BucketType.user)
@@ -608,7 +608,7 @@ class General(commands.Cog):
     
     @commands.command(
         name="choose",
-        description="Chooses a random choice from the set of words given",
+        help="Chooses a random choice from the set of words given",
         usage="choose <choices space-separated>",
     )
     @cooldown(1, 5, BucketType.user)
@@ -623,7 +623,7 @@ class General(commands.Cog):
     
     @commands.command(
         name="kawaii",
-        description="Makes what you say kawaii <3",
+        help="Makes what you say kawaii <3",
         usage="kawaii <message>",
     )
     @cooldown(1, 10, BucketType.user)
@@ -671,7 +671,7 @@ class General(commands.Cog):
     
     @commands.command(
         name="getsettings",
-        description="Views current MaxiGames settings :D",
+        help="Views current MaxiGames settings :D",
         usage="getsettings",
         aliases=["gs", "tux"],
     )
@@ -692,7 +692,7 @@ class General(commands.Cog):
 
     @commands.command(
         name="randcol",
-        description = "Gives you an embed with a random color :D",
+        help = "Gives you an embed with a random color :D",
         usage = "randcol",
         aliases=["randomcol","randomcolor","randomcolour","randcolour","randcolor"]
     )
@@ -703,7 +703,7 @@ class General(commands.Cog):
     @cooldown(1,10,BucketType.user)
     @commands.command(
         name="ship",
-        description="How well do two things (names, objects, discord tags etc.) fit together based on complements, similarity and length difference",
+        help="How well do two things (names, objects, discord tags etc.) fit together based on complements, similarity and length difference",
         usage="ship [name1] [name2]",
         aliases=["matchmake","matchmaking","match"]
     )
@@ -739,7 +739,7 @@ class General(commands.Cog):
 
     @commands.command(
         name="vote",
-        description="Voting link to vote the bot",
+        help="Voting link to vote the bot",
         usage="vote",
         aliases=["v","upvote"]
     )

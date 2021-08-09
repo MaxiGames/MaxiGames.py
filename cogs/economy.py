@@ -22,7 +22,7 @@ class Economy(commands.Cog):
 
     # Curb gambling addiction
     @check.is_banned()
-    @commands.command(name="coinflip", description="provide 2 arguments, the choice of your coin: head/tail, and the amount you want to bet", aliases= ["cf"], usage="coinflip <choice> <amount>")
+    @commands.command(name="coinflip", help="provide 2 arguments, the choice of your coin: head/tail, and the amount you want to bet", aliases= ["cf"], usage="coinflip <choice> <amount>")
     @cooldown(1, 8, BucketType.user)
     async def _coinflip(self, ctx, choice: str, amount: int = 1):
         self.initation = self.client.get_cog("Init")
@@ -101,7 +101,7 @@ class Economy(commands.Cog):
 
     @commands.command(
         name="gamble",
-        description="Try to beat the computer at dice rolling. Keep rolling until you're happy :D",
+        help="Try to beat the computer at dice rolling. Keep rolling until you're happy :D",
         aliases=["g", "gg", "bet", "roll"],
         usage="gamble <amount>",
     )
@@ -213,7 +213,7 @@ class Economy(commands.Cog):
     @check.is_banned()
     @commands.command(
         name="money",
-        description="Allows you to get a source of unlimited points :O",
+        help="Allows you to get a source of unlimited points :O",
         usage="money",
         aliases=["m"],
     )
@@ -250,7 +250,7 @@ class Economy(commands.Cog):
 
     @check.is_banned()
     @commands.command(name="bal",
-        description="Allows you to check your current balance",
+        help="Allows you to check your current balance",
         usage="bal",
         aliases=["balance", "b"],)
     @cooldown(1, 5, BucketType.user)
@@ -282,7 +282,7 @@ class Economy(commands.Cog):
 
     @commands.command(
         name="leaderboard",
-        description="Shows you the richest and most wealthy people in the server you are in :O",
+        help="Shows you the richest and most wealthy people in the server you are in :O",
         usage="leaderboard",
         aliases=["l", "rich", "r", " l"],
     )
@@ -323,7 +323,7 @@ class Economy(commands.Cog):
 
     @commands.command(
         name="hourly",
-        description="Hourly points :D",
+        help="Hourly points :D",
         usage="hourly",
         aliases=["h"],
     )
@@ -355,7 +355,7 @@ class Economy(commands.Cog):
 
     @commands.command(
         name="daily",
-        description="Daily points :D",
+        help="Daily points :D",
         usage="daily",
         aliases=["d"],
     )
@@ -458,7 +458,7 @@ class Economy(commands.Cog):
     @check.is_banned()
     @commands.command(
         name="snake eyes",
-        description="A random dice game that everyone loves.",
+        help="A random dice game that everyone loves.",
         usage="snakeeyes",
         aliases=["se", "snakeyes"],
     )
@@ -600,7 +600,7 @@ class Economy(commands.Cog):
     
     @commands.command(
         name="search",
-        description="Look for stuff! Who knows what you might get.",
+        help="Look for stuff! Who knows what you might get.",
         usage="search",
         aliases=["scout","find"]
     )
@@ -665,7 +665,7 @@ class Economy(commands.Cog):
         doc_ref.set(dict1)
     @commands.command(
         name="lottery",
-        description="Buy as many lottery tickets as you want :D\nEach cost 10 dollars and you can win up to 900000 dollars.",
+        help="Buy as many lottery tickets as you want :D\nEach cost 10 dollars and you can win up to 900000 dollars.",
         usage="lottery [num1 num2 num3 num4 num5 num6] (6 distinct numbers between 1 and 35)",
         aliases=["raffle","lotto"]
     )

@@ -16,7 +16,7 @@ class Connect4(commands.Cog):
 
     @commands.command(
         name="connect4",
-        description="play connect4 with another player",
+        help="play connect4 with another player",
         usage="connect4",
     )
     @cooldown(1, 75, BucketType.user)

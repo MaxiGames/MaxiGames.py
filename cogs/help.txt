@@ -117,6 +117,41 @@ class CustomHelpCommand(HelpCommand):
         page = Paginator(self.cog.client, self.context, msg, pages, buttons=buttons, timeout=60)
         await page.start()
         return await super().send_bot_help(mapping)
+    
+
+
+    async def send_command_help(self, command):
+        if command.hidden or (command.cog is not None and command.cog.hidden):
+            return
+        embed = discord.Embed(
+            title=f"Command `{command.name}`",
+            description=command.help,
+            colour=self.cog.client.primary_colour,
+        )
+        usage = "\n".join(
+            [self.context.prefix + command.name + " " + x.strip() for x in command.usage.split("\n")]
+        )
+        embed.add_field(name="Usage", value=f"```{usage}```", inline=False)
+        if len(command.aliases) > 1:
+            embed.add_field(
+                name="Aliases", value=f"`{'`, `'.join(command.aliases)}`"
+            )
+        elif len(command.aliases) > 0:
+            embed.add_field(name="Alias", value=f"`{command.aliases[0]}`")
+        await self.context.send(embed=embed)
+        return
+    
+    async def send_cog_help(self, cog):
+        print("cog help")
+        return await super().send_cog_help(cog)
+
+    async def send_group_help(self, group):
+        print("group helo")
+        return await super().send_group_help(group)
+    
+    async def send_error_message(self, error):
+        print("error")
+        return await super().send_error_message(error)
 
 
 

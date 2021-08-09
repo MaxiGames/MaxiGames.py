@@ -25,7 +25,7 @@ class Ticket(commands.Cog):
     
 
     @commands.command(
-        name="newTicket", description="Creates a new message that reacts so one can make a ticket", usage="newTicket", alias=["nt","ticket"]
+        name="newTicket", help="Creates a new message that reacts so one can make a ticket", usage="newTicket", alias=["nt","ticket"]
     )
     async def newticket(self, ctx):
         embed = discord.Embed(

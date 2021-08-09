@@ -15,7 +15,7 @@ class Starboard(commands.Cog):
     @check.is_admin()
     @commands.command(
         name="starboardThresh",
-        description="Starts a starboard",
+        help="Starts a starboard",
         usage="starboard <number of stars required>",
         aliases=["starThresh", "starCount", "starboardCount", "starboardLimit"]
     )
@@ -41,7 +41,7 @@ class Starboard(commands.Cog):
     @check.is_admin()
     @commands.command(
         name="starboard",
-        description="Sets the starboard to the current channel or the specified one",
+        help="Sets the starboard to the current channel or the specified one",
         usage="starboard <channel>",
         alias=["star", "starboardSet"]
     )

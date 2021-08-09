@@ -26,7 +26,7 @@ class Games(commands.Cog):
     
     @commands.command(
         name="trivia",
-        description="Answer a trivia question using reactions! Provide a number from 1 to 3 specifying the difficulty of the trivia question you want. Note that this is taken from https://opentdb.com/",
+        help="Answer a trivia question using reactions! Provide a number from 1 to 3 specifying the difficulty of the trivia question you want. Note that this is taken from https://opentdb.com/",
         usage="trivia <difficulty>",
         alias=["funfact", "fact"]
     )
@@ -171,7 +171,7 @@ class Games(commands.Cog):
 
     @commands.command(
         name="math",
-        description="Answer a math question correctly to gain coins. If you don't get it correct you lose coins!",
+        help="Answer a math question correctly to gain coins. If you don't get it correct you lose coins!",
         usage="math",
     )
     @cooldown(1, 15, BucketType.user)
@@ -255,7 +255,7 @@ class Games(commands.Cog):
             await ctx.reply(embed=embed)
 
     @commands.command(
-        name="scramble", description="Try to unscramble a word!", usage="m!scramble"
+        name="scramble", help="Try to unscramble a word!", usage="m!scramble"
     )
     @cooldown(1, 300, BucketType.user)
     async def scramble(self, ctx):

@@ -19,7 +19,7 @@ class Mastermind(commands.Cog):
 
     @commands.command(
         name="mastermind",
-        description="Play a game of mastermind :D",
+        help="Play a game of mastermind :D",
         usage = "mastermind",
         aliases = ["mm"]
     )

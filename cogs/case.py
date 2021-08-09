@@ -6,7 +6,7 @@ class Case(commands.Cog):
 				self.client = client
 				self.hidden = False
 				
-		@commands.command(name="camelcase", description="Converts a string to camelcase", aliases=["cc"], usage="camelcase <string>")
+		@commands.command(name="camelcase", help="Converts a string to camelcase", aliases=["cc"], usage="camelcase <string>")
 		async def cc(self, ctx, *message):
 			count = 0
 			newMessage = []
@@ -20,7 +20,7 @@ class Case(commands.Cog):
 				count+=1
 			await ctx.reply(embed=discord.Embed(title="CamelCase", description=f"{''.join(newMessage)}", color=0x00ff00))
 
-		@commands.command(name="pascalcase", description="Converts a string to pascalcase", aliases=["pc"], usage="pascalcase <string>")
+		@commands.command(name="pascalcase", help="Converts a string to pascalcase", aliases=["pc"], usage="pascalcase <string>")
 		async def pc(self, ctx, *message):
 			count = 0
 			newMessage = []
@@ -29,11 +29,11 @@ class Case(commands.Cog):
 				count+=1
 			await ctx.reply(embed=discord.Embed(title="PascalCase", description=f"{''.join(newMessage)}", color=0x00ff00))
 		
-		@commands.command(name="snakecase", description="Converts a string to snakecase", aliases=["snake"], usage="snakecase <string>")
+		@commands.command(name="snakecase", help="Converts a string to snakecase", aliases=["snake"], usage="snakecase <string>")
 		async def snake(self, ctx, *message):
 			await ctx.reply(embed=discord.Embed(title="SnakeCase", description=f"{'_'.join(message)}", color=0x00ff00))
 		
-		@commands.command(name="uppercase", description="Converts a string to uppercase", aliases=["upper"], usage="uppercase <string>")
+		@commands.command(name="uppercase", help="Converts a string to uppercase", aliases=["upper"], usage="uppercase <string>")
 		async def upper(self, ctx, *message):
 			count = 0
 			newMessage = []
@@ -42,7 +42,7 @@ class Case(commands.Cog):
 				count+=1
 			await ctx.reply(embed=discord.Embed(title="UpperCase", description=f"{' '.join(newMessage)}", color=0x00ff00))
 
-		@commands.command(name="lowercase", description="Converts a string to lowercase", aliases=["lower"], usage="lowercase <string>")
+		@commands.command(name="lowercase", help="Converts a string to lowercase", aliases=["lower"], usage="lowercase <string>")
 		async def lower(self, ctx, *message):
 			count = 0
 			newMessage = []
@@ -51,7 +51,7 @@ class Case(commands.Cog):
 				count+=1
 			await ctx.reply(embed=discord.Embed(title="LowerCase", description=f"{' '.join(newMessage)}", color=0x00ff00))
 		
-		@commands.command(name = "lispcase", description="Converts a string to lispcase", aliases=["lisp"], usage="lispcase <string>")
+		@commands.command(name = "lispcase", help="Converts a string to lispcase", aliases=["lisp"], usage="lispcase <string>")
 		async def lisp(self, ctx, *message):
 			await ctx.reply(embed=discord.Embed(title="LispCase", description=f"{'-'.join(message)}", color=0x00ff00))
 

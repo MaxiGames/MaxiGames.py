@@ -16,7 +16,7 @@ class Suggestions(commands.Cog):
     @check.is_banned()
     @commands.command(
         name="suggest",
-        description=(
+        help=(
             "Suggest anything that you want us to know about!!! " +
             "Be it a game that you really want to be implemented, " +
             "or some comments you have on what can be improved :D. " +
@@ -95,7 +95,7 @@ class Suggestions(commands.Cog):
     @check.is_banned()
     @commands.command(
         name="bugReport",
-        description="Report bugs!",
+        help="Report bugs!",
         usage="bugreport <suggestion>",
         aliases=["report", "br", "bug","reportBug"],
     )
@@ -149,7 +149,7 @@ class Suggestions(commands.Cog):
     @check.is_staff()
     @commands.command(
         name="pmBugReport",
-        description="Pm a user",
+        help="Pm a user",
         usage="pmBugReport <user> <suggestion>",
         aliases=["dmUser", "pmUserMessage"],
         hidden=True,
@@ -178,7 +178,7 @@ class Suggestions(commands.Cog):
     @check.is_staff()
     @commands.command(
         name="pmSuggestion",
-        description="Pm a user",
+        help="Pm a user",
         usage="pmSuggest <user> <yes/no> <suggestion>",
         aliases=["pmSuggest", "pms"],
         hidden=True,

@@ -18,7 +18,7 @@ class Counting(commands.Cog):
     @check.is_admin()
     @commands.command(
         name="countingchanneladd",
-        description="Sets a counting channel by specifing the channel",
+        help="Sets a counting channel by specifing the channel",
         usage="counting-channel-add <channel-id>",
         aliases=["countca", "counting-channel-add"],
     )
@@ -86,7 +86,7 @@ class Counting(commands.Cog):
     @check.is_admin()
     @commands.command(
         name="countingchannelrm",
-        description="Remove a counting channe by specifying the channel name",
+        help="Remove a counting channe by specifying the channel name",
         usage="countingchannelrm <channel>",
         aliases=[
             "countcr",
@@ -129,7 +129,7 @@ class Counting(commands.Cog):
 
     @commands.command(
         name="counting-leaderboard-user",
-        description="Show the leaderboard for users in this server and your position",
+        help="Show the leaderboard for users in this server and your position",
         usage="counting-leaderboard-user",
         aliases=["countlu","countleaderboard"],
     )

@@ -77,7 +77,7 @@ class Hangman(commands.Cog):
         page = Paginator(self.client, ctx, msg, pages, timeout=120)
         await page.start()
     
-    @commands.command(name="hangman", description="Play a hangman game and potentially win points!", usage="hangman")
+    @commands.command(name="hangman", help="Play a hangman game and potentially win points!", usage="hangman")
     @cooldown(1, 30, BucketType.user)
     async def hangman(self, ctx):
         #! Hangman Firebase Initalisation
@@ -296,7 +296,7 @@ class Hangman(commands.Cog):
             await message.reply(embed=embed)
             doc_ref.set(data)
             
-    @commands.command(title="hangmanLB", description="The leaderboard for hangman", aliases=["hangmanleaderboard"])
+    @commands.command(title="hangmanLB", help="The leaderboard for hangman", aliases=["hangmanleaderboard"])
     @cooldown(1, 15, BucketType.user)
     async def hangmanLB(self, ctx):
         await leaderboard_generate(self, ctx, "hangman")
