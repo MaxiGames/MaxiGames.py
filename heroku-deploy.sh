@@ -37,7 +37,7 @@ git commit --allow-empty -m heroku >/dev/null 2>&1  # please just shut up as wel
 if [ $s1 -eq 0 ]; then
     heroku restart >/dev/null 2>&1 
     heroku buildpacks:clear >/dev/null 2>&1 
-    git push -fq heroku main | sed 's/^remote: //g'
+    git push -fq heroku main 2>&1 | sed 's/^remote: //g'
 else
     echo 'Failed to add config files. Abort.'
     cleanup
