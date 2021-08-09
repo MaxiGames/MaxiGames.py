@@ -161,12 +161,14 @@ class CustomHelpCommand(HelpCommand):
         for command_s in commands:
             page = discord.Embed(
                 title=f'Commands for {group.qualified_name}',
-                description=f"All the cool commands under {group.qualified_name}",
+                description=group.help,
                 colour=self.cog.client.primary_colour
             )
             page.set_author(name=self.cog.client.user.name, icon_url=self.cog.client.user.avatar_url)
             for command in command_s:
-                page.add_field(name=command.name, value=command.help, inline=False)
+                if command.usage is None:
+                    page.add_field(name=f'{command.name}', value=command.help, inline=False)
+                page.add_field(name=f'{command.name} {command.usage}', value=command.help, inline=False)
             pages.append(page)
         msg = await self.context.send(
             embed=pages[0],
