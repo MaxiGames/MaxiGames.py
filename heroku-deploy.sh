@@ -28,7 +28,7 @@ if [ $s -eq 0 ]; then
 
     if [ $s1 -eq 0 ]; then
         heroku restart
-        heroku builds:clear
+        heroku buildpacks:clear
         git push -f heroku main
     else
         echo 'Failed to add config files...'
