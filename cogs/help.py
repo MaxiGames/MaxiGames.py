@@ -168,7 +168,8 @@ class CustomHelpCommand(HelpCommand):
             for command in command_s:
                 if command.usage is None:
                     page.add_field(name=f'{command.name}', value=command.help, inline=False)
-                page.add_field(name=f'{command.name} {command.usage}', value=command.help, inline=False)
+                else:
+                    page.add_field(name=f'{command.name} {command.usage}', value=command.help, inline=False)
             pages.append(page)
         msg = await self.context.send(
             embed=pages[0],
