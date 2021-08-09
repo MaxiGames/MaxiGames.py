@@ -15,11 +15,10 @@ bruh=0  # bruh
 function cleanup()
 {
     if [ $bruh -eq 0 ]; then
-        echo "Cleaning up, unarchiving configs."
+        echo "Cleaning up."
         git reset --hard HEAD~ >/dev/null 2>&1  # oh, shut up
         tar xf tar >/dev/null 2>&1  # you shut up too
         rm -f tar
-        echo "Cleaning up, unarchiving configs complete."
         bruh=1
     fi
 }
