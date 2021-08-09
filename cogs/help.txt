@@ -128,30 +128,64 @@ class CustomHelpCommand(HelpCommand):
             description=command.help,
             colour=self.cog.client.primary_colour,
         )
-        usage = "\n".join(
-            [self.context.prefix + command.name + " " + x.strip() for x in command.usage.split("\n")]
-        )
-        embed.add_field(name="Usage", value=f"```{usage}```", inline=False)
+        if command.usage is not None:
+            usage = "\n".join(
+                [self.context.prefix + command.name + " " + x.strip() for x in command.usage.split("\n")]
+            )
+            embed.add_field(name="Usage", value=f"```{usage}```", inline=False)
         if len(command.aliases) > 1:
             embed.add_field(
                 name="Aliases", value=f"`{'`, `'.join(command.aliases)}`"
             )
         elif len(command.aliases) > 0:
             embed.add_field(name="Alias", value=f"`{command.aliases[0]}`")
+        embed.set_author(name=self.cog.client.user.name, icon_url=self.cog.client.user.avatar_url)
         await self.context.send(embed=embed)
         return
     
     async def send_cog_help(self, cog):
-        print("cog help")
-        return await super().send_cog_help(cog)
+        if cog.hidden:
+            return
+        return
 
     async def send_group_help(self, group):
-        print("group helo")
-        return await super().send_group_help(group)
+        if group.hidden:
+            return
+        if group.cog.hidden:
+            return
+        commands = list(group.commands)
+        if len(commands) == 0:
+            self.send_command_help(group)
+        pages = []
+        commands = [commands[i:i + 5] for i in range(0, len(commands), 5)]
+        for command_s in commands:
+            page = discord.Embed(
+                title=f'Commands for {group.qualified_name}',
+                description=f"All the cool commands under {group.qualified_name}",
+                colour=self.cog.client.primary_colour
+            )
+            page.set_author(name=self.cog.client.user.name, icon_url=self.cog.client.user.avatar_url)
+            for command in command_s:
+                page.add_field(name=command.name, value=command.help, inline=False)
+            pages.append(page)
+        msg = await self.context.send(
+            embed=pages[0],
+        )
+        page = Paginator(self.cog.client, self.context, msg, pages, timeout=60)
+        await page.start()
+        
+        
+        
     
     async def send_error_message(self, error):
-        print("error")
-        return await super().send_error_message(error)
+        embed = discord.Embed(
+            title="Command not Found",
+            description=f'{error} Please check that your spelling and capitalisation is correct :D',
+            colour = self.cog.client.primary_colour,
+        )
+        embed.set_author(name=self.cog.client.user.name, icon_url=self.cog.client.user.avatar_url)
+        await self.context.send(embed=embed)
+
 
 
 
