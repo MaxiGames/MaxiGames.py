@@ -27,6 +27,8 @@ if [ $s -eq 0 ]; then
     git commit --allow-empty -m heroku
 
     if [ $s1 -eq 0 ]; then
+        heroku restart
+        heroku builds:clear
         git push -f heroku main
     else
         echo 'Failed to add config files...'
