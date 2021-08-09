@@ -22,7 +22,7 @@ class Economy(commands.Cog):
 
     # Curb gambling addiction
     @check.is_banned()
-    @commands.command(name="coinflip", help="provide 2 arguments, the choice of your coin: head/tail, and the amount you want to bet", aliases= ["cf"], usage="coinflip <choice> <amount>")
+    @commands.command(name="coinflip", help="provide 2 arguments, the choice of your coin: head/tail, and the amount you want to bet", aliases= ["cf"], usage="<choice> <amount>")
     @cooldown(1, 8, BucketType.user)
     async def _coinflip(self, ctx, choice: str, amount: int = 1):
         self.initation = self.client.get_cog("Init")
@@ -103,7 +103,7 @@ class Economy(commands.Cog):
         name="gamble",
         help="Try to beat the computer at dice rolling. Keep rolling until you're happy :D",
         aliases=["g", "gg", "bet", "roll"],
-        usage="gamble <amount>",
+        usage="<amount>",
     )
     @cooldown(1, 8, BucketType.user)
     async def _gamble(self, ctx, amount: int = 5):
@@ -214,7 +214,7 @@ class Economy(commands.Cog):
     @commands.command(
         name="money",
         help="Allows you to get a source of unlimited points :O",
-        usage="money",
+        usage="",
         aliases=["m"],
     )
     @cooldown(1, 3, BucketType.user)
@@ -251,7 +251,7 @@ class Economy(commands.Cog):
     @check.is_banned()
     @commands.command(name="bal",
         help="Allows you to check your current balance",
-        usage="bal",
+        usage="",
         aliases=["balance", "b"],)
     @cooldown(1, 5, BucketType.user)
     async def bal(self, ctx):
@@ -283,7 +283,7 @@ class Economy(commands.Cog):
     @commands.command(
         name="leaderboard",
         help="Shows you the richest and most wealthy people in the server you are in :O",
-        usage="leaderboard",
+        usage="",
         aliases=["l", "rich", "r", " l"],
     )
     @cooldown(1, 10, BucketType.user)
@@ -324,7 +324,7 @@ class Economy(commands.Cog):
     @commands.command(
         name="hourly",
         help="Hourly points :D",
-        usage="hourly",
+        usage="",
         aliases=["h"],
     )
     @cooldown(1, 3600, BucketType.user)
@@ -356,7 +356,7 @@ class Economy(commands.Cog):
     @commands.command(
         name="daily",
         help="Daily points :D",
-        usage="daily",
+        usage="",
         aliases=["d"],
     )
     @cooldown(1, 86400, BucketType.user)
@@ -423,7 +423,7 @@ class Economy(commands.Cog):
     @commands.command(
         name="seboost",
         description="Experimental function that boosts ur se luck :o",
-        usage="seboost",
+        usage="",
         aliases=["seb"] 
     )
     @cooldown(1,100,BucketType.user)
@@ -459,7 +459,7 @@ class Economy(commands.Cog):
     @commands.command(
         name="snake eyes",
         help="A random dice game that everyone loves.",
-        usage="snakeeyes",
+        usage="",
         aliases=["se", "snakeyes"],
     )
     @cooldown(1, 10, BucketType.user)
@@ -601,7 +601,7 @@ class Economy(commands.Cog):
     @commands.command(
         name="search",
         help="Look for stuff! Who knows what you might get.",
-        usage="search",
+        usage="",
         aliases=["scout","find"]
     )
     @cooldown(1,60,BucketType.user)
@@ -666,7 +666,7 @@ class Economy(commands.Cog):
     @commands.command(
         name="lottery",
         help="Buy as many lottery tickets as you want :D\nEach cost 10 dollars and you can win up to 900000 dollars.",
-        usage="lottery [num1 num2 num3 num4 num5 num6] (6 distinct numbers between 1 and 35)",
+        usage="[num1 num2 num3 num4 num5 num6] (6 distinct numbers between 1 and 35)",
         aliases=["raffle","lotto"]
     )
     @cooldown(1,60,BucketType.user)

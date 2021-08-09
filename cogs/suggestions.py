@@ -179,7 +179,7 @@ class Suggestions(commands.Cog):
     @commands.command(
         name="pmSuggestion",
         help="Pm a user",
-        usage="pmSuggest <user> <yes/no> <suggestion>",
+        usage="<user> <yes/no> <suggestion>",
         aliases=["pmSuggest", "pms"],
         hidden=True,
     )

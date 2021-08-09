@@ -16,7 +16,7 @@ class Starboard(commands.Cog):
     @commands.command(
         name="starboardThresh",
         help="Starts a starboard",
-        usage="starboard <number of stars required>",
+        usage="<number of stars required>",
         aliases=["starThresh", "starCount", "starboardCount", "starboardLimit"]
     )
     @cooldown(1, 15, BucketType.user)
@@ -42,7 +42,7 @@ class Starboard(commands.Cog):
     @commands.command(
         name="starboard",
         help="Sets the starboard to the current channel or the specified one",
-        usage="starboard <channel>",
+        usage="<channel>",
         alias=["star", "starboardSet"]
     )
     @cooldown(1, 15, BucketType.user)

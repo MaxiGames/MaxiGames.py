@@ -27,7 +27,7 @@ class Games(commands.Cog):
     @commands.command(
         name="trivia",
         help="Answer a trivia question using reactions! Provide a number from 1 to 3 specifying the difficulty of the trivia question you want. Note that this is taken from https://opentdb.com/",
-        usage="trivia <difficulty>",
+        usage="<difficulty>",
         alias=["funfact", "fact"]
     )
     @cooldown(1, 15, BucketType.user)
@@ -164,7 +164,7 @@ class Games(commands.Cog):
                     await ctx.reply(embed=embed)
                 doc_ref.set(dict1)
 
-    @commands.command(name="triviaLB", description="retrieves the trivia leaderboard", aliases=["trivialeaderboard"], usage="triviaLB")
+    @commands.command(name="triviaLB", description="retrieves the trivia leaderboard", aliases=["trivialeaderboard"], usage="")
     @cooldown(1, 10, BucketType.user)
     async def trivia_leaderboard(self, ctx):
         await leaderboard_generate(self, ctx, "trivia")
@@ -172,7 +172,7 @@ class Games(commands.Cog):
     @commands.command(
         name="math",
         help="Answer a math question correctly to gain coins. If you don't get it correct you lose coins!",
-        usage="math",
+        usage="",
     )
     @cooldown(1, 15, BucketType.user)
     async def math(self, ctx):
@@ -255,7 +255,7 @@ class Games(commands.Cog):
             await ctx.reply(embed=embed)
 
     @commands.command(
-        name="scramble", help="Try to unscramble a word!", usage="m!scramble"
+        name="scramble", help="Try to unscramble a word!", usage=""
     )
     @cooldown(1, 300, BucketType.user)
     async def scramble(self, ctx):

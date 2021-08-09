@@ -17,7 +17,7 @@ class Connect4(commands.Cog):
     @commands.command(
         name="connect4",
         help="play connect4 with another player",
-        usage="connect4",
+        usage="",
     )
     @cooldown(1, 75, BucketType.user)
     async def connect4(self, ctx):

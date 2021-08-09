@@ -19,7 +19,7 @@ class Counting(commands.Cog):
     @commands.command(
         name="countingchanneladd",
         help="Sets a counting channel by specifing the channel",
-        usage="counting-channel-add <channel-id>",
+        usage="<channel>",
         aliases=["countca", "counting-channel-add"],
     )
     async def counting_channel_add(self, ctx, channelarg: str = None):
@@ -87,7 +87,7 @@ class Counting(commands.Cog):
     @commands.command(
         name="countingchannelrm",
         help="Remove a counting channe by specifying the channel name",
-        usage="countingchannelrm <channel>",
+        usage="<channel>",
         aliases=[
             "countcr",
             "countingchannelremove",
@@ -130,7 +130,7 @@ class Counting(commands.Cog):
     @commands.command(
         name="counting-leaderboard-user",
         help="Show the leaderboard for users in this server and your position",
-        usage="counting-leaderboard-user",
+        usage="",
         aliases=["countlu","countleaderboard"],
     )
     async def counting_leaderboard_user(self, ctx):

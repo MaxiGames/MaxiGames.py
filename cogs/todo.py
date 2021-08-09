@@ -51,7 +51,7 @@ class Todo(commands.Cog):
         await ctx.send(embed=embed)
 
     @check.is_staff()
-    @commands.command(name="todoRemove", help="Remove an item to the todo list!", alias=["todoRem", "todoR", "tRem"], usage="todoRem <task>")
+    @commands.command(name="todoRemove", help="Remove an item to the todo list!", alias=["todoRem", "todoR", "tRem"], usage="<task>")
     @cooldown(1, 3, BucketType.user)
     async def todoRem(self, ctx, number):
         self.initation = self.client.get_cog("Init")

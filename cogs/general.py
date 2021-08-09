@@ -96,7 +96,7 @@ class General(commands.Cog):
     @commands.command(
         name="ns",
         description="Makes an intriguing triangle made of ^ symbols.",
-        usage = "ns",
+        usage = "",
         aliases = ["triangle","notstonks"]
     )
     @cooldown(1, 15, BucketType.user)
@@ -119,7 +119,7 @@ class General(commands.Cog):
     @commands.command(
         name="invite",
         description="Gives you a link for you to invite the bot to your server!",
-        usage="invite"
+        usage=""
     )
     @cooldown(1, 20, BucketType.user)
     async def invite(self, ctx):
@@ -132,7 +132,7 @@ class General(commands.Cog):
     @commands.command(
         name="official",
         description="Gives you a discord invite link to the bot's official server!",
-        usage = "official"
+        usage = ""
     )
     @cooldown(1, 20, BucketType.user)
     async def official(self, ctx):
@@ -146,7 +146,7 @@ class General(commands.Cog):
     @commands.command(
         name="whoami",
         description="Gives a bit of information about you",
-        usage="whoami"
+        usage=""
     )
     @cooldown(1, 60, BucketType.user)
     async def whoami(self, ctx):
@@ -184,7 +184,7 @@ class General(commands.Cog):
     @commands.command(
         name="servercount",
         description="Shows how many servers the bot is in :D",
-        usage = "servercount"
+        usage = ""
     )
     @cooldown(1, 60, BucketType.user)
     async def servercount(self, ctx):
@@ -344,7 +344,7 @@ class General(commands.Cog):
     @commands.command(
         name="randnum",
         help="Gives you a random number between the two numbers you specified.",
-        usage="randnum <minimum number> <maximum number>",
+        usage="<minimum number> <maximum number>",
     )
     @cooldown(1, 5, BucketType.user)
     async def randnum(self, ctx, start: int, end: int):
@@ -354,7 +354,7 @@ class General(commands.Cog):
     @commands.command(
         name = "empty",
         help = "Gives you an empty unicode character.",
-        usage = "empty"
+        usage = ""
     )
     @cooldown(1, 5, BucketType.user)
     async def empty(self, ctx):
@@ -363,7 +363,7 @@ class General(commands.Cog):
     @commands.command(
         name="fibo",
         help="Returns the nth fibonacci number, where n is the number you input.",
-        usage="fibo <number>",
+        usage="<number>",
     )
     @cooldown(1, 5, BucketType.user)
     async def fibo(self, ctx, num: int):
@@ -412,7 +412,7 @@ class General(commands.Cog):
     @commands.command(
         name="bigdice",
         help="rolls a specified number of dice with a specified number of faces that you can specify.",
-        usage="bigdice <number of faces for each dice> <number of dice>",
+        usage="<number of faces for each dice> <number of dice>",
     )
     @cooldown(1, 10, BucketType.user)
     async def bigdice(self, ctx, sides: int, num: int):
@@ -461,7 +461,7 @@ class General(commands.Cog):
     @commands.command(
         name="dice",
         help="rolls the number of dice you specify.",
-        usage="dice <number of dice>",
+        usage="<number of dice>",
     )
     @cooldown(1, 10, BucketType.user)
     async def dice(self, ctx, num: int):
@@ -490,7 +490,7 @@ class General(commands.Cog):
     @commands.command(
         name="numprop",
         help="tells you the property of a number you specify!",
-        usage="numprop <number>",
+        usage="<number>",
     )
     @cooldown(1, 5, BucketType.user)
     async def numprop(self, ctx, num: int):
@@ -591,7 +591,7 @@ class General(commands.Cog):
     @commands.command(
         name="lmgtfy",
         help="Command that creats a Let Me Google That For You link for all your queries!",
-        usage="lmgtfy",
+        usage="",
     )
     @cooldown(1, 30, BucketType.user)
     async def lmgtfy(self, ctx, *quer: str):
@@ -609,7 +609,7 @@ class General(commands.Cog):
     @commands.command(
         name="choose",
         help="Chooses a random choice from the set of words given",
-        usage="choose <choices space-separated>",
+        usage="<choices space-separated>",
     )
     @cooldown(1, 5, BucketType.user)
     async def choose(self, ctx, *choices: str):
@@ -624,7 +624,7 @@ class General(commands.Cog):
     @commands.command(
         name="kawaii",
         help="Makes what you say kawaii <3",
-        usage="kawaii <message>",
+        usage="<message>",
     )
     @cooldown(1, 10, BucketType.user)
     async def kawaii(self, ctx, *msg: str):
@@ -672,7 +672,7 @@ class General(commands.Cog):
     @commands.command(
         name="getsettings",
         help="Views current MaxiGames settings :D",
-        usage="getsettings",
+        usage="",
         aliases=["gs", "tux"],
     )
     @check.is_staff()
@@ -693,7 +693,7 @@ class General(commands.Cog):
     @commands.command(
         name="randcol",
         help = "Gives you an embed with a random color :D",
-        usage = "randcol",
+        usage = "",
         aliases=["randomcol","randomcolor","randomcolour","randcolour","randcolor"]
     )
     @cooldown(1,15,BucketType.user)
@@ -704,7 +704,7 @@ class General(commands.Cog):
     @commands.command(
         name="ship",
         help="How well do two things (names, objects, discord tags etc.) fit together based on complements, similarity and length difference",
-        usage="ship [name1] [name2]",
+        usage="[name1] [name2]",
         aliases=["matchmake","matchmaking","match"]
     )
     async def ship(self,ctx,fne:str,sne:str):
@@ -740,7 +740,7 @@ class General(commands.Cog):
     @commands.command(
         name="vote",
         help="Voting link to vote the bot",
-        usage="vote",
+        usage="",
         aliases=["v","upvote"]
     )
     @cooldown(1, 10, BucketType.user)

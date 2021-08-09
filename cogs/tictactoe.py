@@ -11,7 +11,7 @@ class TicTacToe(commands.Cog):
     @commands.command(
         name="ttt",
         help="tic tac toe game u can play with your friend!",
-        usage="ttt",
+        usage="",
         alias=["tictactoe"],
     )
     @cooldown(1, 25, BucketType.user)

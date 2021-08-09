@@ -77,7 +77,7 @@ class Hangman(commands.Cog):
         page = Paginator(self.client, ctx, msg, pages, timeout=120)
         await page.start()
     
-    @commands.command(name="hangman", help="Play a hangman game and potentially win points!", usage="hangman")
+    @commands.command(name="hangman", help="Play a hangman game and potentially win points!", usage="")
     @cooldown(1, 30, BucketType.user)
     async def hangman(self, ctx):
         #! Hangman Firebase Initalisation

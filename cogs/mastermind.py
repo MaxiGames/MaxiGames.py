@@ -20,7 +20,7 @@ class Mastermind(commands.Cog):
     @commands.command(
         name="mastermind",
         help="Play a game of mastermind :D",
-        usage = "mastermind",
+        usage = "",
         aliases = ["mm"]
     )
     @cooldown(1,30,BucketType.user)
