@@ -31,7 +31,7 @@ class CustomHelpCommand(HelpCommand):
 
         page = discord.Embed(
             title="Commands",
-            description="See all commmands that MaxiGame has to offer",
+            description=f"See all commmands that MaxiGame has to offer! Do {self.clean_prefix}help <command> to get more information :D",
             colour=self.cog.client.primary_colour,
         )
         page.set_thumbnail(url=self.cog.client.user.avatar_url)
