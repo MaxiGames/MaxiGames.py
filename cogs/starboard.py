@@ -83,7 +83,7 @@ class Starboard(commands.Cog):
             discord.Embed(
                 title=f"Starred {reaction.count} times!",
                 description=f"[Click to jump to message]({reaction.message.jump_url})\n\n{reaction.message.content}",
-                color=0x00FF00,
+                color=self.client.primary_colour,
             )
             .set_footer(text=f"React with {'⭐'} to star this message")
             .set_author(

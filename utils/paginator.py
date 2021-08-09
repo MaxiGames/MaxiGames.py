@@ -236,10 +236,7 @@ class Paginator:
                 ]
                 component = copy.copy(self.buttons)
                 component.append(add_on_buttons)
-                if component != [[]]:
-                    await self.message.edit(
-                        embed=self.pages[self.page_num], components=copy.copy(component)
-                    )
-                else:
-                    await self.message.delete()
+                await self.message.edit(
+                    embed=self.pages[self.page_num], components=copy.copy(component)
+                )
                 return

@@ -18,11 +18,10 @@ class Errors(commands.Cog):
                 description="You are not authorised to use this command.",
                 colour=self.client.error_colour,
             )
-            channel = self.client.get_channel(866526918484164668)
             embed.set_author(
                 name=ctx.author.display_name, icon_url=ctx.author.avatar_url
             )
-            await channel.send(embed=embed)
+            await ctx.send(embed=embed)
 
         elif isinstance(error, commands.MissingPermissions):
             embed = discord.Embed(
@@ -30,11 +29,10 @@ class Errors(commands.Cog):
                 description="You do not have permission to run this command. It might be because it is a command only for admins, or because you have been banned.",
                 colour=self.client.error_colour,
             )
-            channel = self.client.get_channel(866526918484164668)
             embed.set_author(
                 name=ctx.author.display_name, icon_url=ctx.author.avatar_url
             )
-            await channel.send(embed=embed)
+            await ctx.send(embed=embed)
 
         elif isinstance(error, commands.CommandOnCooldown):
             embed = discord.Embed(
