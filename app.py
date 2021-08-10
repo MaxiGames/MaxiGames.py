@@ -1,14 +1,23 @@
 import json
-import discord
 import os
-from client import Client
+import sys
 
+import discord
+from client import Client
 import firebase_admin
 from firebase_admin import firestore
 from firebase_admin import credentials
 from discord_components import DiscordComponents
 from discord_slash import SlashCommand
 import topgg
+
+# simple arguments -- for now just Beta or Release
+beta = True
+if sys.argv[1] == "r":
+    print("Running Release version of bot")
+    beta = False
+else:
+    print("Running Beta version of bot")
 
 def get_prefix(client, message):
     with open('prefix.json', 'r') as f: 
@@ -22,7 +31,7 @@ with open("config.json", "r") as file:
     client = Client(command_prefix=(get_prefix), intents=intents)
     client.topggpy = topgg.DBLClient(client, data["topggId"], autopost=True)
 
-cred = credentials.Certificate("serviceAccountKey.json")
+cred = credentials.Certificate("serviceAccountKey2.json") if beta else credentials.Certificate("serviceAccountKey.json") 
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
@@ -51,4 +60,7 @@ async def on_ready():
 
 with open("config.json", "r") as file:
     data = json.load(file)
-    client.run(data["tokenId"])
+    if beta:
+        client.run(data["tokenIdBeta"])
+    else:
+        client.run(data["tokenId"])
