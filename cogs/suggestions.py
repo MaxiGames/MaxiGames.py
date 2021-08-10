@@ -150,7 +150,7 @@ class Suggestions(commands.Cog):
     @commands.command(
         name="pmBugReport",
         help="Pm a user",
-        usage="pmBugReport <user> <suggestion>",
+        usage="<user> <suggestion>",
         aliases=["dmUser", "pmUserMessage"],
         hidden=True,
     )

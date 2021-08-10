@@ -22,7 +22,6 @@ class Init(commands.Cog):
                 u"countingsaves": 0,
                 u"name": str(ctx.author.name),
                 u"seboosted": False,
-                u"maxigamespins": 0,
             }
         )
         await self.serverinit(ctx)
