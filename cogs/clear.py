@@ -11,7 +11,7 @@ class Clear(commands.Cog):
         self.hidden = False
 
     @check.is_admin()
-    @commands.group(invoke_without_subcommands=False, name="clear", description="A perfect set of commands for easily deleting messages!", usage="[member] <search>", help="Deletes messages ")
+    @commands.group(invoke_without_subcommands=False, name="clear", description="A perfect set of commands for easily deleting messages!", usage="[member] <search>", help="Deletes messages (optionally from specific member). Ignores pinned messages :D")
     async def clear(self, ctx, member:typing.Optional[discord.Member]=None, number:typing.Optional[int]=None):  
         if ctx.invoked_subcommand is None:
             if member is None and number is not None:
@@ -67,7 +67,7 @@ class Clear(commands.Cog):
                 await ctx.send_help(self.clear)
     
     @check.is_staff()
-    @clear.command()
+    @clear.command(usage="[search=100]", help="Removes all messages (max. 100 unless specified otherwise).")
     async def all(self, ctx, search: int=100):
         if str(ctx.channel.id) in self.channels:
             await ctx.send("A clear is in progress. Try again later :D")
@@ -88,7 +88,7 @@ class Clear(commands.Cog):
         await asyncio.sleep(3)
         await msg.delete()
 
-    @clear.command()
+    @clear.command(usage="[search=100]", help="Removes all messages from bot accounts, up to 100 unless otherwise specified.")
     async def bot(self, ctx, search: int=100):
         if str(ctx.channel.id) in self.channels:
             await ctx.send("A clear is in progress. Try again later :D")
@@ -109,7 +109,7 @@ class Clear(commands.Cog):
         await asyncio.sleep(3)
         await msg.delete()
 
-    @clear.command()
+    @clear.command(usage="[search=100]", help="Removes all messages from non-bot accounts, up to 100 unless otherwise specified.")
     async def human(self, ctx, search: int=100):
         if str(ctx.channel.id) in self.channels:
             await ctx.send("A clear is in progress. Try again later :D")
@@ -131,7 +131,7 @@ class Clear(commands.Cog):
         await msg.delete()
     
     @check.is_admin()
-    @clear.command()
+    @clear.command(usage="[search=100] <substr>", help="Removes all messages containing a specified substring. Up to 100 messages unless otherwise specified.")
     async def contains(self, ctx, number:typing.Optional[int]=100, *, substr: str):
         if str(ctx.channel.id) in self.channels:
             await ctx.send("A clear is in progress. Try again later :D")
