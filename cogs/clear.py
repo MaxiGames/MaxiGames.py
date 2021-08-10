@@ -11,7 +11,7 @@ class Clear(commands.Cog):
         self.hidden = False
 
     @check.is_admin()
-    @commands.group(invoke_without_subcommands=False, name="clear", help="Deletes multiple messages at once", usage="<member> <search>")
+    @commands.group(invoke_without_subcommands=False, name="clear", description="A perfect set of commands for easily deleting messages!", usage="[member] <search>", help="Deletes messages ")
     async def clear(self, ctx, member:typing.Optional[discord.Member]=None, number:typing.Optional[int]=None):  
         if ctx.invoked_subcommand is None:
             if member is None and number is not None:
@@ -21,13 +21,15 @@ class Clear(commands.Cog):
                     return
                     # clear in progress
                 await ctx.message.delete()
+                def check(m):
+                    return not m.pinned
                 self.channels.append(str(ctx.channel.id))
-                messages = await ctx.channel.purge(limit=number)
+                messages = await ctx.channel.purge(limit=number, check=check)
                 
                 self.channels.remove(str(ctx.channel.id))
                 embed = discord.Embed(
                     title=f"Messages deleted :D",
-                    description=f"{len(messages)} messages has been deleted from {ctx.channel.name}.",
+                    description=f"{len(messages)} messages has been deleted from {ctx.channel.mention}.",
                     colour = self.client.primary_colour
                 )
                 msg = await ctx.send(embed=embed)
@@ -41,7 +43,7 @@ class Clear(commands.Cog):
                     # clear in progress
                 await ctx.message.delete()
                 def check(m):
-                    return m.author == member and m.channel == ctx.channel
+                    return m.author == member and m.channel == ctx.channel and not m.pinned
                 self.channels.append(str(ctx.channel.id))
                 counter = 0
                 async for message in ctx.channel.history():
@@ -55,14 +57,14 @@ class Clear(commands.Cog):
                 self.channels.remove(str(ctx.channel.id))
                 embed = discord.Embed(
                     title=f"{counter} messages deleted :D",
-                    description=f"{counter} messages by {member.mention} has been deleted from {ctx.channel.name}.",
+                    description=f"{counter} messages by {member.mention} has been deleted from {ctx.channel.mention}.",
                     colour = self.client.primary_colour
                 )
                 msg = await ctx.send(embed=embed)
                 await asyncio.sleep(3)
                 await msg.delete()
             else:
-                pass
+                await ctx.send_help(self.clear)
     
     @check.is_staff()
     @clear.command()
@@ -72,12 +74,14 @@ class Clear(commands.Cog):
             return
             # clear in progress
         self.channels.append(str(ctx.channel.id))
-        messages = await ctx.channel.purge(limit=search)
+        def check(m):
+            return not m.pinned
+        messages = await ctx.channel.purge(limit=search, check=check)
         
         self.channels.remove(str(ctx.channel.id))
         embed = discord.Embed(
             title=f"Messages deleted :D",
-            description=f"{len(messages)} messages has been deleted from {ctx.channel.name}.",
+            description=f"{len(messages)} messages has been deleted from {ctx.channel.mention}.",
             colour = self.client.primary_colour
         )
         msg = await ctx.send(embed=embed)
@@ -90,15 +94,15 @@ class Clear(commands.Cog):
             await ctx.send("A clear is in progress. Try again later :D")
             return
             # clear in progress
-        def check(message):
-            return message.author.bot
+        def check(m):
+            return m.author.bot and not m.pinned
         self.channels.append(str(ctx.channel.id))
         messages = await ctx.channel.purge(limit=search, check=check)
         
         self.channels.remove(str(ctx.channel.id))
         embed = discord.Embed(
             title=f"Messages deleted :D",
-            description=f"{len(messages)} messages has been deleted from {ctx.channel.name}.",
+            description=f"{len(messages)} messages has been deleted from {ctx.channel.mention}.",
             colour = self.client.primary_colour
         )
         msg = await ctx.send(embed=embed)
@@ -111,15 +115,15 @@ class Clear(commands.Cog):
             await ctx.send("A clear is in progress. Try again later :D")
             return
             # clear in progress
-        def check(message):
-            return not message.author.bot
+        def check(m):
+            return not (m.author.bot) and not m.pinned
         self.channels.append(str(ctx.channel.id))
         messages = await ctx.channel.purge(limit=search, check=check)
         
         self.channels.remove(str(ctx.channel.id))
         embed = discord.Embed(
             title=f"Messages deleted :D",
-            description=f"{len(messages)} messages has been deleted from {ctx.channel.name}.",
+            description=f"{len(messages)} messages has been deleted from {ctx.channel.mention}.",
             colour = self.client.primary_colour
         )
         msg = await ctx.send(embed=embed)
@@ -128,7 +132,7 @@ class Clear(commands.Cog):
     
     @check.is_admin()
     @clear.command()
-    async def contains(self, ctx, number:typing.Optional[int]=None, *, substr: str):
+    async def contains(self, ctx, number:typing.Optional[int]=100, *, substr: str):
         if str(ctx.channel.id) in self.channels:
             await ctx.send("A clear is in progress. Try again later :D")
             return
@@ -136,24 +140,15 @@ class Clear(commands.Cog):
         await ctx.message.delete()
         self.channels.append(str(ctx.channel.id))
 
-        if number is not None:
-            counter = 0
-            async for message in ctx.channel.history():
-                if counter >= number:
-                    break
-                if substr in message.content:
-                    counter += 1
-                    await message.delete()
-        else:
-            def check(m):
-                return substr in m.content
-            messages = await ctx.channel.purge(check=check)
-            counter = len(messages)
+        def check(m):
+            return substr in m.content and not m.pinned
+        messages = await ctx.channel.purge(limit=number, check=check)
+        counter = len(messages)
         
         self.channels.remove(str(ctx.channel.id))
         embed = discord.Embed(
             title=f"Messages deleted :D",
-            description=f"{counter} messages that includes {substr} has been deleted from {ctx.channel.name}.",
+            description=f"{counter} messages that includes {substr} has been deleted from {ctx.channel.mention}.",
             colour = self.client.primary_colour
         )
         msg = await ctx.send(embed=embed)
