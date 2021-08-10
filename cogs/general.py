@@ -581,7 +581,7 @@ class General(commands.Cog):
         length_to_do = min(len(fn),len(sn))
         for i in range(length_to_do):
             alpha_index = alpha.index(fn[i])
-            distance = min(alpha.index(sn[i])-alpha_index,abs(35-alpha.index(sn[i])-alpha_index))
+            distance = min(abs(alpha.index(sn[i])-alpha_index),abs(35-alpha.index(sn[i])-alpha_index))
             total_mismatch += distance
         percentage_match = round((35*length_to_do - total_mismatch)/(35*length_to_do)*100*min(len(fn),len(sn))/max(len(fn),len(sn)))
         
