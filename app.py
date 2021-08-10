@@ -13,7 +13,7 @@ import topgg
 
 # simple arguments -- for now just Beta or Release
 beta = True
-if sys.argv[1] == "r":
+if len(sys.argv) > 1 and sys.argv[1] == "r":
     print("Running Release version of bot")
     beta = False
 else:
