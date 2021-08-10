@@ -156,12 +156,13 @@ class CustomHelpCommand(HelpCommand):
         commands = list(group.commands)
         if len(commands) == 0:
             self.send_command_help(group)
+        commands.insert(0, group)
         pages = []
         commands = [commands[i:i + 5] for i in range(0, len(commands), 5)]
         for command_s in commands:
             page = discord.Embed(
-                title=f'Commands for {group.qualified_name}',
-                description=group.help,
+                title=f'Commands for {group.qualified_name} ({len(commands)} commands)',
+                description=group.description,
                 colour=self.cog.client.primary_colour
             )
             page.set_author(name=self.cog.client.user.name, icon_url=self.cog.client.user.avatar_url)
