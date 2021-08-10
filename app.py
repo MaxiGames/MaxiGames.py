@@ -22,7 +22,7 @@ with open("config.json", "r") as file:
     client = Client(command_prefix=(get_prefix), intents=intents)
     client.topggpy = topgg.DBLClient(client, data["topggId"], autopost=True)
 
-cred = credentials.Certificate("serviceAccountKey.json")
+cred = credentials.Certificate("serviceAccountKey2.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
