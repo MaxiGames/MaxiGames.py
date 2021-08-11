@@ -9,7 +9,7 @@ class Todo(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.db = firestore.client()
-        self.initation = self.client.get_cog("Init")
+        self.init = self.client.get_cog("Init")
         self.hidden = True
 
     @check.is_staff()
@@ -17,8 +17,8 @@ class Todo(commands.Cog):
     @cooldown(1, 3, BucketType.user)
     async def todoAdd(self, ctx, *msg):
         task = " ".join(msg)
-        self.initation = self.client.get_cog("Init")
-        await self.initation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
         doc = doc_ref.get()
         data = doc.to_dict()
@@ -33,8 +33,8 @@ class Todo(commands.Cog):
     @commands.command(name="todoList", help="Show your current todo list!", alias=["todo", "listTodo"], usage="todoList")
     @cooldown(1, 3, BucketType.user)
     async def todo(self, ctx):
-        self.initation = self.client.get_cog("Init")
-        await self.initation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
         doc = doc_ref.get()
         data = doc.to_dict()
@@ -54,8 +54,8 @@ class Todo(commands.Cog):
     @commands.command(name="todoRemove", help="Remove an item to the todo list!", alias=["todoRem", "todoR", "tRem"], usage="<task>")
     @cooldown(1, 3, BucketType.user)
     async def todoRem(self, ctx, number):
-        self.initation = self.client.get_cog("Init")
-        await self.initation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
         doc = doc_ref.get()
         data = doc.to_dict()

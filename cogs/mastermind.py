@@ -197,7 +197,7 @@ class Mastermind(commands.Cog):
                     correct_guess = False
                     break
             if correct_guess:
-                self.initation = self.client.get_cog("Init")
+                self.init = self.client.get_cog("Init")
                 await self.init.checkserver(ctx)
                 doc_ref = self.db.collection("users").document(
                     "{}".format(str(ctx.author.id))
