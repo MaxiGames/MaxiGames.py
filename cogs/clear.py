@@ -11,7 +11,7 @@ class Clear(commands.Cog):
         self.hidden = False
 
     @check.is_admin()
-    @commands.group(invoke_without_subcommands=False, name="clear", description="A perfect set of commands for easily deleting messages!", usage="[member] <search>", help="Deletes messages (optionally from specific member). Ignores pinned messages :D")
+    @commands.group(invoke_without_subcommands=False, name="clear", description="A perfect set of commands for easily deleting messages!", usage="[member] <search>", help="Deletes messages in the search range (optionally from specific member). Ignores pinned messages :D")
     async def clear(self, ctx, member:typing.Optional[discord.Member]=None, number:typing.Optional[int]=None):  
         if ctx.invoked_subcommand is None:
             if member is None and number is not None:
