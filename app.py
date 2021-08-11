@@ -26,6 +26,7 @@ with open("config.json", "r") as file:
     data = json.load(file)
     intents = discord.Intents.default()
     intents.members = True
+    intents.guilds = True
     client = Client(command_prefix=(get_prefix), intents=intents, case_insensitive = True)
     client.prefixes = {}
     client.topggpy = topgg.DBLClient(client, data["topggId"], autopost=True)
