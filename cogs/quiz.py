@@ -127,7 +127,7 @@ class Games(commands.Cog):
             else:
                 return
             ans = arr[index]
-            self.initation = self.client.get_cog("Init")
+            self.init = self.client.get_cog("Init")
             await self.init.checkserver(ctx)
             doc_ref = self.db.collection("users").document(
                 "{}".format(str(ctx.author.id))

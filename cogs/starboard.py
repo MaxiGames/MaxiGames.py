@@ -21,8 +21,8 @@ class Starboard(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def starboard_threshold(self, ctx, thresh: int = None):
-        self.initation = self.client.get_cog("Init")
-        await self.initation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
         doc = doc_ref.get()
         data = doc.to_dict()
@@ -51,8 +51,8 @@ class Starboard(commands.Cog):
             await ctx.reply("You need to specify a channel")
             return
         try:
-            self.initation = self.client.get_cog("Init")
-            await self.initation.checkserver(ctx)
+            self.init = self.client.get_cog("Init")
+            await self.init.checkserver(ctx)
             doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
             doc = doc_ref.get()
             data = doc.to_dict()

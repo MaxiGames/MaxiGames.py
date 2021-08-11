@@ -15,7 +15,7 @@ class Economy(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.db = firestore.client()
-        self.initation = self.client.get_cog("Init")
+        self.init = self.client.get_cog("Init")
         self.hidden = False
 
 
@@ -25,8 +25,8 @@ class Economy(commands.Cog):
     @commands.command(name="coinflip", help="provide 2 arguments, the choice of your coin: head/tail, and the amount you want to bet", aliases= ["cf"], usage="<choice> <amount>")
     @cooldown(1, 8, BucketType.user)
     async def _coinflip(self, ctx, choice: str, amount: int = 1):
-        self.initation = self.client.get_cog("Init")
-        await self.initation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists:
@@ -97,7 +97,7 @@ class Economy(commands.Cog):
                 await ctx.reply(embed=embed)
             doc_ref.set(dict1)
         else:
-            await self.initation.init(ctx)
+            await self.init.init(ctx)
 
     @commands.command(
         name="gamble",
@@ -107,8 +107,8 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 8, BucketType.user)
     async def _gamble(self, ctx, amount: int = 5):
-        self.initation = self.client.get_cog("Init")
-        await self.initation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists:
@@ -219,8 +219,8 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 3, BucketType.user)
     async def _money(self, ctx):
-        self.initation = self.client.get_cog("Init")
-        await self.initation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists:
@@ -245,7 +245,7 @@ class Economy(commands.Cog):
                 embed=embed, allowed_mentions=discord.AllowedMentions.none()
             )
         else:
-            await self.initation.init(ctx)
+            await self.init.init(ctx)
             # await ctx.send("Now you can start running currency commands :D")
 
     @check.is_banned()
@@ -255,8 +255,8 @@ class Economy(commands.Cog):
         aliases=["balance", "b"],)
     @cooldown(1, 5, BucketType.user)
     async def bal(self, ctx):
-        self.initation = self.client.get_cog("Init")
-        await self.initation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists:
@@ -277,7 +277,7 @@ class Economy(commands.Cog):
                 embed=embed, allowed_mentions=discord.AllowedMentions.none()
             )
         else:
-            await self.initation.init(ctx)
+            await self.init.init(ctx)
             # return False
 
     @commands.command(
@@ -288,8 +288,8 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 10, BucketType.user)
     async def _leaderboard(self, ctx):
-        self.initation = self.client.get_cog("Init")
-        await self.initation.checkserver(ctx)
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
 
         doc_ref = self.db.collection("servers").document("{}".format(str(ctx.guild.id)))
         doc = doc_ref.get()
@@ -329,7 +329,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 3600, BucketType.user)
     async def hourly(self, ctx):
-        await self.initation.checkserver(ctx)
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         booster = 1
@@ -361,7 +361,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 86400, BucketType.user)
     async def daily(self, ctx):
-        await self.initation.checkserver(ctx)
+        await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         booster = 1

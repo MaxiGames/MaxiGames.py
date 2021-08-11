@@ -9,7 +9,7 @@ class Inventory (commands.Cog):
         self.client = client
         self.db = firestore.client()
         self.utility = self.client.get_cog("Utility")
-        self.initation = self.client.get_cog("Initiation")
+        self.init = self.client.get_cog("Initiation")
         self.hidden = False
 
     @check.is_admin()
@@ -37,7 +37,7 @@ class Inventory (commands.Cog):
             await ctx.send(embed=embed, allowed_mentions=discord.AllowedMentions.none())
             # await ctx.reply(embed=embed)
         else:
-            await self.initation.serverinitiate(ctx)
+            await self.init.serverinitiate(ctx)
         
     @check.is_admin()
     @cooldown(1, 15, BucketType.user)
@@ -70,7 +70,7 @@ class Inventory (commands.Cog):
             await ctx.send(embed=embed, allowed_mentions=discord.AllowedMentions.none())
             # await ctx.reply(embed=embed)
         else:
-            await self.initation.serverinitiate(ctx)
+            await self.init.serverinitiate(ctx)
 
     @commands.command(name="shop", aliases=['shopList', 's'], help="lists the items in the shop", usage="")
     @cooldown(1, 15, BucketType.user)
@@ -182,7 +182,7 @@ class Inventory (commands.Cog):
             await ctx.reply(embed=embed, allowed_mentions=discord.AllowedMentions.none())
 
         else:
-            await self.initation.initiate(ctx)
+            await self.init.initiate(ctx)
     
 
 
