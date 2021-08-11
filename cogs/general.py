@@ -478,7 +478,7 @@ class General(commands.Cog):
     
     @commands.command(
         name="kawaii",
-        help="Makes what you say kawaii <3",
+        help="Makes what you say kawaii (replaces some letter combinations with others)",
         usage="<message>",
     )
     @cooldown(1, 10, BucketType.user)
@@ -526,9 +526,9 @@ class General(commands.Cog):
     
     @commands.command(
         name="getsettings",
-        help="Views current MaxiGames settings :D",
+        help="Views current MaxiGames settings in this server",
         usage="",
-        aliases=["gs", "tux"],
+        aliases=["gs"],
     )
     @check.is_staff()
     @cooldown(1, 30, BucketType.user)
