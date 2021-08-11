@@ -229,7 +229,7 @@ class Games(commands.Cog):
                 added = random.randint(1, 3*bonus)
                 embed = discord.Embed(
                     title="Your answer " + theanswer + " was correct!",
-                    description=f"You are veery beeg brain! U gained {added}",
+                    description=f"You are veery beeg brain! U gained {added} money",
                     color=self.client.primary_colour,
                 )
                 dict1["money"] += added
