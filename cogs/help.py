@@ -90,7 +90,6 @@ class CustomHelpCommand(HelpCommand):
                 page.add_field(name=cog.qualified_name, value=cmds)
                 totalCount += count
 
-        pages.append(page)
         page_num = 0
         msg = await self.context.send(
             embed=pages[page_num],
