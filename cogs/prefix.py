@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from firebase_admin import firestore
 import threading
-import json
 from utils import check
 from discord.ext.commands import cooldown, BucketType
 
@@ -18,13 +17,8 @@ class Prefix(commands.Cog):
 
         # Create a callback on_snapshot function to capture changes
         def on_snapshot(col_snapshot, changes, read_time):
-            with open('prefix.json', 'r') as f:
-                prefixes = json.load(f)
             for change in changes:
-                prefixes[str(change.document.id)] = change.document.to_dict()["prefix"]
-            
-            with open('prefix.json', 'w') as f:  # write in the prefix.json "message.guild.id": "bl!"
-                json.dump(prefixes, f, indent=4)
+                self.client.prefixes[str(change.document.id)] = change.document.to_dict()["prefix"]
             callback_done.set()
 
         col_query = self.db.collection(u'servers')
@@ -34,10 +28,7 @@ class Prefix(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        with open('prefix.json', 'r') as f:
-            prefixes = json.load(f)
-        
-        prefixes[str(guild.id)] = [self.client.primary_prefix]
+        self.client.prefixes[str(guild.id)] = [self.client.primary_prefix]
 
 
 
@@ -45,12 +36,8 @@ class Prefix(commands.Cog):
     async def prefix(self, ctx):
         """Prefix commands"""
         description = "```"
-
-        with open("prefix.json", "r") as f:
-            data = json.load(f)
-            prefixes = data[str(ctx.guild.id)]
-        for i in range(len(prefixes)):
-            description += f"{i+1}. {prefixes[i]}\n"
+        for i in range(len(self.client.prefixes)):
+            description += f"{i+1}. {self.client.prefixes[i]}\n"
         description += "```"
         
         embed = discord.Embed(
@@ -58,8 +45,8 @@ class Prefix(commands.Cog):
             description = description,
             colour = self.client.primary_colour
         )
-        if len(prefixes) > 1:
-            embed.set_footer(text = f"{len(prefixes)} prefixes")
+        if len(self.client.prefixes) > 1:
+            embed.set_footer(text = f"{len(self.client.prefixes)} prefixes")
         else:
             embed.set_footer(text = "1 prefix")
         await ctx.reply(embed=embed)

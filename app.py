@@ -3,6 +3,7 @@ import os
 import sys
 
 import discord
+from discord.ext import commands
 from client import Client
 import firebase_admin
 from firebase_admin import firestore
@@ -20,16 +21,16 @@ else:
     print("Running Beta version of bot")
 
 def get_prefix(client, message):
-    with open('prefix.json', 'r') as f: 
-        prefixes = json.load(f) 
-    return prefixes[str(message.guild.id)]
+    return client.prefixes[str(message.guild.id)]
+
 
 with open("config.json", "r") as file:
     data = json.load(file)
     intents = discord.Intents.default()
     intents.members = True
     client = Client(command_prefix=(get_prefix), intents=intents)
-    client.topggpy = topgg.DBLClient(client, data["topggId"], autopost=True)
+    client.prefixes = {}
+    # client.topggpy = topgg.DBLClient(client, data["topggId"], autopost=True)
 
 cred = credentials.Certificate("serviceAccountKey2.json") if beta else credentials.Certificate("serviceAccountKey.json") 
 firebase_admin.initialize_app(cred)
