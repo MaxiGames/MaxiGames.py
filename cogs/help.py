@@ -161,7 +161,7 @@ class CustomHelpCommand(HelpCommand):
         commands = [commands[i:i + 5] for i in range(0, len(commands), 5)]
         for command_s in commands:
             page = discord.Embed(
-                title=f'{group.name} {group.usage}',
+                title=f'{group.name} {group.usage} ({len(list(group.commands))} commands)',
                 description=group.help,
                 colour=self.cog.client.primary_colour
             )

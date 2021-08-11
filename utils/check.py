@@ -13,6 +13,8 @@ authorised = {}
 banned = {}
 # Create a callback on_snapshot function to capture changes
 def on_snapshot(col_snapshot, changes, read_time):
+    global authorised
+    global banned
     for change in changes:
         if change.document.id == "authorised":
             authorised = change.document.to_dict()
