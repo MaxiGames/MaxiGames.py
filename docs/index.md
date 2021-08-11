@@ -1,0 +1,3 @@
+# MaxiGames Official Wiki
+
+wip
