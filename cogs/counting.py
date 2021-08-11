@@ -194,7 +194,7 @@ class Counting(commands.Cog):
         if "counting_channels" not in data:
             return
 
-        #check if the specific channel exists
+        # check if the specific channel exists
         if str(msg.guild.id) not in data["counting_channels"]:
             return
 
@@ -253,6 +253,14 @@ class Counting(commands.Cog):
                         colour=self.client.primary_colour
                     )
                 )
+
+            try:
+                # update user's counter userrank
+                if data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] > 0:
+                    data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] -= 1
+            except KeyError:
+                # initialise user's counter userrank
+                data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] = 0
 
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"] = 0
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] = None
