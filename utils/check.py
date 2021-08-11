@@ -5,15 +5,29 @@ import discord
 from discord.ext import commands
 # from cogs.init import Init
 
-db = firestore.client()
+import threading
 
+db = firestore.client()
+callback_done = threading.Event()
+authorised = {}
+banned = {}
+# Create a callback on_snapshot function to capture changes
+def on_snapshot(col_snapshot, changes, read_time):
+    for change in changes:
+        if change.document.id == "authorised":
+            authorised = change.document.to_dict()
+        elif change.document.id == "banned":
+            banned = change.document.to_dict()
+    callback_done.set()
+
+col_query = db.collection(u'admin')
+
+# Watch the collection query
+query_watch = col_query.on_snapshot(on_snapshot)
 
 def is_staff():
     async def predicate(ctx):
-        doc_ref = db.collection(u"admin").document(u"{}".format("authorised"))
-        doc = doc_ref.get()
-        people = doc.to_dict()
-        allowed = people["owner"] + people["staff"]
+        allowed = authorised["owner"] + authorised["staff"]
         if str(ctx.author.id) not in allowed:
             raise commands.NotOwner()
         else:
@@ -24,10 +38,7 @@ def is_staff():
 
 def is_owner():
     async def predicate(ctx):
-        doc_ref = db.collection(u"admin").document(u"{}".format("authorised"))
-        doc = doc_ref.get()
-        people = doc.to_dict()
-        allowed = people["owner"]
+        allowed = authorised["owner"]
         if str(ctx.author.id) not in allowed:
             raise commands.NotOwner()
         else:
@@ -38,10 +49,7 @@ def is_owner():
 
 def is_banned():
     async def predicate(ctx):
-        doc_ref = db.collection(u"admin").document(u"{}".format("banned"))
-        doc = doc_ref.get()
-        people = doc.to_dict()
-        if str(ctx.author.id) in people:
+        if str(ctx.author.id) in banned:
             raise commands.MissingPermissions([])
         else:
             return True
@@ -51,10 +59,7 @@ def is_banned():
 
 def is_admin():
     async def predicate(ctx):
-        doc_ref = db.collection(u"admin").document(u"{}".format("authorised"))
-        doc = doc_ref.get()
-        people = doc.to_dict()
-        allowed = people["owner"] + people["staff"]
+        allowed = authorised["owner"] + authorised["staff"]
         if (
             str(ctx.author.id) not in allowed
             and not ctx.message.author.guild_permissions.administrator
@@ -64,20 +69,3 @@ def is_admin():
             return True
 
     return commands.check(predicate)
-
-
-async def _isadmin(ctx, pri=True):
-    doc_ref = db.collection(u"admin").document(u"{}".format("authorised"))
-    doc_ = doc_ref.get()
-    if doc_.exists:
-        doc = doc_.to_dict()
-        if str(ctx.author.id) in doc["owner"] or str(ctx.author.id) in doc["staff"]:
-            staff = True
-    if ctx.message.author.guild_permissions.administrator or staff:
-        if pri:
-            await ctx.reply("Of course")
-        return True
-    else:
-        if pri:
-            await ctx.reply("What made you think you did...")
-        return False
