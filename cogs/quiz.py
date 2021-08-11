@@ -255,7 +255,10 @@ class Games(commands.Cog):
             await ctx.reply(embed=embed)
 
     @commands.command(
-        name="scramble", help="Try to unscramble a word!", usage=""
+        name="scramble", 
+        help="Try to unscramble a series of 5 words and earn coins when you unscramble them! (You may also lose coins if you don't unscramble) Do be warned, it isn't easy...", 
+        usage="",
+        aliases=["unscramble"]
     )
     @cooldown(1, 300, BucketType.user)
     async def scramble(self, ctx):
@@ -280,7 +283,7 @@ class Games(commands.Cog):
         )
         await ctx.reply(embed=embed)
         await ctx.send(
-            "You have 1 minute to unscramble the word. Everytime you send a message and it contains a correct word, the timer will reset"
+            "You have 45 seconds to unscramble the word. Everytime you send a message and it contains a correct word, the timer will reset. Do note that your balance will only be updated after the game is over."
         )
 
         # firebase
@@ -295,16 +298,17 @@ class Games(commands.Cog):
             print("Nonexistant database")
             return
         dict1 = doc.to_dict()
-
+        
         while True:
             try:
                 messageanswer = await self.client.wait_for(
-                    "message", timeout=60, check=check
+                    "message", timeout=45, check=check
                 )
                 msgcontent = messageanswer.content
                 if msgcontent in correctWords:
                     toAdd = len(msgcontent)
-                    dict1["money"] += math.floor(toAdd * 1.5)
+                    toAdd = math.floor(toAdd * 3.5)
+                    dict1["money"] += toAdd
                     moneynow = dict1["money"]
                     embed = discord.Embed(
                         title="Correct answer",
@@ -313,7 +317,8 @@ class Games(commands.Cog):
                     )
                     await messageanswer.reply(embed=embed)
                     correctWords.remove(msgcontent)
-                    if len(chosenWords) == 0:
+                    print(correctWords)
+                    if len(correctWords) == 0:
                         embed = discord.Embed(
                             title="You won!",
                             description="You have won the game!",
@@ -322,15 +327,16 @@ class Games(commands.Cog):
                         await messageanswer.reply(embed=embed)
                         break
                 else:
+                    dict1["money"] -= 1
                     embed = discord.Embed(
                         title="Wrong answer",
-                        description="Continue guessing. Oof. Oof. Oof.",
+                        description="You lost 1 money! Continue guessing.",
                         color=0xFF0000,
                     )
                     await messageanswer.reply(embed=embed)
 
             except asyncio.TimeoutError:
-                lost = random.randint(1, 10)
+                lost = random.randint(1, 1+len(correctWords))
                 dict1["money"] -= lost
                 embed = discord.Embed(
                     title="Time has run out...",

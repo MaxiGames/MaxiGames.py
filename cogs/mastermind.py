@@ -19,7 +19,7 @@ class Mastermind(commands.Cog):
 
     @commands.command(
         name="mastermind",
-        help="Play a game of mastermind :D",
+        help="Play a game of mastermind, a fun and interactive code-breaking game! Codes are auto-generated randomly. If you don't know how the game works, check out\n**https://en.wikipedia.org/wiki/Mastermind**! (Rewards the more money the lesser guesses it takes you to solve it)",
         usage = "",
         aliases = ["mm"]
     )
