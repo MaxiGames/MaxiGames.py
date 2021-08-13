@@ -1,21 +1,19 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import cooldown, BucketType
-import firebase_admin
 from firebase_admin import firestore
 from utils import check
 import random
 import math
 import asyncio
-import time
-from discord_slash import SlashContext, cog_ext
-import threading
+from discord_slash import cog_ext
 
 class Economy(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.db = firestore.client()
         self.init = self.client.get_cog("Init")
+        print(self.init)
         self.hidden = False
 
 
@@ -299,7 +297,7 @@ class Economy(commands.Cog):
             doc_ref = self.db.collection("users").document("{}".format(i))
             doc = doc_ref.get()
             dict1 = doc.to_dict()
-            if dict1 == None:
+            if "money" not in dict1:
                 continue
             dict3[i] = dict1["money"]
         description = ""
@@ -352,6 +350,11 @@ class Economy(commands.Cog):
             await ctx.reply(
                 embed=embed, allowed_mentions=discord.AllowedMentions.none()
             )
+    
+    @cog_ext.cog_slash(name="hourly", description="Claim your hourly money here! :D")
+    async def _hourly_cog(self, ctx):
+        await self.hourly(ctx)
+
 
     @commands.command(
         name="daily",
@@ -384,10 +387,6 @@ class Economy(commands.Cog):
             await ctx.reply(
                 embed=embed, allowed_mentions=discord.AllowedMentions.none()
             )
-
-    @cog_ext.cog_slash(name="hour", description="Claim your hourly money here :D")
-    async def _hourly_cog(self, ctx):
-        await self._hourly(ctx)
 
     @check.is_staff()
     @commands.command(
