@@ -8,7 +8,6 @@ class Topgg(commands.Cog):
         self.hidden = True
     
     @commands.Cog.listener()
-    async def on_dbl_vote(self, data):
 
 def setup(client):
     client.add_cog(Topgg(client))  
