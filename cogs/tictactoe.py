@@ -38,8 +38,7 @@ class TicTacToe(commands.Cog):
                 reaction2, user2 = await self.client.wait_for(
                     "reaction_add", timeout=45, check=check
                 )
-                if user2 == user1:
-                else:
+                if user2 != user1:
                     break
             await ctx.reply(
                 f"2 players have joined, tic tac toe game starting... <@{user1.id}>, <@{user2.id}>"
