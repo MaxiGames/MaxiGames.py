@@ -13,7 +13,6 @@ class Economy(commands.Cog):
         self.client = client
         self.db = firestore.client()
         self.init = self.client.get_cog("Init")
-        print(self.init)
         self.hidden = False
 
 

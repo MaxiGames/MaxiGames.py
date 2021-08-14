@@ -151,7 +151,6 @@ class Suggestions(commands.Cog):
             return
         if(reaction.message.channel.id == 865821669730156544):
             #suggestions
-            print(reaction.message.author)
             if reaction.emoji == "❌":
                 await reaction.message.author.send(embed=discord.Embed(title="Suggestion declined", description=f"A moderator declined your suggestion `{reaction.message.embeds[0].fields[0].value}`.", colour=self.client.primary_colour))
             elif reaction.emoji == "✅":

@@ -171,7 +171,6 @@ class Hangman(commands.Cog):
         answer = ""
         for i in range(len(wordChoice)):
             correctWord.append(wordChoice[i])
-            print(wordChoice[i])
             if wordChoice[i] == " ":
                 answer = answer + " "
                 currentGuess.append(" ")
