@@ -16,10 +16,10 @@ import topgg
 # simple arguments -- for now just Beta or Release
 beta = True
 if len(sys.argv) > 1 and sys.argv[1] == "r":
-    print("Running Release version of bot")
+    print("Running Release version of bot.")
     beta = False
 else:
-    print("Running Beta version of bot")
+    print("Running Beta version of bot.")
 
 def get_prefix(client, message):
     return client.prefixes[str(message.guild.id)]

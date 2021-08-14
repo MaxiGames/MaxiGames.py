@@ -40,7 +40,6 @@ class Mastermind(commands.Cog):
             elem = random.choice(set_of_code)
             code.append(elem)
             set_of_code.remove(elem)
-        print(code)
         message = board
 
         embed = discord.Embed(

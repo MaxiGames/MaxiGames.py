@@ -50,7 +50,6 @@ class Connect4(commands.Cog):
                 else:
                     player2 = user1
                     break
-                print(user1.id)
 
             except asyncio.TimeoutError:
                 await ctx.reply("No one joined, please try again later!")
@@ -68,13 +67,11 @@ class Connect4(commands.Cog):
             ["□", "□", "□", "□", "□", "□"],
             ["□", "□", "□", "□", "□", "□"],
         ]
-        print(board)
         curmax = [0, 0, 0, 0, 0, 0, 0]
         turn = 0
         success = 0
         number_of_counter_left = 42
         while True:
-            print(number_of_counter_left)
             if number_of_counter_left == 0:
                 embed = discord.Embed(
                     title="Draw", description="No one wins!", color=0xFFFF00
@@ -104,7 +101,6 @@ class Connect4(commands.Cog):
                                 continue
                             board[selected][curmax[selected]] = "o"
                             curmax[selected] += 1
-                            print(board)
                             success = 1
                             board_display = "```| 1 2 3 4 5 6 7 "
                             for i in range(6):
@@ -190,7 +186,6 @@ class Connect4(commands.Cog):
                         return
             else:
                 turn = 0
-                print(number_of_counter_left)
                 if number_of_counter_left == 0:
                     embed = discord.Embed(
                         title="Draw", description="No one wins!", color=0xFFFF00
@@ -220,7 +215,6 @@ class Connect4(commands.Cog):
                             board[selected][curmax[selected]] = "x"
                             curmax[selected] += 1
                             number_of_counter_left -= 1
-                            print(board)
                             success = 1
                             board_display = "```| 1 2 3 4 5 6 7 "
                             for i in range(6):
@@ -228,7 +222,6 @@ class Connect4(commands.Cog):
                                 for j in range(7):
                                     board_display += board[j][5 - i]
                                     board_display += " "
-                                    print(board_display)
                             board_display += "|```"
                             await message.reply(board_display)
 

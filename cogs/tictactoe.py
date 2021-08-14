@@ -34,14 +34,11 @@ class TicTacToe(commands.Cog):
             reaction1, user1 = await self.client.wait_for(
                 "reaction_add", timeout=45, check=check
             )
-            print(user1.id)
             while True:
                 reaction2, user2 = await self.client.wait_for(
                     "reaction_add", timeout=45, check=check
                 )
-                print(user2.id)
                 if user2 == user1:
-                    print("attempted to break the system in ttt")
                 else:
                     break
             await ctx.reply(

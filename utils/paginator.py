@@ -49,7 +49,6 @@ class Paginator:
             or isinstance(client, commands.AutoShardedBot)
         ):
             raise TypeError("Paginator client must be a discord.Client or commands.Bot")
-        # print("values initialised")
 
     async def start(self):
         if len(self.pages) <=1:
@@ -82,7 +81,6 @@ class Paginator:
         component.append(add_on_buttons)
         # component[0] = add_on_buttons + component[0]
 
-        # print(component)
         components = [add_on_buttons]
         await self.message.edit(
             embed=self.pages[self.page_num], components=copy.copy(component)
@@ -99,7 +97,6 @@ class Paginator:
                 res = await self.client.wait_for(
                     "button_click", timeout=self.timeout, check=check
                 )
-                # print(res)
                 await res.respond(
                     type=InteractionType.DeferredUpdateMessage  # , content=f"{res.component.label} pressed"
                 )
@@ -122,7 +119,6 @@ class Paginator:
                     component.append(add_on_buttons)
                     # component[0] = add_on_buttons + component[0]
 
-                    # print(component)
                     components = [add_on_buttons]
                     await self.message.edit(
                         embed=self.pages[self.page_num],
@@ -148,7 +144,6 @@ class Paginator:
                         component.append(add_on_buttons)
                         # component[0] = add_on_buttons + component[0]
 
-                        # print(component)
                         components = [add_on_buttons]
                         await self.message.edit(
                             embed=self.pages[self.page_num],
@@ -166,7 +161,6 @@ class Paginator:
                         component.append(add_on_buttons)
                         # component[0] = add_on_buttons + component[0]
 
-                        # print(component)
                         components = [add_on_buttons]
                         await self.message.edit(
                             embed=self.pages[self.page_num],
@@ -191,7 +185,6 @@ class Paginator:
                         component.append(add_on_buttons)
                         # component[0] = add_on_buttons + component[0]
 
-                        # print(component)
                         components = [add_on_buttons]
                         await self.message.edit(
                             embed=self.pages[self.page_num],
@@ -210,7 +203,6 @@ class Paginator:
                         component.append(add_on_buttons)
                         # component[0] = add_on_buttons + component[0]
 
-                        # print(component)
                         components = [add_on_buttons]
                         await self.message.edit(
                             embed=self.pages[self.page_num],
@@ -233,7 +225,6 @@ class Paginator:
                     component.append(add_on_buttons)
                     # component[0] = add_on_buttons + component[0]
 
-                    # print(component)
                     components = [add_on_buttons]
                     await self.message.edit(
                         embed=self.pages[self.page_num],
@@ -241,7 +232,6 @@ class Paginator:
                     )
 
             except asyncio.TimeoutError:
-                # print("Times up")
                 add_on_buttons = [
                     Button(style=ButtonStyle.green, label=self.first_symbol, disabled=True),
                     Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),

@@ -80,12 +80,8 @@ class Inventory (commands.Cog):
         self.dict2 = self.doc.to_dict()
         self.objects = self.dict2['all']
         self.description = ""
-        # print(items)
-        # print(sorted(objects.items(), key=lambda kv: (kv[1])))
         for i in sorted(self.objects.items(), key=lambda kv: (kv[1]), reverse=True):
-            # print(i)
             self.description += f"{i[0]} ({i[1]} points)\n"
-        # print(description)
 
         self.embed = discord.Embed(
             title="Shop",
@@ -100,7 +96,6 @@ class Inventory (commands.Cog):
     async def _inv(self, ctx, user: discord.Member = None):
         if user is None:
             user = ctx.author
-        print(user)
         doc_ref = self.db.collection(u'servers').document(u'{}'.format(str(ctx.guild.id)))
         doc = doc_ref.get()
         dict2 = doc.to_dict()["users"]
@@ -162,15 +157,12 @@ class Inventory (commands.Cog):
                 await ctx.reply(embed=embed)
                 return
             user_dict['money'] -= items[item]
-            # print("amount subtracted")
             user_ref.set(user_dict)
             if item in dict2["users"][uid]:
                 dict2["users"][uid][item]+=1
             else:
                 dict2["users"][uid][item] = 1
-            # print("item added")
 
-            # print(dict2[str(ctx.author.id)])
             doc_ref.set(dict2)
             embed = discord.Embed(
                 title="Item Bought",

@@ -14,7 +14,6 @@ class CustomHelpCommand(HelpCommand):
 
     async def send_bot_help(self, mapping):
         # for i in mapping:
-        #     print(i)
         pages = []
         page = discord.Embed(
             title="Help",
@@ -49,7 +48,6 @@ class CustomHelpCommand(HelpCommand):
 
             cmds = "```\n"
             for cmd in cog_commands:
-                # print(type(cmd))
                 count += 1
                 if cmd.hidden is False:
                     cmds += cmd.name + "\n"

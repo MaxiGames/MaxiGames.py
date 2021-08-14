@@ -275,7 +275,6 @@ class Games(commands.Cog):
                 newStartWord = "".join(firstWord)
                 chosenWords.append(newStartWord)
                 correctWords.append(newWord)
-        print(correctWords)
         embed = discord.Embed(
             title="Scrambled words",
             description=f"The words you have to unscramble are: {', '.join(chosenWords)}",
@@ -295,7 +294,6 @@ class Games(commands.Cog):
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         if doc.exists == False:
-            print("Nonexistant database")
             return
         dict1 = doc.to_dict()
         
@@ -317,7 +315,6 @@ class Games(commands.Cog):
                     )
                     await messageanswer.reply(embed=embed)
                     correctWords.remove(msgcontent)
-                    print(correctWords)
                     if len(correctWords) == 0:
                         embed = discord.Embed(
                             title="You won!",
