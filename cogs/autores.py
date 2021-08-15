@@ -36,10 +36,13 @@ class Autoresponse(commands.Cog):
             return
         if msg.author == self.client.user:
             return
+        content = ""
         if str(msg.guild.id) in self.autoresponse:
             for trigger in self.autoresponse[str(msg.guild.id)]:
                 if trigger.lower() in msg.content.lower():
-                    await msg.channel.send(self.autoresponse[str(msg.guild.id)][trigger])
+                    content += self.autoresponse[str(msg.guild.id)][trigger] + "\n"
+            if content != "":
+                await msg.channel.send(content)
 
     @check.is_admin()
     @commands.group(name="autoresponse", invoke_without_command=True, aliases=["ar"])
@@ -50,8 +53,8 @@ class Autoresponse(commands.Cog):
             description="This server has no autoresponses."
         else:
             count = 0
-            for key in responses:
-                description += f"{count+1}. {key}, Response: {responses[key]} \n"
+            for i in responses:
+                description += f"{count+1}. `{i}`. Response: {responses[i]}\n"
                 count += 1
         embed = discord.Embed(title="Autoresponses", description=description, colour=self.client.primary_colour)
 
