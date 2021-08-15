@@ -40,7 +40,6 @@ class Autoresponse(commands.Cog):
             for trigger in self.autoresponse[str(msg.guild.id)]:
                 if trigger.lower() in msg.content.lower():
                     await msg.channel.send(self.autoresponse[str(msg.guild.id)][trigger])
-                    return
 
     @check.is_admin()
     @commands.group(name="autoresponse", invoke_without_command=True, aliases=["ar"])
