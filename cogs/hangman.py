@@ -274,7 +274,7 @@ class Hangman(commands.Cog):
                 data["money"] = 0
             embed = discord.Embed(
                 title="You lost!",
-                description=f"The word was {wordChoice}, {deduct} money was subtracted off your account :(. You currently have {data['money']} money",
+                description=f"The word was **{wordChoice}**, {deduct} money was subtracted off your account :(. You currently have {data['money']} money",
                 color=0xff0000
             )
             await message.reply(embed=embed)
