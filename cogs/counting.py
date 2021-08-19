@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from firebase_admin import firestore
 from utils import check
-import time
 import copy
 from utils.paginator import Paginator
 
