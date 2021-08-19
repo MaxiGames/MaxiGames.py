@@ -7,7 +7,6 @@ if [ ! $(git branch --show-current) = "main" ]; then
     exit 1
 fi
 
-heroku git:remote -a maxi-games-bot-1
 rm -f tar
 tar cf tar serviceAccountKey.json serviceAccountKey2.json config.json >/dev/null 2>&1  # shh
 s=$?
