@@ -6,6 +6,7 @@ import time
 import copy
 from utils.paginator import Paginator
 
+
 class Counting(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -30,20 +31,25 @@ class Counting(commands.Cog):
         try:
             t = int("".join(list(filter(str.isdigit, channelarg))))
             channel = t
-            data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
+            data = (
+                self.db.collection("servers")
+                .document(str(ctx.guild.id))
+                .get()
+                .to_dict()
+            )
 
             init_channel_count = {"count": 0, "previous_author": None}
 
             if "counting_channels" not in data:
                 data["counting_channels"] = {}
-            
+
             ##
             chann = discord.utils.get(ctx.guild.channels, id=channel)
             if chann == None or not isinstance(chann, discord.channel.TextChannel):
                 await ctx.reply(
                     embed=discord.Embed(
                         title="Error: channel does not exist, or is not a text channel.",
-                        colour=self.client.primary_colour
+                        colour=self.client.primary_colour,
                     )
                 )
                 return
@@ -52,21 +58,23 @@ class Counting(commands.Cog):
             await ctx.reply(
                 embed=discord.Embed(
                     title="Error: channel does not exist, or is not a text channel.",
-                    colour=self.client.primary_colour
+                    colour=self.client.primary_colour,
                 )
             )
             return
 
         if str(ctx.guild.id) in data["counting_channels"]:  # do not merge with and!
             if str(channel) not in data["counting_channels"][str(ctx.guild.id)]:
-                data["counting_channels"][str(ctx.guild.id)][str(channel)] = copy.deepcopy(init_channel_count)
+                data["counting_channels"][str(ctx.guild.id)][
+                    str(channel)
+                ] = copy.deepcopy(init_channel_count)
                 data["counting_channels"][str(ctx.guild.id)]["counterUR"] = {}
                 await ctx.reply(embed=discord.Embed(title="Success! Channel Added!"))
             else:
                 await ctx.reply(
                     embed=discord.Embed(
                         title="Error: channel is already a counting channel.",
-                        colour=self.client.primary_colour
+                        colour=self.client.primary_colour,
                     )
                 )
 
@@ -112,13 +120,13 @@ class Counting(commands.Cog):
             del data["counting_channels"][str(ctx.guild.id)][str(channel)]
             await ctx.reply(
                 embed=discord.Embed(title="Channel is no longer a counting channel."),
-                colour=self.client.primary_colour
+                colour=self.client.primary_colour,
             )
         else:
             await ctx.reply(
                 embed=discord.Embed(
                     title="Channel never was a counting channel or doesn't exist.",
-                    colour=self.client.primary_colour
+                    colour=self.client.primary_colour,
                 )
             )
 
@@ -130,37 +138,54 @@ class Counting(commands.Cog):
         name="countingServerLeaderboard",
         help="Show the leaderboard for users in this server and your position",
         usage="",
-        aliases=["countSlb","slb", "serverLeaderboard", "countingSlb"],
+        aliases=["countSlb", "slb", "serverLeaderboard", "countingSlb"],
     )
     async def counting_server_leaderboard(self, ctx):
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
         dict1 = data["counting_channels"][str(ctx.guild.id)]["counterUR"].items()
-        #sorts leaderboard
+        # sorts leaderboard
         dict1 = dict(sorted(dict1, key=lambda item: item[1], reverse=True))
 
-        message = await ctx.send(embed = discord.Embed(title = "Retrieving data...", description = "hold on a second, we will get it done in a jiffy!"))
+        message = await ctx.send(
+            embed=discord.Embed(
+                title="Retrieving data...",
+                description="hold on a second, we will get it done in a jiffy!",
+            )
+        )
         toSend = []
         for key in dict1:
             user = await ctx.guild.fetch_member(key)
             if user == None:
                 continue
             toSend.append(f"**{user.display_name}#{user.discriminator}**: {dict1[key]}")
-        
-        #add and format the data to a page
+
+        # add and format the data to a page
         pages = []
-        page = discord.Embed(title="Counting server leaderboard!", description="View your ranking amongst the other people in your server, and the server leaderboard!", colour = self.client.primary_colour)
+        page = discord.Embed(
+            title="Counting server leaderboard!",
+            description="View your ranking amongst the other people in your server, and the server leaderboard!",
+            colour=self.client.primary_colour,
+        )
         count = 0
         count2 = 1
         for i in toSend:
-            page.add_field(name=f"**{count2}**",value=i, inline=False)
+            page.add_field(name=f"**{count2}**", value=i, inline=False)
             count += 1
             count2 += 1
             if count == 21:
                 count = 0
                 pages.append(page)
-                page = discord.Embed(title="Counting server leaderboard!", description="View your ranking amongst the other people in your server, and the server leaderboard!", colour = self.client.primary_colour)
-        
-        if page != discord.Embed(title="Counting server leaderboard!", description="View your ranking amongst the other people in your server, and the server leaderboard!", colour = self.client.primary_colour):
+                page = discord.Embed(
+                    title="Counting server leaderboard!",
+                    description="View your ranking amongst the other people in your server, and the server leaderboard!",
+                    colour=self.client.primary_colour,
+                )
+
+        if page != discord.Embed(
+            title="Counting server leaderboard!",
+            description="View your ranking amongst the other people in your server, and the server leaderboard!",
+            colour=self.client.primary_colour,
+        ):
             pages.append(page)
         page_num = 0
         await message.edit(
@@ -177,7 +202,7 @@ class Counting(commands.Cog):
         data = self.db.collection("servers").document(str(msg.guild.id)).get().to_dict()
         if data == None:
             return
-        
+
         if "counting_channels" not in data:
             return
 
@@ -204,10 +229,15 @@ class Counting(commands.Cog):
             return  # no number
         num = int(numinter)
 
-        ccount = data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"]
+        ccount = data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+            "count"
+        ]
         if (
             num == ccount + 1
-            and data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] != msg.author.id
+            and data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+                "previous_author"
+            ]
+            != msg.author.id
         ):
             await msg.add_reaction("✅")
             data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
@@ -218,10 +248,14 @@ class Counting(commands.Cog):
             ] = msg.author.id
             try:
                 # update user's counter userrank
-                data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] += 1
+                data["counting_channels"][str(msg.guild.id)]["counterUR"][
+                    str(msg.author.id)
+                ] += 1
             except KeyError:
                 # initialise user's counter userrank
-                data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] = 1
+                data["counting_channels"][str(msg.guild.id)]["counterUR"][
+                    str(msg.author.id)
+                ] = 1
         else:
             await msg.add_reaction("❌")
             if num != ccount + 1:
@@ -229,7 +263,7 @@ class Counting(commands.Cog):
                     embed=discord.Embed(
                         title="Wrong count",
                         description=f"{msg.author.mention} messed up the count at {ccount}. The next count for this server is 1.",
-                        colour=self.client.primary_colour
+                        colour=self.client.primary_colour,
                     )
                 )
             else:
@@ -237,20 +271,33 @@ class Counting(commands.Cog):
                     embed=discord.Embed(
                         title="You cannot count twice in a row",
                         description=f"{msg.author.mention} messed up the count at {ccount}. The next count for this server is 1.",
-                        colour=self.client.primary_colour
+                        colour=self.client.primary_colour,
                     )
                 )
 
             try:
                 # update user's counter userrank
-                if data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] > 0:
-                    data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] -= 1
+                if (
+                    data["counting_channels"][str(msg.guild.id)]["counterUR"][
+                        str(msg.author.id)
+                    ]
+                    > 0
+                ):
+                    data["counting_channels"][str(msg.guild.id)]["counterUR"][
+                        str(msg.author.id)
+                    ] -= 1
             except KeyError:
                 # initialise user's counter userrank
-                data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] = 0
+                data["counting_channels"][str(msg.guild.id)]["counterUR"][
+                    str(msg.author.id)
+                ] = 0
 
-            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"] = 0
-            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] = None
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+                "count"
+            ] = 0
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+                "previous_author"
+            ] = None
 
         self.db.collection("servers").document(str(msg.guild.id)).set(data)
         return
