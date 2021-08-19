@@ -20,7 +20,7 @@ class Counting(commands.Cog):
         name="countingChannelAdd",
         help="Sets a counting channel by specifing the channel",
         usage="<channel>",
-        aliases=["countCa", "countingAdd", "countingChannel"],
+        aliases=["countca", "countingChannel"],
     )
     async def counting_channel_add(self, ctx, channelarg: str = None):
         # sets the key "counting_channel"
@@ -94,8 +94,7 @@ class Counting(commands.Cog):
         help="Remove a counting channe by specifying the channel name",
         usage="<channel>",
         aliases=[
-            "countCr",
-            "countRm",
+            "countcr",
             "countingRemove",
         ],
     )
@@ -135,7 +134,7 @@ class Counting(commands.Cog):
         name="countingServerLeaderboard",
         help="Show the leaderboard for users in this server and your position",
         usage="",
-        aliases=["countSlb", "slb", "serverLeaderboard", "countingSlb"],
+        aliases=["countslb", "slb", "serverLeaderboard"],
     )
     async def counting_server_leaderboard(self, ctx):
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
