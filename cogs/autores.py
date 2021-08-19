@@ -40,7 +40,11 @@ class Autoresponse(commands.Cog):
         if str(msg.guild.id) in self.autoresponse:
             for trigger in self.autoresponse[str(msg.guild.id)]:
                 if trigger.lower() in msg.content.lower():
-                    content += self.autoresponse[str(msg.guild.id)][trigger] + "\n"
+                    toAdd = self.autoresponse[str(msg.guild.id)][trigger] + "\n"
+                    if len(toAdd) + len(content) > 2000:
+                        await msg.channel.send(content)
+                        return
+                    content += toAdd
             if content != "":
                 await msg.channel.send(content)
 
@@ -54,7 +58,7 @@ class Autoresponse(commands.Cog):
         else:
             count = 0
             for i in responses:
-                description += f"{count+1}. `{i}`. Response: {responses[i]}\n"
+                description += f"{count+1}. `{i}`. Response: \n{responses[i]}\n"
                 count += 1
         embed = discord.Embed(title="Autoresponses", description=description, colour=self.client.primary_colour)
 
@@ -98,10 +102,6 @@ class Autoresponse(commands.Cog):
         
         doc_ref.update(data)
         await ctx.send(f"{trigger} removed.")
-
-        
-
-
 
 def setup(client):
     client.add_cog(Autoresponse(client))
