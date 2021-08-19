@@ -1,9 +1,7 @@
 import discord
-from discord.ext.commands import Bot, Cog, Command, Context, Group, DefaultHelpCommand, HelpCommand
+from discord.ext.commands import Cog, HelpCommand
 from utils.paginator import Paginator
 from discord_components import ButtonStyle, Button
-import functools
-import copy
 
 class CustomHelpCommand(HelpCommand):
     def __init__(self):
