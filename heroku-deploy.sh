@@ -7,6 +7,10 @@ if [ ! $(git branch --show-current) = "main" ]; then
     exit 1
 fi
 
+hps=$(heroku ps --remote heroku >/dev/null 2>&1)
+(echo $hps | grep "No dynos") || (remote="heroku"; echo "Deploying to heroku.")
+(echo $hps | grep "No dynos") && (remote="heroku1"; echo "Deploying to heroku1.")  # out of hours on main
+
 rm -f tar
 tar cf tar serviceAccountKey.json serviceAccountKey2.json config.json >/dev/null 2>&1  # shh
 s=$?
@@ -36,16 +40,16 @@ fi
 
 git add -f serviceAccountKey.json serviceAccountKey2.json config.json >/dev/null 2>&1  # please just shut up
 s1=$?
-git commit --allow-empty -m heroku >/dev/null 2>&1  # please just shut up as well
+git commit --allow-empty -m $remote >/dev/null 2>&1  # please just shut up as well
 if [ "$(git status --porcelain)" ]; then
     git stash --all >/dev/null 2>&1
     oink=1
 fi
 
 if [ $s1 -eq 0 ]; then
-    heroku restart >/dev/null 2>&1
-    heroku builds:clear >/dev/null 2>&1 
-    git push -fq heroku main 2>&1 | sed 's/^remote: //g; s/^-----//g; s/^     //g; /^[ \t]*$/d'
+    heroku restart --remote $remote >/dev/null 2>&1
+    heroku builds:clear --remote $remote >/dev/null 2>&1 
+    git push -fq $remote main 2>&1 | sed 's/^remote: //g; s/^-----//g; s/^     //g; /^[ \t]*$/d'
     cleanup
     exit 0
 else

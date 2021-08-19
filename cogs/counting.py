@@ -169,7 +169,7 @@ class Counting(commands.Cog):
                 toprint = tmp
             elif rank < 5:
                 toprint = tmp[0:rank+5]
-            elif rank > len(tmp):
+            else:
                 toprint = tmp[rank-5:len(tmp)-1]
 
             await ctx.reply(
