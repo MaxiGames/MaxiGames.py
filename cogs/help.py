@@ -172,9 +172,6 @@ class CustomHelpCommand(HelpCommand):
         )
         page = Paginator(self.cog.client, self.context, msg, pages, timeout=60)
         await page.start()
-        
-        
-        
     
     async def send_error_message(self, error):
         embed = discord.Embed(
@@ -184,10 +181,6 @@ class CustomHelpCommand(HelpCommand):
         )
         embed.set_author(name=self.cog.client.user.name, icon_url=self.cog.client.user.avatar_url)
         await self.context.send(embed=embed)
-
-
-
-
 
 class Help (Cog):
     def __init__(self, client):

@@ -7,6 +7,7 @@ import random
 import math
 import asyncio
 from discord_slash import cog_ext
+from utils.paginator import Paginator
 
 class Economy(commands.Cog):
     def __init__(self, client):
@@ -281,12 +282,13 @@ class Economy(commands.Cog):
         name="leaderboard",
         help="Shows you the richest and most wealthy people in the server you are in :O",
         usage="",
-        aliases=["l", "rich", "r", " l"],
+        aliases=["l", "rich", "r", " lb"],
     )
     @cooldown(1, 10, BucketType.user)
     async def _leaderboard(self, ctx):
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
+        msg = await ctx.send(embed=discord.Embed(title="Loading...", description="Hang in tight! We will be done in a jiffy!"))
 
         doc_ref = self.db.collection("servers").document("{}".format(str(ctx.guild.id)))
         doc = doc_ref.get()
@@ -296,27 +298,48 @@ class Economy(commands.Cog):
             doc_ref = self.db.collection("users").document("{}".format(i))
             doc = doc_ref.get()
             dict1 = doc.to_dict()
-            if "money" not in dict1:
+            if dict1 == None or "money" not in dict1:
                 continue
             dict3[i] = dict1["money"]
-        description = ""
+        description = []
         count = 1
-        for i in sorted(dict3.items(), key=lambda kv: (kv[1]), reverse=True):
-            user = await self.client.fetch_user(int(i[0]))
-            description += f"{count}) {user.mention} - {i[1]} points\n"
-            count += 1
-            if count > 10:
-                break
         embed = discord.Embed(
             title=f"Leaderboard in {ctx.message.guild.name}:",
-            description=description,
+            description="Currency leaderboards! Check out the currency section in m!help for more details!",
             colour=self.client.primary_colour,
         )
-        embed.set_author(
-            name="Hallo Bot",
-            icon_url="https://cdn.discordapp.com/attachments/797393542251151380/839131666483511336/476ffc83637891f004e1ba6e1ca63e6c.jpg",
+        for i in sorted(dict3.items(), key=lambda kv: (kv[1]), reverse=True):
+            user = await self.client.fetch_user(int(i[0]))
+            description.append(f"{user.mention}: **{i[1]} points**")
+            count += 1
+        
+        pages = []
+        count = 1
+        count1 = 0
+        for i in description:
+            if count > 10:
+                pages.append(embed)
+                embed = discord.Embed(
+                    title=f"Leaderboard in {ctx.message.guild.name}:",
+                    description="Currency leaderboards! Check out the currency section in m!help for more details!",
+                    colour=self.client.primary_colour,
+                )
+                count = 0
+            embed.add_field(name=f"**#{count}**", value=i, inline=False)
+            count += 1
+            count1 += 1
+
+        if count1 != 1:
+            pages.append(embed)
+
+        page_num = 0
+        await msg.edit(
+            embed=pages[page_num],
+            allowed_mentions=discord.AllowedMentions.none()
         )
-        await ctx.send(embed=embed, allowed_mentions=discord.AllowedMentions.none())
+        
+        page = Paginator(self.client, ctx, msg, pages, timeout=60)
+        await page.start()
 
     @commands.command(
         name="hourly",
