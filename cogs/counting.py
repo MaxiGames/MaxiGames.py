@@ -163,11 +163,9 @@ class Counting(commands.Cog):
             colour=self.client.primary_colour,
         )
         count = 0
-        count2 = 1
         for i in toSend:
-            page.add_field(name=f"**{count2}**", value=i, inline=False)
+            page.add_field(name=f"**{i+1}**", value=i, inline=False)
             count += 1
-            count2 += 1
             if count == 21:
                 count = 0
                 pages.append(page)
