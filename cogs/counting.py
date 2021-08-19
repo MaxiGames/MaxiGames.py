@@ -20,7 +20,7 @@ class Counting(commands.Cog):
         name="countingChannelAdd",
         help="Sets a counting channel by specifing the channel",
         usage="<channel>",
-        aliases=["countca", "countingChannel"],
+        aliases=["countCa", "countingChannel"],
     )
     async def counting_channel_add(self, ctx, channelarg: str = None):
         # sets the key "counting_channel"
@@ -94,7 +94,9 @@ class Counting(commands.Cog):
         help="Remove a counting channe by specifying the channel name",
         usage="<channel>",
         aliases=[
-            "countcr",
+            "countCr",
+            "countRm",
+            "countCRm",
             "countingRemove",
         ],
     )
@@ -134,7 +136,7 @@ class Counting(commands.Cog):
         name="countingServerLeaderboard",
         help="Show the leaderboard for users in this server and your position",
         usage="",
-        aliases=["countslb", "slb", "serverLeaderboard"],
+        aliases=["countslb", "slb", "serverLeaderboard", "countingSlb"],
     )
     async def counting_server_leaderboard(self, ctx):
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
@@ -163,9 +165,11 @@ class Counting(commands.Cog):
             colour=self.client.primary_colour,
         )
         count = 0
+        count1 = 1
         for i in toSend:
-            page.add_field(name=f"**{i+1}**", value=i, inline=False)
+            page.add_field(name=f"**#{count1}**", value=i, inline=False)
             count += 1
+            count1 += 1
             if count == 21:
                 count = 0
                 pages.append(page)
