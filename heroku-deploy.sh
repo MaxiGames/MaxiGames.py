@@ -1,15 +1,15 @@
 #! /bin/sh
 
-echo "Deploying from branch $(git branch --show-current) to Heroku."
+hps=$(heroku ps --remote heroku >/dev/null 2>&1)
+{echo $hps | grep "No dynos" >/dev/null 2>&1} || remote="heroku"
+{echo $hps | grep "No dynos" >/dev/null 2>&1} && remote="heroku1"# out of hours on main
+
+echo "Deploying from branch $(git branch --show-current) to remote $remote."
 
 if [ ! $(git branch --show-current) = "main" ]; then
     echo "Can only deploy from branch main. Abort."
     exit 1
 fi
-
-hps=$(heroku ps --remote heroku >/dev/null 2>&1)
-(echo $hps | grep "No dynos") || (remote="heroku"; echo "Deploying to heroku.")
-(echo $hps | grep "No dynos") && (remote="heroku1"; echo "Deploying to heroku1.")  # out of hours on main
 
 rm -f tar
 tar cf tar serviceAccountKey.json serviceAccountKey2.json config.json >/dev/null 2>&1  # shh
