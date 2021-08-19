@@ -64,9 +64,7 @@ class Counting(commands.Cog):
 
         if str(ctx.guild.id) in data["counting_channels"]:  # do not merge with and!
             if str(channel) not in data["counting_channels"][str(ctx.guild.id)]:
-                data["counting_channels"][str(ctx.guild.id)][
-                    str(channel)
-                ] = copy.deepcopy(init_channel_count)
+                data["counting_channels"][str(ctx.guild.id)][str(channel)] = copy.deepcopy(init_channel_count)
                 data["counting_channels"][str(ctx.guild.id)]["counterUR"] = {}
                 await ctx.reply(embed=discord.Embed(title="Success! Channel Added!"))
             else:
