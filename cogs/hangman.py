@@ -14,9 +14,7 @@ import asyncio
 import time
 from utils.paginator import Paginator
 from utils.leaderboard import leaderboard_generate
-import firebase_admin
 from firebase_admin import firestore
-from discord_components import Button, ButtonStyle
 
 alpha = "abcdefghijklmnopqrstuvwxyz"
 
