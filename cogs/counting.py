@@ -4,7 +4,7 @@ from firebase_admin import firestore
 from utils import check
 import time
 import copy
-
+from utils.paginator import Paginator
 
 class Counting(commands.Cog):
     def __init__(self, client):
@@ -17,10 +17,10 @@ class Counting(commands.Cog):
 
     @check.is_admin()
     @commands.command(
-        name="countingchanneladd",
+        name="countingChannelAdd",
         help="Sets a counting channel by specifing the channel",
         usage="<channel>",
-        aliases=["countca", "counting-channel-add"],
+        aliases=["countCa", "countingAdd", "countingChannel"],
     )
     async def counting_channel_add(self, ctx, channelarg: str = None):
         # sets the key "counting_channel"
@@ -85,14 +85,13 @@ class Counting(commands.Cog):
 
     @check.is_admin()
     @commands.command(
-        name="countingchannelrm",
+        name="countingChannelRemove",
         help="Remove a counting channe by specifying the channel name",
         usage="<channel>",
         aliases=[
-            "countcr",
-            "countingchannelremove",
-            "counting-channel-remove",
-            "counting-channel-rm",
+            "countCr",
+            "countRm",
+            "countingRemove",
         ],
     )
     async def counting_channel_rm(self, ctx, channel: str = None):
@@ -128,59 +127,47 @@ class Counting(commands.Cog):
         return
 
     @commands.command(
-        name="counting-leaderboard-user",
+        name="countingServerLeaderboard",
         help="Show the leaderboard for users in this server and your position",
         usage="",
-        aliases=["countlu","countleaderboard"],
+        aliases=["countSlb","slb", "serverLeaderboard", "countingSlb"],
     )
-    async def counting_leaderboard_user(self, ctx):
+    async def counting_server_leaderboard(self, ctx):
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
-        sortedUR = list(
-            map(
-                lambda x: (x[1], x[0]),
-                sorted(
-                    [(v, k) for k, v in data["counting_channels"][str(ctx.guild.id)]["counterUR"].items()],
-                    reverse=True
-                )
-            )
+        dict1 = data["counting_channels"][str(ctx.guild.id)]["counterUR"].items()
+        #sorts leaderboard
+        dict1 = dict(sorted(dict1, key=lambda item: item[1], reverse=True))
+
+        message = await ctx.send(embed = discord.Embed(title = "Retrieving data...", description = "hold on a second, we will get it done in a jiffy!"))
+        toSend = []
+        for key in dict1:
+            user = await ctx.guild.fetch_member(key)
+            if user == None:
+                continue
+            toSend.append(f"**{user.display_name}#{user.discriminator}**: {dict1[key]}")
+        
+        #add and format the data to a page
+        pages = []
+        page = discord.Embed(title="Counting server leaderboard!", description="View your ranking amongst the other people in your server, and the server leaderboard!", colour = self.client.primary_colour)
+        count = 0
+        count2 = 1
+        for i in toSend:
+            page.add_field(name=f"**{count2}**",value=i, inline=False)
+            count += 1
+            count2 += 1
+            if count == 21:
+                count = 0
+                pages.append(page)
+                page = discord.Embed(title="Counting server leaderboard!", description="View your ranking amongst the other people in your server, and the server leaderboard!", colour = self.client.primary_colour)
+        
+        if page != discord.Embed(title="Counting server leaderboard!", description="View your ranking amongst the other people in your server, and the server leaderboard!", colour = self.client.primary_colour):
+            pages.append(page)
+        page_num = 0
+        await message.edit(
+            embed=pages[page_num],
         )
-        if list(filter(lambda x: x[0] == str(ctx.author.id), sortedUR)) == []:
-            await ctx.reply(
-                embed=discord.Embed(
-                    title="You haven't counted yet!",
-                    colour = self.client.primary_colour
-                )
-            )
-        else:
-            tmp = []
-            for i, c in enumerate(sortedUR):
-                cmemb = await ctx.guild.fetch_member(c[0])
-                cnick = cmemb.nick if cmemb.nick != None else cmemb.name + "#" + cmemb.discriminator
-                tmp.append(f"{('**' if int(c[0]) == ctx.author.id else '')}#{i+1}: {cnick} -- {c[1]}{('**' if int(c[0]) == ctx.author.id else '')}\n")
-
-            rank = 0
-            for i, c in enumerate(sortedUR):
-                if c[0] == str(ctx.author.id):
-                    rank = i + 1
-                    break
-
-            toprint = []
-            if rank < 5 and rank > len(tmp):
-                toprint = tmp
-            elif rank < 5:
-                toprint = tmp[0:rank+5]
-            else:
-                toprint = tmp[rank-5:len(tmp)-1]
-
-            await ctx.reply(
-                embed = discord.Embed(
-                    title=f"Your counting userrank is {rank}!",
-                    description="".join(toprint),
-                    colour = self.client.primary_colour
-                )
-            )
-
-
+        page = Paginator(self.client, ctx, message, pages, timeout=120)
+        await page.start()
         return
 
     @commands.Cog.listener()
