@@ -35,11 +35,21 @@ class Errors(commands.Cog):
             await ctx.send(embed=embed)
 
         elif isinstance(error, commands.CommandOnCooldown):
+            seconds = round(error.retry_after)
             embed = discord.Embed(
                 title="Command on Cooldown",
                 description=f"This command is on cooldown. Try again in {error.retry_after:,.1f} seconds.",
                 colour=self.client.primary_colour,
             )
+            if seconds < 60:
+                embed.description = f"This command is on cooldown. Try again in {seconds} seconds."
+            elif seconds >= 60:
+                minutes = seconds // 60
+                embed.description = f"This command is on cooldown. Try again in {minutes} minutes."
+            elif seconds >= 3600:
+                hours = seconds // 3600
+                embed.description = f"This command is on cooldown. Try again in {hours} hours."
+            
             embed.set_author(
                 name=ctx.author.display_name, icon_url=ctx.author.avatar_url
             )

@@ -349,6 +349,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 3600, BucketType.user)
     async def hourly(self, ctx):
+        self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()

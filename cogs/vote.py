@@ -4,6 +4,7 @@ from discord.ext import commands
 class Vote(commands.Cog):
     def __init__(self, client):
         self.client = client
+        self.hidden = True
 
     @commands.command(name='didivote')
     async def didvote(self, ctx):
