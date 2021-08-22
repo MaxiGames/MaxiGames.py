@@ -444,7 +444,7 @@ class Economy(commands.Cog):
     @check.is_banned()
     @commands.command(
         name="seboost",
-        description="Experimental function that boosts ur se luck :o",
+        description="Boosts ur se luck, but comes at a cost of 50 money.",
         usage="",
         aliases=["seb"] 
     )
@@ -465,18 +465,19 @@ class Economy(commands.Cog):
                 await ctx.reply(embed=embed)
             else:
                 embed=discord.Embed(
-                    title="Yay! You boosted your se luck.",
+                    title="Yay! You boosted your se luck for 50 money!",
                     description="",
                     color=self.client.primary_colour
                 )
                 await ctx.reply(embed=embed)
-                dict1["money"] -= 100
+                dict1["money"] -= 50
                 dict1["seboosted"] = True
                 doc_ref.set(dict1)
                 await asyncio.sleep(50)
                 dict1["seboosted"] = False
                 await ctx.author.send("Your se boost ended D:")
                 doc_ref.set(dict1)
+
     @check.is_banned()
     @commands.command(
         name="snake eyes",
