@@ -441,42 +441,7 @@ class Economy(commands.Cog):
                 color=self.client.primary_colour,
             )
             await ctx.send(embed=embed)
-    @check.is_banned()
-    @commands.command(
-        name="seboost",
-        description="Boosts ur se luck, but comes at a cost of 50 money.",
-        usage="",
-        aliases=["seb"] 
-    )
-    @cooldown(1,100,BucketType.user)
-    async def seboost(self,ctx):
-        self.init = self.client.get_cog("Init")
-        await self.init.checkserver(ctx)
-        doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
-        doc = doc_ref.get()
-        if doc.exists:
-            dict1 = doc.to_dict()
-            if dict1["money"] < 100:
-                embed=discord.Embed(
-                    title="You don't have enough money to boost your luck :(",
-                    description="Come back when you have 100 :D",
-                    color=0xff0000
-                )
-                await ctx.reply(embed=embed)
-            else:
-                embed=discord.Embed(
-                    title="Yay! You boosted your se luck for 50 money!",
-                    description="",
-                    color=self.client.primary_colour
-                )
-                await ctx.reply(embed=embed)
-                dict1["money"] -= 50
-                dict1["seboosted"] = True
-                doc_ref.set(dict1)
-                await asyncio.sleep(50)
-                dict1["seboosted"] = False
-                await ctx.author.send("Your se boost ended D:")
-                doc_ref.set(dict1)
+
 
     @check.is_banned()
     @commands.command(
@@ -485,15 +450,17 @@ class Economy(commands.Cog):
         usage="",
         aliases=["se", "snakeyes"],
     )
-    @cooldown(1, 10, BucketType.user)
+    @cooldown(1, 5, BucketType.user)
     async def se(self, ctx, amount: int):
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
+
         if doc.exists:
             dict1 = doc.to_dict()
             if dict1["money"] < amount:
+                #! bank account money too low
                 embed = discord.Embed(
                     title="Amount in bank too low",
                     description="The amount that you want to gamble is more than what you have in your bank.",
@@ -504,18 +471,12 @@ class Economy(commands.Cog):
                 )
                 await ctx.reply(embed=embed)
                 return
-            if amount <= 0:
-                doc_ref = self.db.collection("users").document(
-                    "{}".format(str(ctx.author.id))
-                )
-                doc = doc_ref.get()
-                if doc.exists:
-                    dict1 = doc.to_dict()
 
-                    doc_ref.set(dict1)
+            if amount <= 0:
+                #! tried to gamble negative amount
                 embed = discord.Embed(
                     title="Amount gambled unacceptable",
-                    description="It appears that you have been attempting to exploit the system and this is very bad!!! Stop doing this or we'll set your balance to 0.",
+                    description="Negative numbers are not accepted.",
                     color=self.client.primary_colour,
                 )
                 embed.set_author(
@@ -530,77 +491,41 @@ class Economy(commands.Cog):
                 color=self.client.primary_colour,
             )
 
-            messagec = await ctx.reply(embed=embed)
-            await asyncio.sleep(2)
+            message = await ctx.reply(embed=embed)
+            await asyncio.sleep(1)
+
             dice1 = random.randint(1, 6)
             dice2 = random.randint(1, 6)
             if dice1 != 1 and dice2 != 1:
-                dict1["money"] -= amount
+                dict1["money"] -= 2*amount
+                print(amount)
                 nowmoney = dict1["money"]
                 doc_ref.set(dict1)
                 embed = discord.Embed(
                     title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description="You didn't get any snake eyes. Beeg sed. You now have "
+                    description="You didn't get any snake eyes. You lost 2x your bet. You now have "
                     + str(nowmoney)
                     + " money.",
                     color=0xFF0000,
                 )
-                if dict1["seboosted"]:
-                    embed.add_field(
-                        name="Snake eyes boost active",
-                        value="This boost expires 50 seconds after activation",
-                        inline=True
-                    )
-                await messagec.edit(embed=embed)
-            elif dice1 == 1 and dice2 != 1:
-                if dict1["seboosted"] == True:
-                    earnt = math.floor(2.3*amount)
-                else:
-                    earnt = math.floor(1.8 * amount)
+                await message.edit(embed=embed)
+
+            elif (dice1 == 1 and dice2 != 1) or (dict1 != 1 and dice2 == 1):
+                earnt = math.floor(2 * amount)
                 dict1["money"] += earnt
                 doc_ref.set(dict1)
                 nowmoney = dict1["money"]
                 embed = discord.Embed(
                     title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description="You got one snake eye! You won 1.8x your bet. You now have "
+                    description="You got one snake eye! You won 3x your bet. You now have "
                     + str(nowmoney)
                     + " money.",
                     color=self.client.primary_colour,
                 )
-                if dict1["seboosted"]:
-                    embed.add_field(
-                        name="Snake eyes boost active",
-                        value="This boost expires 50 seconds after activation",
-                        inline=True
-                    )
-                await messagec.edit(embed=embed)
-            elif dice1 != 1 and dice2 == 1:
-                if dict1["seboosted"] == True:
-                    earnt = math.floor(2.3*amount)
-                else:
-                    earnt = math.floor(1.8 * amount)
-                dict1["money"] += earnt
-                nowmoney = dict1["money"]
-                doc_ref.set(dict1)
-                embed = discord.Embed(
-                    title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description="You got one snake eye! You won 1.8x your bet. You now have "
-                    + str(nowmoney)
-                    + " money.",
-                    color=self.client.primary_colour,
-                )
-                if dict1["seboosted"]:
-                    embed.add_field(
-                        name="Snake eyes boost active",
-                        value="This boost expires 50 seconds after activation",
-                        inline=True
-                    )
-                await messagec.edit(embed=embed)
+                await message.edit(embed=embed)
+
             else:
-                if dict1["seboosted"] == True:
-                    earnt = math.floor(12*amount)
-                else:
-                    earnt = math.floor(10 * amount)
+                earnt = math.floor(10 * amount)
                 dict1["money"] += earnt
                 nowmoney = dict1["money"]
                 doc_ref.set(dict1)
@@ -611,13 +536,7 @@ class Economy(commands.Cog):
                     + " money. Woo!",
                     color=self.client.primary_colour,
                 )
-                if dict1["seboosted"]:
-                    embed.add_field(
-                        name="Snake eyes boost active",
-                        value="This boost expires 50 seconds after activation",
-                        inline=True
-                    )
-                await messagec.edit(embed=embed)
+                await message.edit(embed=embed)
         else:
             await self.init.init(ctx)
     
