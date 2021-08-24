@@ -11,7 +11,6 @@ from firebase_admin import firestore
 from firebase_admin import credentials
 from discord_components import DiscordComponents
 from discord_slash import SlashCommand
-import topgg
 
 # simple arguments -- for now just Beta or Release
 beta = True
@@ -31,7 +30,6 @@ with open("config.json", "r") as file:
     intents.guilds = True
     client = Client(command_prefix=(get_prefix), intents=intents, case_insensitive = True)
     client.prefixes = {}
-    client.topggpy = topgg.DBLClient(client, data["topggId"])
 
 cred = credentials.Certificate("serviceAccountKey2.json") if beta else credentials.Certificate("serviceAccountKey.json") 
 firebase_admin.initialize_app(cred)
