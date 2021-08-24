@@ -511,13 +511,13 @@ class Economy(commands.Cog):
                 await message.edit(embed=embed)
 
             elif (dice1 == 1 and dice2 != 1) or (dict1 != 1 and dice2 == 1):
-                earnt = math.floor(1.8 * amount)
+                earnt = math.floor(amount*2)
                 dict1["money"] += earnt
                 doc_ref.set(dict1)
                 nowmoney = dict1["money"]
                 embed = discord.Embed(
                     title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description="You got one snake eye! You won 1.8x your bet. You now have "
+                    description="You got one snake eye! You won 2x your bet. You now have "
                     + str(nowmoney)
                     + " money.",
                     color=self.client.primary_colour,
