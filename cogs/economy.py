@@ -476,7 +476,7 @@ class Economy(commands.Cog):
                 #! tried to gamble negative amount
                 embed = discord.Embed(
                     title="Amount gambled unacceptable",
-                    description="Negative numbers are not accepted.",
+                    description="You have to bet a positive amount of money!",
                     color=self.client.primary_colour,
                 )
                 embed.set_author(
@@ -497,13 +497,13 @@ class Economy(commands.Cog):
             dice1 = random.randint(1, 6)
             dice2 = random.randint(1, 6)
             if dice1 != 1 and dice2 != 1:
-                dict1["money"] -= 2*amount
+                dict1["money"] -= amount
                 print(amount)
                 nowmoney = dict1["money"]
                 doc_ref.set(dict1)
                 embed = discord.Embed(
                     title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description="You didn't get any snake eyes. You lost 2x your bet. You now have "
+                    description="You didn't get any snake eyes. You lost your bet. You now have "
                     + str(nowmoney)
                     + " money.",
                     color=0xFF0000,
@@ -511,13 +511,13 @@ class Economy(commands.Cog):
                 await message.edit(embed=embed)
 
             elif (dice1 == 1 and dice2 != 1) or (dict1 != 1 and dice2 == 1):
-                earnt = math.floor(2 * amount)
+                earnt = math.floor(1.8 * amount)
                 dict1["money"] += earnt
                 doc_ref.set(dict1)
                 nowmoney = dict1["money"]
                 embed = discord.Embed(
                     title="You rolled " + str(dice1) + " and " + str(dice2) + "!",
-                    description="You got one snake eye! You won 3x your bet. You now have "
+                    description="You got one snake eye! You won 1.8x your bet. You now have "
                     + str(nowmoney)
                     + " money.",
                     color=self.client.primary_colour,
@@ -597,7 +597,7 @@ class Economy(commands.Cog):
                     color=0xff0000
                 )
                 await ctx.reply(embed=embed)
-            elif num < 610:
+            else:
                 embed=discord.Embed(
                     title="Welp. You didn't find anything, but at least you didn't die :D",
                     description="Money ±0",
