@@ -19,7 +19,7 @@ class VoteRewards(commands.Cog):
             # get the id of the user
             content = ctx.content
             print(content)
-            userId = int(content[28:-1])
+            userId = int(content.replace("Thank you for the upvote <@", "").replace(">", ""))
             doc_ref = self.db.collection("users").document("{}".format(str(userId)))
             doc = doc_ref.get().to_dict()
             if doc == None:
@@ -32,9 +32,6 @@ class VoteRewards(commands.Cog):
                     doc["money"] = 500
                 num = doc["money"]
             doc_ref.set(doc)
-            #idk if this works if the member is not inside the official server
-            user = ctx.guild.get_member(userId)
-            await user.send("Thanks for voting!")
 
 def setup(client):
     client.add_cog(VoteRewards(client))  
