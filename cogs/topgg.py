@@ -14,20 +14,27 @@ class VoteRewards(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, ctx):
         if ctx.author.bot and ctx.channel.id == 879697234340491274:
-            #! is sent by the bo
+            #! is sent by the bot
 
             # get the id of the user
             content = ctx.content
-            userId = int(content.replace("Thank you for the upvote <@", "").replace(">", ""))
+            print(content)
+            userId = int(content[28:-1])
             doc_ref = self.db.collection("users").document("{}".format(str(userId)))
             doc = doc_ref.get().to_dict()
             if doc == None:
                 doc = {"voteReward": time.time()}
             else:
                 doc["voteReward"] = time.time()
+                if "money" in doc.keys():
+                    doc["money"] += 500
+                else:
+                    doc["money"] = 500
+                num = doc["money"]
             doc_ref.set(doc)
-
-            await ctx.send("Thank you for the upvote <@{}>! You will receive a reward in the next 24 hours!".format(userId))
+            #idk if this works if the member is not inside the official server
+            user = ctx.guild.get_member(userId)
+            await user.send("Thanks for voting!")
 
 def setup(client):
     client.add_cog(VoteRewards(client))  
