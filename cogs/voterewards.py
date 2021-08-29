@@ -44,7 +44,7 @@ class VoteRewards(commands.Cog):
             ## remind the person to re-vote if needed
             if "remindVote" in doc:
                 if doc["remindVote"] == True:
-                    asyncio.sleep(43200)
+                    await asyncio.sleep(43200)
                     user = self.client.get_user(userId)
                     await user.send(embed=discord.Embed(title="You can vote for MaxiGames again!", description="Link: https://top.gg/bot/863419048041381920/vote"))
 
