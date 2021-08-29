@@ -162,7 +162,7 @@ class Games(commands.Cog):
                     await ctx.reply(embed=embed)
                 doc_ref.set(dict1)
 
-    @commands.command(name="trivialb", description="retrieves the trivia leaderboard", aliases=["trivialeaderboard","tlb","triviaLB"], usage="")
+    @commands.command(name="trivialb", description="retrieves the trivia leaderboard", aliases=["trivialeaderboard","tlb"], usage="")
     @cooldown(1, 10, BucketType.user)
     async def trivia_leaderboard(self, ctx):
         await leaderboard_generate(self, ctx, "trivia")

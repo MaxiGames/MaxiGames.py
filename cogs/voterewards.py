@@ -6,6 +6,7 @@ import time
 from discord.ext.commands import cooldown, BucketType
 from utils.paginator import Paginator
 from datetime import datetime
+import asyncio
 
 class VoteRewards(commands.Cog):
     def __init__(self, client):
@@ -39,6 +40,13 @@ class VoteRewards(commands.Cog):
                 date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
                 doc["notifications"].append({"title": "Vote Reward Added!", "description":"+300 money and other rewards added on " + date_time})
             doc_ref.set(doc)
+
+            ## remind the person to re-vote if needed
+            if "remindVote" in doc:
+                if doc["remindVote"] == True:
+                    asyncio.sleep(43200)
+                    user = self.client.get_user(userId)
+                    await user.send(embed=discord.Embed(title="You can vote for MaxiGames again!", description="Link: https://top.gg/bot/863419048041381920/vote"))
 
     @commands.command(
         name="notifications",
@@ -120,6 +128,25 @@ class VoteRewards(commands.Cog):
             doc["notifications"] = []
         doc_ref.set(doc)
         await ctx.reply("Done!")
+    
+    @commands.command(
+        name="remindVote",
+        help="Toggles whether the bot reminds you when you can vote again for it, after every 12 hours",
+        usage="",
+        aliases=["rv", "remindToVote", "remindV"]
+    )
+    @cooldown(1, 15, BucketType.user)
+    async def remindVote(self, ctx):
+        doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
+        doc = doc_ref.get().to_dict()
+        if "remindVote" in doc and doc["remindVote"] == True:
+            doc["remindVote"] = False
+            doc_ref.set(doc)
+            await ctx.reply("The bot will **not** remind you when you can vote for it again :D")
+            return
+        doc["remindVote"] = True
+        doc_ref.set(doc)
+        await ctx.reply("The bot will remind you when you can vote for it again :D")
 
 def setup(client):
     client.add_cog(VoteRewards(client))  
