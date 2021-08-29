@@ -181,13 +181,8 @@ class Hangman(commands.Cog):
             title="Your hangman game: ", description=answer, color=0xFFFF00
         )
 
-        def maxi(a, b):
-            if a > b:
-                return a
-            else:
-                return b
 
-        lives = maxi(5, math.floor(len(wordChoice) * 2 / 3))
+        lives = max(5, math.floor(len(wordChoice) * 2 / 3))
         word_guessed = 0
         await ctx.reply(embed=embed)
         guessed_letter = []
@@ -221,14 +216,14 @@ class Hangman(commands.Cog):
                     if ok == 0:
                         lives -= 1
                         embed = discord.Embed(
-                            title="Oof... Your guess wasn't correct.",
-                            description=f"Try again using individual character or whole word guesses! You have {lives} lives left",
+                            title=f"Your guess wasn't correct. {lives} lives left",
+                            description=f"Try again using individual character or whole word guesses!",
                             color=0xFF0000,
                         )
                     else:
                         embed = discord.Embed(
-                            title="Pog! Your guess is correct!",
-                            description=f"The word now is {' '.join(currentGuess)}! You have {lives} lives left",
+                            title=f"Your guess is correct! {lives} lives left",
+                            description=f"The word now is {' '.join(currentGuess)}!",
                             color=self.client.primary_colour,
                         )
                     await message.reply(embed=embed)
@@ -253,8 +248,8 @@ class Hangman(commands.Cog):
                     else:
                         lives -= 1
                         embed = discord.Embed(
-                            title="Your guess was wrong!",
-                            description=f"Try again using individual character or whole word guesses! You have {lives} lives left",
+                            title=f"Your guess wasn't correct. {lives} lives left",
+                            description=f"Try again using individual character or whole word guesses!",
                             color=0xFF0000,
                         )
                         await message.reply(embed=embed)

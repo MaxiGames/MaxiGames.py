@@ -305,12 +305,12 @@ class Economy(commands.Cog):
         count = 1
         embed = discord.Embed(
             title=f"Leaderboard in {ctx.message.guild.name}:",
-            description="Currency leaderboards! Check out the currency section in m!help for more details!",
+            description=f"Richest people in {ctx.message.guild.name}! Check out the currency section in m!help for more details!",
             colour=self.client.primary_colour,
         )
         for i in sorted(dict3.items(), key=lambda kv: (kv[1]), reverse=True):
             user = await self.client.fetch_user(int(i[0]))
-            description.append(f"{user.mention}: **{i[1]} points**")
+            description.append(f"{user.mention}: **{i[1]} money**")
             count += 1
         
         pages = []
@@ -343,7 +343,7 @@ class Economy(commands.Cog):
 
     @commands.command(
         name="hourly",
-        help="Hourly points :D",
+        help="Collect your hourly money :D",
         usage="",
         aliases=["h"],
     )
@@ -381,7 +381,7 @@ class Economy(commands.Cog):
 
     @commands.command(
         name="daily",
-        help="Daily points :D",
+        help="Collect your daily money! :D",
         usage="",
         aliases=["d"],
     )
@@ -445,8 +445,8 @@ class Economy(commands.Cog):
 
     @check.is_banned()
     @commands.command(
-        name="snake eyes",
-        help="A random dice game that everyone loves.",
+        name="snakeeyes",
+        help="When you roll a 1 on a die, you win money!",
         usage="",
         aliases=["se", "snakeyes"],
     )

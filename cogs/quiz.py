@@ -48,7 +48,7 @@ class Games(commands.Cog):
             await ctx.reply(
                 embed=discord.Embed(
                     title="Error",
-                    description="A difficulty level of 1, 2 or 3 is needed! Note that the harder the question is, the more points you will get if u get it right!",
+                    description="A difficulty level of 1, 2 or 3 is required! Note that the harder the question is, the more points you will get if you get it right! (Check syntax with help command)",
                     colour=self.client.primary_colour,
                 )
             )
@@ -96,7 +96,6 @@ class Games(commands.Cog):
         await message.add_reaction("2️⃣")
         await message.add_reaction("3️⃣")
         await message.add_reaction("4️⃣")
-        # res = await Bot.wait_for_reaction('3️⃣', message=msg, timeout=15)
 
         def check(reaction, user):
             return user == ctx.author and reaction.message == message
@@ -114,7 +113,6 @@ class Games(commands.Cog):
             await ctx.reply(embed=embed)
 
         else:
-            # find which option is correct????
             index = None
             if reaction.emoji == "1️⃣":
                 index = 0
@@ -164,7 +162,7 @@ class Games(commands.Cog):
                     await ctx.reply(embed=embed)
                 doc_ref.set(dict1)
 
-    @commands.command(name="triviaLB", description="retrieves the trivia leaderboard", aliases=["trivialeaderboard"], usage="")
+    @commands.command(name="trivialb", description="retrieves the trivia leaderboard", aliases=["trivialeaderboard","tlb","triviaLB"], usage="")
     @cooldown(1, 10, BucketType.user)
     async def trivia_leaderboard(self, ctx):
         await leaderboard_generate(self, ctx, "trivia")

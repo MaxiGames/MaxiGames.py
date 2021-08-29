@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from discord.ext.commands.core import has_guild_permissions
 
-# import tictactoe
 
 
 class EasterEggs(commands.Cog):
@@ -29,8 +28,8 @@ class EasterEggs(commands.Cog):
     @commands.command(hidden=True,aliases=["gamblingisbad"], help="Easter eggs?")
     async def gamblingbad(self,ctx):
         embed=discord.Embed(
-            title = "EASTER EGG FOUND! Glad you realised that gambling is bad :D",
-            description = "But anyway here are some stats on gambling to make sure you don't do it anymore >:(",
+            title = "Gambling is bad :D",
+            description = "You will lose money if you play MaxiGames gambling games :D",
             color=self.client.primary_colour
         )
         embed.add_field(

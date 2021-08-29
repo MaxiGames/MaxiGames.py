@@ -445,8 +445,8 @@ class General(commands.Cog):
 
     @commands.command(
         name="lmgtfy",
-        help="Command that creats a Let Me Google That For You link for all your queries!",
-        usage="",
+        help="Command that creats a Let Me Google That For You (lmgtfy) link for all your queries! Perfect for lazy people.",
+        usage="<query>",
     )
     @cooldown(1, 30, BucketType.user)
     async def lmgtfy(self, ctx, *quer: str):
@@ -464,7 +464,7 @@ class General(commands.Cog):
     @commands.command(
         name="choose",
         help="Chooses a random choice from the set of words given",
-        usage="<choices space-separated>",
+        usage="<choice1> <choice2> ...",
     )
     @cooldown(1, 5, BucketType.user)
     async def choose(self, ctx, *choices: str):
@@ -478,7 +478,7 @@ class General(commands.Cog):
     
     @commands.command(
         name="kawaii",
-        help="Makes what you say kawaii (replaces some letter combinations with others)",
+        help="Makes what you say look/sound cuter (replaces some letter combinations with others)",
         usage="<message>",
     )
     @cooldown(1, 10, BucketType.user)
