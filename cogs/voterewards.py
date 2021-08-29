@@ -35,7 +35,7 @@ class VoteRewards(commands.Cog):
                     doc["money"] = 300
 
                 if "notifications" not in doc.keys():
-                    doc["notifications"] - []
+                    doc["notifications"] = []
                 date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
                 doc["notifications"].append({"title": "Vote Reward Added!", "description":"+300 money and other rewards added on " + date_time})
             doc_ref.set(doc)
