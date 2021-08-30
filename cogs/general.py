@@ -41,7 +41,7 @@ class General(commands.Cog):
             u'autoresponses': {}
         }
         doc_ref.set(data)
-        await client.change_presence(
+        await self.client.change_presence(
         status=discord.Status.online,
         activity=discord.Game(
             name="m!help on " + str(len(self.client.guilds)) + " servers", type=0
@@ -52,7 +52,7 @@ class General(commands.Cog):
     async def on_guild_remove(self, guild):
         doc_ref = self.db.collection(u'servers').document(str(guild.id))
         doc_ref.delete()
-        await client.change_presence(
+        await self.client.change_presence(
         status=discord.Status.online,
         activity=discord.Game(
             name="m!help on " + str(len(self.client.guilds)) + " servers", type=0
