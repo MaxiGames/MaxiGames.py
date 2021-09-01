@@ -41,6 +41,8 @@ class Suggestions(commands.Cog):
             for c in ctx.message.attachments:
                 embed.set_image(url=c)
         message = await channel.send(embed=embed)
+        await message.add_reaction("⬆️")
+        await message.add_reaction("⬇️")
 
         acknowledgement = discord.Embed(
             title="Suggestion Submitted",
@@ -48,6 +50,55 @@ class Suggestions(commands.Cog):
             colour=self.client.primary_colour,
         )
         await ctx.reply(embed=acknowledgement)
+    
+    @check.is_staff()
+    @commands.command(
+        name="replySuggestion",
+        description="Approve/deny a suggestion",
+        hidden = True,
+        alias=["approveSuggestion", "rs", "as", "ds", "denySuggestion"],
+        usage=("replySuggestion <suggestion message id> <approve/deny (bool)> <message>"),
+    )
+    async def replySuggestion(self, ctx, messageID:int, approve:bool, *messageToUser):
+        messageToUser = " ".join(messageToUser[:])
+
+        channel = self.client.get_channel(865821669730156544)
+        message = await channel.fetch_message(messageID)
+        if message == None:
+            await ctx.reply("No message found!")
+            return
+        
+        # retrieving suggestion and user that submitted it
+        user = message.author
+        suggestion = ""
+        if message.embeds != []:
+            for embed in message.embeds:
+                if embed.title == "New Suggestion":
+                    suggestion = embed.fields[0].value
+                    user = int(embed.description.replace("> has submitted a suggestion.", "").replace("<@", "").replace("!", ""))
+                    user = self.client.get_user(user)
+        else:
+            await ctx.reply("Invalid Message")
+            return
+        if suggestion == "" or user == message.author:
+            await ctx.reply("Invalid Message")
+            return
+
+        if user == None:
+            await ctx.reply("Invalid User")
+        
+        # send results
+        channel2 = self.client.get_channel(882646341799542824)
+        await message.delete()
+        if approve:
+            await channel2.send(embed=discord.Embed(title=f"Suggestion has been approved.", description=f"Suggestion: {suggestion}", colour=self.client.primary_colour).add_field(name="Admin's message:", value=messageToUser, inline=False))
+            await user.send(embed=discord.Embed(title=f"Your suggestion has been approved.", description=f"Suggestion: {suggestion}", colour=self.client.primary_colour).add_field(name="Admin's message:", value=messageToUser, inline=False))
+        else:
+            await channel2.send(embed=discord.Embed(title=f"Suggestion has been denied.", description=f"Suggestion: {suggestion}", colour=self.client.primary_colour).add_field(name="Admin's message:", value=messageToUser, inline=False))
+            await user.send(embed=discord.Embed(title=f"Your suggestion has been denied.", description=f"Suggestion: {suggestion}", colour=self.client.primary_colour).add_field(name="Admin's message:", value=messageToUser, inline=False))
+        
+        await ctx.message.delete()
+
 
     @check.is_banned()
     @commands.command(
@@ -79,7 +130,8 @@ class Suggestions(commands.Cog):
             colour=self.client.primary_colour,
         )
         await ctx.reply(embed=acknowledgement)
-        
+    
+
 
 
 def setup(client):
