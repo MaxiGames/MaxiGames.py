@@ -252,10 +252,14 @@ class Economy(commands.Cog):
         usage="",
         aliases=["balance", "b"],)
     @cooldown(1, 5, BucketType.user)
-    async def bal(self, ctx):
+    async def bal(self, ctx, user:discord.User = None):
+        actualUser = ctx.author
+        if user != None:
+            actualUser = user
+
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
-        doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
+        doc_ref = self.db.collection("users").document("{}".format(str(actualUser.id)))
         doc = doc_ref.get()
         if doc.exists:
             embed = discord.Embed(
@@ -264,12 +268,15 @@ class Economy(commands.Cog):
                 colour=self.client.primary_colour,
             )
             embed.set_author(
-                name=ctx.author.display_name,
+                name=actualUser.display_name,
                 url="https://google.com",
-                icon_url=ctx.author.avatar_url,
+                icon_url=actualUser.avatar_url,
             )
             embed.add_field(
                 name="Balance", value=f'{doc.to_dict()["money"]}', inline=True
+            )
+            embed.set_footer(
+                text="Requested by: {}".format(str(ctx.author.display_name)), icon_url: ctx.author.avatar_url
             )
             await ctx.reply(
                 embed=embed, allowed_mentions=discord.AllowedMentions.none()
