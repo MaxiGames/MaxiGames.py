@@ -276,7 +276,7 @@ class Economy(commands.Cog):
                 name="Balance", value=f'{doc.to_dict()["money"]}', inline=True
             )
             embed.set_footer(
-                text="Requested by: {}".format(str(ctx.author.display_name)), icon_url: ctx.author.avatar_url
+                text="Requested by: {}".format(str(ctx.author.display_name)), icon_url= ctx.author.avatar_url
             )
             await ctx.reply(
                 embed=embed, allowed_mentions=discord.AllowedMentions.none()
@@ -708,5 +708,51 @@ class Economy(commands.Cog):
                 )
                 await ctx.reply(embed=embed)
         doc_ref.set(dict1)
+
+    @commands.command(
+        name="share",
+        help="Sharing is caring! Share some money to your friends now!",
+        usage="<amount>",
+        aliases=["give", "pay", "offer"]
+    )
+    @cooldown(1,5,BucketType.user)
+    async def share(self,ctx,user:discord.User,amount:int):
+        if discord.User == None:
+            embed=discord.Embed(
+                title="Invalid user!",
+                description="",
+                color=0xff1100
+            )
+            await ctx.reply(embed=embed)
+            return
+        if amount <= 0:
+            await ctx.reply(embed = discord.Embed(title="Error", description="You can't share negative money!"), colour=0xff1100)
+            return
+
+        msg = await ctx.reply(embed=discord.Embed(title="Sharing...", description="Your kind deed will be delivered to " + str(user) + "! Hang in tight!"))
+
+        self.init = self.client.get_cog("Init")
+        await self.init.checkserver(ctx)
+        doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
+        doc = doc_ref.get().to_dict()
+
+        if "money" not in doc or doc["money"] < amount:
+            await msg.edit(embed = discord.Embed(title="Error", description="You don't have enough money to share it with your friends :("), colour=0xff1100)
+            return
+
+        doc_ref_2 = self.db.collection("users").document("{}".format(str(user.id)))
+        doc_2 = doc_ref_2.get().to_dict()
+        
+        # share success
+        if "money" not in doc_2:
+            doc_2["money"] = amount
+        else:
+            doc_2["money"] += amount
+        doc_ref_2.set(doc_2)
+        doc["money"] -= amount
+        doc_ref.set(doc)
+
+        await msg.edit(embed = discord.Embed(title="Success", description="You gave " + str(amount) + " coins to " + user.mention + "!", color=self.client.primary_colour))
+
 def setup(client):
     client.add_cog(Economy(client))
