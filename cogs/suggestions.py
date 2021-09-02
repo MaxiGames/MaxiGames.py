@@ -90,7 +90,10 @@ class Suggestions(commands.Cog):
         # send results
         channel2 = self.client.get_channel(882646341799542824)
         await message.delete()
-        if approve:
+        if approve == None:
+            await channel2.send(embed=discord.Embed(title=f"Suggestion needs clarification.", description=f"Suggestion: {suggestion}", colour=self.client.primary_colour).add_field(name="Admin's message:", value=messageToUser, inline=False))
+            await user.send(embed=discord.Embed(title=f"Your suggestion needs clarification.", description=f"Suggestion: {suggestion}", colour=self.client.primary_colour).add_field(name="Admin's message:", value=messageToUser, inline=False))
+        elif if approve:
             await channel2.send(embed=discord.Embed(title=f"Suggestion has been approved.", description=f"Suggestion: {suggestion}", colour=self.client.primary_colour).add_field(name="Admin's message:", value=messageToUser, inline=False))
             await user.send(embed=discord.Embed(title=f"Your suggestion has been approved.", description=f"Suggestion: {suggestion}", colour=self.client.primary_colour).add_field(name="Admin's message:", value=messageToUser, inline=False))
         else:
