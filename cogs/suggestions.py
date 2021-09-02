@@ -59,7 +59,7 @@ class Suggestions(commands.Cog):
         alias=["approveSuggestion", "rs", "as", "ds", "denySuggestion"],
         usage=("replySuggestion <suggestion message id> <approve/deny (bool)> <message>"),
     )
-    async def replySuggestion(self, ctx, messageID:int, approve:bool, *messageToUser):
+    async def replySuggestion(self, ctx, messageID:int, approve:str, *messageToUser):
         messageToUser = " ".join(messageToUser[:])
 
         channel = self.client.get_channel(865821669730156544)
@@ -90,14 +90,14 @@ class Suggestions(commands.Cog):
         # send results
         channel2 = self.client.get_channel(882646341799542824)
         await message.delete()
-        if approve == None:
-            await channel2.send(embed=discord.Embed(title=f"Suggestion needs clarification.", description=f"Suggestion: {suggestion}", colour=0x0000ff).add_field(name="Admin's message:", value=messageToUser, inline=False))
+        if approve == "None":
+            await channel2.send(embed=discord.Embed(title=f"Suggestion needs clarification.", description=f"Suggestion: {suggestion}", colour=0x0000ff).add_field(name="Admin's message:", value=messageToUser, inline=False).set_footer(text=user.display_name, icon_url=user.avatar_url))
             await user.send(embed=discord.Embed(title=f"Your suggestion needs clarification.", description=f"Suggestion: {suggestion}", colour=0x0000ff).add_field(name="Admin's message:", value=messageToUser, inline=False))
-        elif if approve:
-            await channel2.send(embed=discord.Embed(title=f"Suggestion has been approved.", description=f"Suggestion: {suggestion}", colour=0x00ff00).add_field(name="Admin's message:", value=messageToUser, inline=False))
+        elif approve == "True":
+            await channel2.send(embed=discord.Embed(title=f"Suggestion has been approved.", description=f"Suggestion: {suggestion}", colour=0x00ff00).add_field(name="Admin's message:", value=messageToUser, inline=False).set_footer(text=user.display_name, icon_url=user.avatar_url))
             await user.send(embed=discord.Embed(title=f"Your suggestion has been approved.", description=f"Suggestion: {suggestion}", colour=0x00ff00).add_field(name="Admin's message:", value=messageToUser, inline=False))
         else:
-            await channel2.send(embed=discord.Embed(title=f"Suggestion has been denied.", description=f"Suggestion: {suggestion}", colour=0xff0000).add_field(name="Admin's message:", value=messageToUser, inline=False))
+            await channel2.send(embed=discord.Embed(title=f"Suggestion has been denied.", description=f"Suggestion: {suggestion}", colour=0xff0000).add_field(name="Admin's message:", value=messageToUser, inline=False).set_footer(text=user.display_name, icon_url=user.avatar_url))
             await user.send(embed=discord.Embed(title=f"Your suggestion has been denied.", description=f"Suggestion: {suggestion}", colour=0xff0000).add_field(name="Admin's message:", value=messageToUser, inline=False))
         
         await ctx.message.delete()
