@@ -57,7 +57,7 @@ class Suggestions(commands.Cog):
         description="Approve/deny a suggestion",
         hidden = True,
         alias=["approveSuggestion", "rs", "as", "ds", "denySuggestion"],
-        usage=("replySuggestion <suggestion message id> <approve/deny (bool)> <message>"),
+        usage=("<suggestion message id> <approve/deny (bool)> <message>"),
     )
     async def replySuggestion(self, ctx, messageID:int, approve:str, *messageToUser):
         messageToUser = " ".join(messageToUser[:])
@@ -102,7 +102,6 @@ class Suggestions(commands.Cog):
         
         await ctx.message.delete()
 
-
     @check.is_banned()
     @commands.command(
         name="bugReport",
@@ -134,8 +133,57 @@ class Suggestions(commands.Cog):
         )
         await ctx.reply(embed=acknowledgement)
     
+    @check.is_staff()
+    @commands.command(
+        name="replyBugReport",
+        description="Approve/deny a bug report",
+        hidden = True,
+        alias=["approveBugReport", "rbr", "br", "replyBug", "denyBugReport"],
+        usage=("<suggestion message id> <approve/deny (bool)> <message>"),
+    )
+    async def replySuggestion(self, ctx, messageID:int, approve:str, *messageToUser):
+        messageToUser = " ".join(messageToUser[:])
 
+        channel = self.client.get_channel(869960880631218196)
+        message = await channel.fetch_message(messageID)
+        if message == None:
+            await ctx.reply("No message found!")
+            return
+        
+        # retrieving report and user that submitted it
+        user = message.author
+        suggestion = ""
+        if message.embeds != []:
+            for embed in message.embeds:
+                if embed.title == "New Bug":
+                    suggestion = embed.fields[0].value
+                    user = int(embed.description.replace("> has submitted a bug.", "").replace("<@", "").replace("!", ""))
+                    user = self.client.get_user(user)
+        else:
+            await ctx.reply("Invalid Message")
+            return
 
+        if suggestion == "" or user == message.author:
+            await ctx.reply("Invalid Message")
+            return
+
+        if user == None:
+            await ctx.reply("Invalid User")
+        
+        # send results
+        channel2 = self.client.get_channel(882981586818195476)
+        await message.delete()
+        if approve == "None":
+            await channel2.send(embed=discord.Embed(title=f"Bug Report needs clarification.", description=f"Suggestion: {suggestion}", colour=0x0000ff).add_field(name="Admin's message:", value=messageToUser, inline=False).set_footer(text=user.display_name, icon_url=user.avatar_url))
+            await user.send(embed=discord.Embed(title=f"Your Bug Report needs clarification.", description=f"Suggestion: {suggestion}", colour=0x0000ff).add_field(name="Admin's message:", value=messageToUser, inline=False))
+        elif approve == "True":
+            await channel2.send(embed=discord.Embed(title=f"Bug Report has been approved.", description=f"Suggestion: {suggestion}", colour=0x00ff00).add_field(name="Admin's message:", value=messageToUser, inline=False).set_footer(text=user.display_name, icon_url=user.avatar_url))
+            await user.send(embed=discord.Embed(title=f"Your Bug Report has been approved.", description=f"Suggestion: {suggestion}", colour=0x00ff00).add_field(name="Admin's message:", value=messageToUser, inline=False))
+        else:
+            await channel2.send(embed=discord.Embed(title=f"Bug Report has been denied.", description=f"Suggestion: {suggestion}", colour=0xff0000).add_field(name="Admin's message:", value=messageToUser, inline=False).set_footer(text=user.display_name, icon_url=user.avatar_url))
+            await user.send(embed=discord.Embed(title=f"Your Bug Report has been denied.", description=f"Suggestion: {suggestion}", colour=0xff0000).add_field(name="Admin's message:", value=messageToUser, inline=False))
+        
+        await ctx.message.delete()
 
 def setup(client):
     client.add_cog(Suggestions(client))
