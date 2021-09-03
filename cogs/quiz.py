@@ -169,7 +169,7 @@ class Games(commands.Cog):
 
     @commands.command(
         name="math",
-        help="Answer a math question correctly to gain coins. If you don't get it correct you lose coins!",
+        help="Answer a math question correctly to earn coins. If you don't get it correct you lose coins!",
         usage="",
     )
     @cooldown(1, 15, BucketType.user)
@@ -308,7 +308,7 @@ class Games(commands.Cog):
                     moneynow = dict1["money"]
                     embed = discord.Embed(
                         title="Correct answer",
-                        description=f"The word was {msgcontent}, you gained {toAdd} money! You now have {moneynow} money! :D",
+                        description=f"The word was {msgcontent}, you earned {toAdd} money! You now have {moneynow} money! :D",
                         color=self.client.primary_colour,
                     )
                     await messageanswer.reply(embed=embed)

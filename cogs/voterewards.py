@@ -101,7 +101,7 @@ class VoteRewards(commands.Cog):
     
     @commands.command(
         name="voteRewards",
-        help="By voting for the bot, you will gain these rewards!",
+        help="By voting for the bot, you will earn these rewards!",
         usage="",
         aliases=["vr", "rewards", "reward", "votereward"]
     )

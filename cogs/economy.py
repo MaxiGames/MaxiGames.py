@@ -368,7 +368,7 @@ class Economy(commands.Cog):
             doc_ref.set(dict1)
             embed = discord.Embed(
                 title="Hourly claimed :D",
-                description="Money gained from saying hourly!",
+                description="Money earned from saying hourly!",
                 colour=self.client.primary_colour,
             )
             embed.set_author(

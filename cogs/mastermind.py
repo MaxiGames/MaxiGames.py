@@ -210,7 +210,7 @@ class Mastermind(commands.Cog):
                 
                     embed=discord.Embed(
                         title="You won the game!",
-                        description="You guessed the code! The answer was: "+str(guess.content)+"!\nYou gained " + str(13-guesses) + " money and you now have " + str(money_now) + " money!",
+                        description="You guessed the code! The answer was: "+str(guess.content)+"!\nYou earned " + str(13-guesses) + " money and you now have " + str(money_now) + " money!",
                         color=self.client.primary_colour
                     )
                     

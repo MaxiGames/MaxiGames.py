@@ -239,7 +239,7 @@ class Hangman(commands.Cog):
 
                         embed = discord.Embed(
                             title="You won!",
-                            description=f"Congratulations, you guessed the word **{wordChoice}** correctly and gained {add} money! You have {data['money']} money now!",
+                            description=f"Congratulations, you guessed the word **{wordChoice}** correctly and earned {add} money! You have {data['money']} money now!",
                             color=0x00FF00,
                         )
                         await message.reply(embed=embed)
@@ -284,7 +284,7 @@ class Hangman(commands.Cog):
 
             embed = discord.Embed(
                 title="You won!",
-                description=f"Congratulations, you guessed the word **{wordChoice}** correctly and gained {add} money! You have {data['money']} money now!",
+                description=f"Congratulations, you guessed the word **{wordChoice}** correctly and earned {add} money! You have {data['money']} money now!",
                 color=0x00FF00,
             )
             await message.reply(embed=embed)
