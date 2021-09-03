@@ -63,7 +63,7 @@ class Todo(commands.Cog):
             data["todo"].pop(int(number) - 1)
         except:
             await ctx.send(
-                "Item does not exist. Do note that you are supposed to state the number of the element u want to remove"
+                "Item does not exist. Do note that you are supposed to state the number of the element you want to remove"
             )
             return
         doc_ref.set(data)

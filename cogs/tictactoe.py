@@ -10,7 +10,7 @@ class TicTacToe(commands.Cog):
 
     @commands.command(
         name="ttt",
-        help="tic tac toe game u can play with your friend!",
+        help="tic tac toe game you can play with your friend!",
         usage="",
         alias=["tictactoe"],
     )
