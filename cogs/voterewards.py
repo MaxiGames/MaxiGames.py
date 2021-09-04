@@ -107,11 +107,13 @@ class VoteRewards(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def r(self, ctx):
-        ctx.send(embed=discord.Embed(
+        await ctx.send(embed=discord.Embed(
             title="Rewards for voting the bot!!",
             description="Try `m!vote` to get the link to voting maxigames :D",
             colour=self.client.primary_colour,
-        ).add_field(name="Instant Reward:", value = "`+300 Money!`")
+        ).add_field(name="Instant Reward:", value = "`+300 Money!`", inline=False)
+        .add_field(name="Claimable Reward:", value = "`Daily 10% boost within the next 24 hrs!`", inline=False)
+        .add_field(name="Usable Reward:", value = "`Snake eyes reward boost by 10% within the next 24 hrs!`", inline=False)
         )
     
     @commands.command(
