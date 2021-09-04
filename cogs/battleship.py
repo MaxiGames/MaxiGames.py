@@ -8,10 +8,8 @@ from utils.classesish import gendispatch
 # Game logic
 # Data... and code
 def Pos(x, y):
-    def px():
-        return x
-    def py():
-        return y
+    px = lambda: x
+    py = lambda: y
 
     return gendispatch(locals())
 
@@ -20,14 +18,10 @@ SHPOHOR = 0
 SHPOVER = 1
 def Ship(id, length, pos, orient):  # creates a ship
     # id should be unique; will not be checked; make sure it is indeed unique!
-    def getid():
-        return id
-    def getlength():
-        return length
-    def getpos():
-        return pos
-    def getori():
-        return orient
+    getid = lambda: id
+    getlength = lambda: length
+    getpos = lambda: pos
+    getori = lambda: orient
 
     return gendispatch(locals())
 
@@ -35,12 +29,9 @@ def Ship(id, length, pos, orient):  # creates a ship
 def Grid(xsz, ysz, data):  # creates a grid
     # gfill's dimensions will not be checked; make sure they are correct!
 
-    def getxsz():
-        return xsz
-    def getysz():
-        return ysz
-    def getdata():
-        return data
+    getxsz = lambda: xsz
+    getysz = lambda: ysz
+    getdata = lambda: data
 
     def putship(shplen, shppos, orient):
         """
