@@ -32,7 +32,7 @@ def Ship(id, length, pos, orient):  # creates a ship
     return gendispatch(locals())
 
 
-def Grid(xsz, ysz, data, cnt):  # creates a grid
+def Grid(xsz, ysz, data):  # creates a grid
     # gfill's dimensions will not be checked; make sure they are correct!
 
     def getxsz():
@@ -41,8 +41,6 @@ def Grid(xsz, ysz, data, cnt):  # creates a grid
         return ysz
     def getdata():
         return data
-    def getcnt():
-        return cnt
 
     def putship(shplen, shppos, orient):
         """
@@ -53,24 +51,34 @@ def Grid(xsz, ysz, data, cnt):  # creates a grid
         if orient == SHPOHOR:
             for i in range(shppos("PX")(), shppos("PX")() + shplen):
                 if d[shppos("PY")()][i] != None:
-                    return Grid(xsz, ysz, d, cnt)
+                    return Grid(xsz, ysz, d)
             for i in range(shppos("PX")(), shppos("PX")() + shplen):
                 # This loop must be seperate!
-                d[shppos("PY")()][i] = Ship(cnt + 1, shplen, shppos, orient)
+                d[shppos("PY")()][i] = Ship(
+                    2 ** shppos("PX")() * 3 ** shppos("PY")(),  # reverse prime factoring :)
+                    shplen,
+                    shppos,
+                    orient
+                )
         else:
             for i in range(shppos("PY")(), shppos("PY")() + shplen):
                 if d[i][shppos("PX")()] != None:
-                    return Grid(xsz, ysz, d, cnt)
+                    return Grid(xsz, ysz, d)
             for i in range(shppos("PY")(), shppos("PY")() + shplen):
                 # This loop must be seperate!
-                d[i][shppos("PX")()] = Ship(cnt + 1, shplen, shppos, orient)
+                d[i][shppos("PX")()] = Ship(
+                    2 ** shppos("PX")() * 3 ** shppos("PY")(),  # reverse prime factoring :)
+                    shplen,
+                    shppos,
+                    orient
+                )
 
-        return Grid(xsz, ysz, d, cnt + 1)
+        return Grid(xsz, ysz, d)
 
     def killcell(cellpos):
         d = deepcopy(data)
         d[cellpos("PY")()][cellpos("PX")()] = None
-        return Grid(xsz, ysz, d, cnt)
+        return Grid(xsz, ysz, d)
 
     return gendispatch(locals())
 
