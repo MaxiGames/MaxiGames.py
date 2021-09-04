@@ -12,7 +12,7 @@ def gendispatch(parentlocals):
     def dispatch(n):
         s = "if n == None: r = None\n"
         for name, obj in parentlocals.items():
-            if callable(obj):  # it's a function
+            if callable(obj) and name[0] != '_' :  # it's a non-'private' function
                 s += f"elif n.upper() == '{name.upper()}': r = {name}\n"  # add it to the if-else case tree
 
         exec(s, globals(), locals := {**parentlocals, 'n': n, 'r': None})  # run the if-else case tree
