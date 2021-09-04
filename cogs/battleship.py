@@ -7,21 +7,14 @@ from utils.classesish import gendispatch
 
 # Game logic
 # Data... and code
-PX = 0
-PY = 1
 def Pos(x, y):
     def px():
         return x
     def py():
         return y
 
-    return gendispatch("", locals())
+    return gendispatch(locals())
 
-
-SHPGETID = 0
-SHPGETLEN = 1
-SHPGETPOS = 2
-SHPGETORI = 3
 
 SHPOHOR = 0
 SHPOVER = 1
@@ -36,15 +29,9 @@ def Ship(id, length, pos, orient):  # creates a ship
     def getori():
         return orient
 
-    return gendispatch("Shp", locals())
+    return gendispatch(locals())
 
 
-GRIDGETXSZ = 0
-GRIDGETYSZ = 1
-GRIDGETDATA = 2
-GRIDGETCNT = 3  # for internal state
-GRIDPUTSHIP = 4
-GRIDKILLCELL = 5
 def Grid(xsz, ysz, data, cnt):  # creates a grid
     # gfill's dimensions will not be checked; make sure they are correct!
 
@@ -64,28 +51,28 @@ def Grid(xsz, ysz, data, cnt):  # creates a grid
         """
         d = deepcopy(data)
         if orient == SHPOHOR:
-            for i in range(shppos(PX)(), shppos(PX)() + shplen):
-                if d[shppos(PY)()][i] != None:
+            for i in range(shppos("PX")(), shppos("PX")() + shplen):
+                if d[shppos("PY")()][i] != None:
                     return Grid(xsz, ysz, d, cnt)
-            for i in range(shppos(PX)(), shppos(PX)() + shplen):
+            for i in range(shppos("PX")(), shppos("PX")() + shplen):
                 # This loop must be seperate!
-                d[shppos(PY)()][i] = Ship(cnt + 1, shplen, shppos, orient)
+                d[shppos("PY")()][i] = Ship(cnt + 1, shplen, shppos, orient)
         else:
-            for i in range(shppos(PY)(), shppos(PY)() + shplen):
-                if d[i][shplen(PX)()] != None:
+            for i in range(shppos("PY")(), shppos("PY")() + shplen):
+                if d[i][shplen("PX")()] != None:
                     return Grid(xsz, ysz, d, cnt)
-            for i in range(shppos(PY)(), shppos(PY)() + shplen):
+            for i in range(shppos("PY")(), shppos("PY")() + shplen):
                 # This loop must be seperate!
-                d[i][shppos(PX)()] = Ship(cnt + 1, shplen, shppos, orient)
+                d[i][shppos("PX")()] = Ship(cnt + 1, shplen, shppos, orient)
 
         return Grid(xsz, ysz, d, cnt + 1)
 
     def killcell(cellpos):
         d = deepcopy(data)
-        d[cellpos(PY)][cellpos(PX)] = None
+        d[cellpos("PY")()][cellpos("PX")()] = None
         return Grid(xsz, ysz, d, cnt)
 
-    return gendispatch("Grid", locals())
+    return gendispatch(locals())
 
 # The cog
 

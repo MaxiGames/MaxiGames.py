@@ -1,4 +1,4 @@
-def gendispatch(prefix, parentlocals):
+def gendispatch(parentlocals):
     """
     Generate the dispatch function.
     This is for use in a class-function (something inspired by chapter 2 of SICP)
@@ -12,8 +12,8 @@ def gendispatch(prefix, parentlocals):
     def dispatch(n):
         s = "if n == None: r = None\n"
         for name, obj in parentlocals.items():
-            if callable(obj):  # if it's a function
-                s += f"elif n == {prefix.upper()}{name.upper()}: r = {name}\n"  # add it to the if-else case tree
+            if callable(obj):  # it's a function
+                s += f"elif n.upper() == '{name.upper()}': r = {name}\n"  # add it to the if-else case tree
 
         exec(s, globals(), locals := {**parentlocals, 'n': n, 'r': None})  # run the if-else case tree
         return locals['r']  # that's the result
