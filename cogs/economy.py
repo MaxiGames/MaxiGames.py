@@ -1,4 +1,5 @@
 import discord
+import time
 from discord.ext import commands
 from discord.ext.commands import cooldown, BucketType
 from firebase_admin import firestore
@@ -394,14 +395,17 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 86400, BucketType.user)
     async def daily(self, ctx):
-        await self.init.checkserver(ctx)
+        #await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         booster = 1
+        if "voteReward" in doc.to_dict() and time.time() - doc.to_dict()["voteReward"] < 86400:
+            booster = 1.1
+
         if doc.exists:
             dict1 = doc.to_dict()
             # value = int(doc.to_dict()['money'])
-            dict1["money"] = dict1["money"] + booster * (random.randint(20, 200))
+            dict1["money"] = int(dict1["money"] + booster * (random.randint(20, 200)))
             doc_ref.set(dict1)
             embed = discord.Embed(
                 title="Daily claimed :D",
@@ -414,6 +418,8 @@ class Economy(commands.Cog):
                 icon_url=ctx.author.avatar_url,
             )
             embed.add_field(name="New Balance", value=f'{dict1["money"]}', inline=True)
+            if booster == 1.1:
+                embed.add_field(name="Vote Booster On!", value="You have claimed daily within 24 hours of voting for the bot! You got a 10% buff to the daily reward.", inline=False)
             await ctx.reply(
                 embed=embed, allowed_mentions=discord.AllowedMentions.none()
             )
@@ -464,6 +470,10 @@ class Economy(commands.Cog):
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
 
+        booster = 1
+        if "voteReward" in doc.to_dict() and time.time() - doc.to_dict()["voteReward"] < 86400:
+            booster = 1.1
+
         if doc.exists:
             dict1 = doc.to_dict()
             if dict1["money"] < amount:
@@ -499,7 +509,7 @@ class Economy(commands.Cog):
             )
 
             message = await ctx.reply(embed=embed)
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.5)
 
             dice1 = random.randint(1, 6)
             dice2 = random.randint(1, 6)
@@ -519,7 +529,7 @@ class Economy(commands.Cog):
 
             elif (dice1 == 1 and dice2 != 1) or (dict1 != 1 and dice2 == 1):
                 earnt = math.floor(amount*2)
-                dict1["money"] += earnt
+                dict1["money"] += earnt * booster
                 doc_ref.set(dict1)
                 nowmoney = dict1["money"]
                 embed = discord.Embed(
@@ -533,7 +543,7 @@ class Economy(commands.Cog):
 
             else:
                 earnt = math.floor(10 * amount)
-                dict1["money"] += earnt
+                dict1["money"] += earnt * booster
                 nowmoney = dict1["money"]
                 doc_ref.set(dict1)
                 embed = discord.Embed(
@@ -544,6 +554,8 @@ class Economy(commands.Cog):
                     color=self.client.primary_colour,
                 )
                 await message.edit(embed=embed)
+            if booster == 1.1:
+                await ctx.reply(embed=discord.Embed(title="Vote booster was applied for the snake-eyes result!" , description="It will not be applied if you have lost :)", colour=self.client.primary_colour))
         else:
             await self.init.init(ctx)
     
