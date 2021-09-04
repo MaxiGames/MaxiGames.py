@@ -90,7 +90,7 @@ class Battleship(commands.Cog):
         name="battleship",
         help="Starts a new game of battleship",
         usage="",
-        aliases=["ship", "battle", "bs"],
+        aliases=["ship", "battle", "bs", "bullshit"],
     )
     async def battleship(self, ctx):
         message = await ctx.reply(
