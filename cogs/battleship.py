@@ -59,7 +59,7 @@ def Grid(xsz, ysz, data, cnt):  # creates a grid
                 d[shppos("PY")()][i] = Ship(cnt + 1, shplen, shppos, orient)
         else:
             for i in range(shppos("PY")(), shppos("PY")() + shplen):
-                if d[i][shplen("PX")()] != None:
+                if d[i][shppos("PX")()] != None:
                     return Grid(xsz, ysz, d, cnt)
             for i in range(shppos("PY")(), shppos("PY")() + shplen):
                 # This loop must be seperate!
