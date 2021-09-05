@@ -8,55 +8,43 @@ from utils.classesish import gendispatch
 # Game logic
 # Data... and code
 def Pos(x, y):
-    px = lambda: x
-    py = lambda: y
-
-    return gendispatch(locals())
+    return gendispatch(Pos, locals())
 
 
 SHPOHOR = 0
 SHPOVER = 1
 def Ship(id, length, pos, orient):  # creates a ship
     # id should be unique; will not be checked; make sure it is indeed unique!
-    getid = lambda: id
-    getlength = lambda: length
-    getpos = lambda: pos
-    getori = lambda: orient
-
-    return gendispatch(locals())
+    return gendispatch(Ship, locals())
 
 
 def Grid(xsz, ysz, data):  # creates a grid
     # gfill's dimensions will not be checked; make sure they are correct!
-
-    getxsz = lambda: xsz
-    getysz = lambda: ysz
-    getdata = lambda: data
 
     def putship(shplen, shppos, orient):
         empty cells must be set to None
         does nothing if there's overlap
         d = deepcopy(data)
         if orient == SHPOHOR:
-            for i in range(shppos("PX")(), shppos("PX")() + shplen):
-                if d[shppos("PY")()][i] != None:
+            for i in range(shppos("_x")(), shppos("_x")() + shplen):
+                if d[shppos("_y")()][i] != None:
                     return Grid(xsz, ysz, d)
-            for i in range(shppos("PX")(), shppos("PX")() + shplen):
+            for i in range(shppos("_x")(), shppos("_x")() + shplen):
                 # This loop must be seperate!
-                d[shppos("PY")()][i] = Ship(
-                    2 ** shppos("PX")() * 3 ** shppos("PY")(),  # reverse prime factoring :)
+                d[shppos("_y")()][i] = Ship(
+                    2 ** shppos("_x")() * 3 ** shppos("_y")(),  # reverse prime factoring :)
                     shplen,
                     shppos,
                     orient
                 )
         else:
-            for i in range(shppos("PY")(), shppos("PY")() + shplen):
-                if d[i][shppos("PX")()] != None:
+            for i in range(shppos("_y")(), shppos("_y")() + shplen):
+                if d[i][shppos("_x")()] != None:
                     return Grid(xsz, ysz, d)
-            for i in range(shppos("PY")(), shppos("PY")() + shplen):
+            for i in range(shppos("_y")(), shppos("_y")() + shplen):
                 # This loop must be seperate!
-                d[i][shppos("PX")()] = Ship(
-                    2 ** shppos("PX")() * 3 ** shppos("PY")(),  # reverse prime factoring :)
+                d[i][shppos("_x")()] = Ship(
+                    2 ** shppos("_x")() * 3 ** shppos("_y")(),  # reverse prime factoring :)
                     shplen,
                     shppos,
                     orient
@@ -66,10 +54,10 @@ def Grid(xsz, ysz, data):  # creates a grid
 
     def killcell(cellpos):
         d = deepcopy(data)
-        d[cellpos("PY")()][cellpos("PX")()] = None
+        d[cellpos("_y")()][cellpos("_x")()] = None
         return Grid(xsz, ysz, d)
 
-    return gendispatch(locals())
+    return gendispatch(Grid, locals())
 
 """
 

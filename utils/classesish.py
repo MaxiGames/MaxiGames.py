@@ -6,10 +6,11 @@ They are declared like this:
         return gendispatch(locals())
 
 Note that these should NOT have any extraneous local variables;
-all top-level local variables should be functions meant to be called.
+all top-level local variables should be functions meant to be called,
+or arguments passed.
 """
 
-def gendispatch(parentlocals):
+def gendispatch(parent, parentlocals, *, no_gen_getters=False):
     """
     Generate the dispatch function.
     This is for use in a class-function (something inspired by chapter 2 of SICP)
@@ -17,24 +18,49 @@ def gendispatch(parentlocals):
       and a bunch of corresponding subprocedures (locally in parent)
     generate the dispatch() routine which is to be returned.
     Note: This should be used like so:
-        return gendispatch("<prefix>", locals())
+        return gendispatch(<parent function object>, locals())
 
     The parent function's locals have to be passed because of technical constraints.
 
     Due to how inheritance is implemented, you must not name a local (procedure or not)
-    "_exposed".
+    "_exposed" or "_getargs".
+
+    Unless otherwise specified (by passing no_gen_getters as True)
+    Getters are automatically generated: they are named "_<var>". If such a function
+    has already been defined, it is not overwritten.
 
     See example.py for more details.
     """
     def dispatch(n):
-        s = "if n == '_exposed': r = parentlocals\n"  # return the parent locals
-                                                      # (a.k.a. procedures and other junk)
-        for name, obj in parentlocals.items():
-            if callable(obj) and name[0] != '_' :  # it's a non-'private' function
-                s += f"elif n.upper() == '{name.upper()}': r = {name}\n"  # add it to the
-                                                                          # if-else case tree
+        s = (
+            "if n=='_getargs':r=parent.__code__.co_varnames["
+                ":parent.__code__.co_argcount"
+            "]\n"  # return the parent arglist
+        )
 
-        exec(s, globals(), slocals := {
+        for name, obj in parentlocals.items():
+            if (
+                callable(obj) and  # function
+                name[0] != '_' and  # non-'private'
+                name not in parent.__code__.co_varnames[:parent.__code__.co_argcount]
+                # not an argument
+            ):
+                s += f"elif n.upper()=='{name.upper()}':r={name}\n"  # add it to the
+                                                                     # if-else case tree
+
+        # Generate getters
+        if not no_gen_getters:
+            for name in parent.__code__.co_varnames[:parent.__code__.co_argcount]:
+                if f"_{name}" not in parentlocals.values():  # getter not already defined
+                    s += (
+                        f"elif n.upper()=='_{name.upper()}':\n"
+                        f" r=lambda:{name}\n"
+                    )
+                    parentlocals[f"_{name}"] = lambda: parentlocals[name]
+
+        s += "if n == '_exposed': r = parentlocals\n"
+
+        exec(s, {**globals(), **parentlocals}, slocals := {
             **parentlocals, 'n': n, 'r': None, "parentlocals": parentlocals
         })
         return slocals['r']  # that's the result
@@ -42,7 +68,7 @@ def gendispatch(parentlocals):
     return dispatch
 
 
-def fcmerge(base, extend):
+def fcmerge(result, base, extend, extargs):
     """
     Merges two function-classes.
     Overlapping definitions will favour base2.
@@ -51,26 +77,23 @@ def fcmerge(base, extend):
 
     "base" should be the base fc /called with initial args/.
     "extend" should be the extending fc /uncalled/.
+    "extargs" should have arguments for "extend"
+
+    The first argument of "extend" /must/ be for the base.
+    However its name does not matter.
 
     Again, see example.py for more details.
     """
+    exposed = {**base("_exposed"), **extend(base, *extargs)("_exposed")}
+    print(exposed)
 
     exec(
         f"""
-def r({', '
-       .join(
-           map(
-               lambda c: c + "=" + (
-                   f'{{**base("_exposed"), **extend(base)("_exposed")}}["{c}"]'
-               ),
-               {**base("_exposed"), **extend(base)("_exposed")}.keys()
-           )
-       )
-}):
- return gendispatch(locals())
+def r({', '.join(sorted(exposed.keys()))}):
+ return gendispatch(result, locals())
         """,
-        globals(),
+        {**globals(), **locals(), "r": None},
         slocals := {**locals(), "r": None}  # not sure if this is needed, but...
     )
 
-    return slocals["r"](**base("_exposed"), **extend(base)("_exposed"))
+    return slocals["r"](*(map(lambda p: p[1], sorted(exposed.items()))))
