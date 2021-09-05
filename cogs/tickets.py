@@ -22,10 +22,12 @@ class Ticket(commands.Cog):
             self.messages = {}
             self.count = {}
             self.active_tickets = {}
-    
 
     @commands.command(
-        name="newTicket", help="Creates a new message that reacts so one can make a ticket", usage="", alias=["nt","ticket"]
+        name="newTicket",
+        help="Creates a new message that reacts so one can make a ticket",
+        usage="",
+        alias=["nt", "ticket"],
     )
     async def newticket(self, ctx):
         embed = discord.Embed(
@@ -45,7 +47,7 @@ class Ticket(commands.Cog):
             self.active_tickets[str(ctx.guild.id)] = {}
         else:
             self.messages[str(ctx.guild.id)].append(str(msg.id))
-        doc_ref = self.db.collection(u'tickets').document('ticket-ref')
+        doc_ref = self.db.collection("tickets").document("ticket-ref")
         doc = doc_ref.get()
         if doc.exists:
             data = doc.to_dict()
@@ -54,9 +56,9 @@ class Ticket(commands.Cog):
             data["active_tickets"] = self.active_tickets
         else:
             data = {
-                'active_tickets': self.active_tickets,
-                'messages': self.messages,
-                'count': self.count
+                "active_tickets": self.active_tickets,
+                "messages": self.messages,
+                "count": self.count,
             }
         doc_ref.set(data)
         await ctx.message.delete()
@@ -73,11 +75,11 @@ class Ticket(commands.Cog):
         if (
             str(payload.guild_id) in self.messages
             and str(payload.message_id) in self.messages[str(payload.guild_id)]
-            and payload.emoji.name == '🎫'
+            and payload.emoji.name == "🎫"
         ):
             # does ticket exist?
             if str(payload.user_id) in self.active_tickets[str(payload.guild_id)]:
-                embed=discord.Embed(
+                embed = discord.Embed(
                     title="Ticket Present",
                     description="You can only have 1 ticket open per server. Please close the other ticket before starting a new one :D",
                     colour=self.client.primary_colour,
@@ -100,21 +102,38 @@ class Ticket(commands.Cog):
                     f"open-tickets", position=0
                 )
             overwrites = {
-                react_guild.default_role: discord.PermissionOverwrite(view_channel=False),
-                payload.member: discord.PermissionOverwrite(read_messages=True, add_reactions=True, send_messages=True)
+                react_guild.default_role: discord.PermissionOverwrite(
+                    view_channel=False
+                ),
+                payload.member: discord.PermissionOverwrite(
+                    read_messages=True, add_reactions=True, send_messages=True
+                ),
             }
             self.count[str(payload.guild_id)] += 1
-            self.active_tickets[str(payload.guild_id)][str(payload.user_id)] = self.count[str(payload.guild_id)]
-            channel = await react_guild.create_text_channel(f'ticket-{self.count[str(payload.guild_id)]}', overwrites=overwrites, category=category)
-            
-            embed=discord.Embed(
+            self.active_tickets[str(payload.guild_id)][
+                str(payload.user_id)
+            ] = self.count[str(payload.guild_id)]
+            channel = await react_guild.create_text_channel(
+                f"ticket-{self.count[str(payload.guild_id)]}",
+                overwrites=overwrites,
+                category=category,
+            )
+
+            embed = discord.Embed(
                 title="New Ticket",
                 description=f"Welcome {payload.member.mention} to your new ticket.",
-                colour=self.client.primary_colour
+                colour=self.client.primary_colour,
             )
-            embed.set_footer(text="MaxiGames - The Best Minigame Bot", icon_url=self.client.user.avatar_url)
-            startmsg = await channel.send(embed=embed, components=[[Button(style=ButtonStyle.grey, label="🔒 Close")]], allowed_mentions = discord.AllowedMentions.all())
-            await react_msg.remove_reaction('🎫', payload.member)
+            embed.set_footer(
+                text="MaxiGames - The Best Minigame Bot",
+                icon_url=self.client.user.avatar_url,
+            )
+            startmsg = await channel.send(
+                embed=embed,
+                components=[[Button(style=ButtonStyle.grey, label="🔒 Close")]],
+                allowed_mentions=discord.AllowedMentions.all(),
+            )
+            await react_msg.remove_reaction("🎫", payload.member)
 
             doc_ref = self.db.collection("tickets").document("ticket-ref")
             data = {
@@ -130,8 +149,9 @@ class Ticket(commands.Cog):
                     "button_click",
                     check=lambda inter: (
                         inter.user == payload.member
-                        and inter.message.channel == channel and inter.component.label == "🔒 Close"
-                    )
+                        and inter.message.channel == channel
+                        and inter.component.label == "🔒 Close"
+                    ),
                 )
 
                 await res.respond(
@@ -143,12 +163,24 @@ class Ticket(commands.Cog):
                     description=f"Please confirm that you want to delete this ticket. This is not reversible.",
                     colour=self.client.primary_colour,
                 )
-                embed.set_footer(text="MaxiGames - The Best Minigame Bot", icon_url=self.client.user.avatar_url)
-                confirm = await channel.send(embed=confirmation, components=[[Button(style=ButtonStyle.red, label="Close"), Button(style=ButtonStyle.grey, label="Cancel")]])
+                embed.set_footer(
+                    text="MaxiGames - The Best Minigame Bot",
+                    icon_url=self.client.user.avatar_url,
+                )
+                confirm = await channel.send(
+                    embed=confirmation,
+                    components=[
+                        [
+                            Button(style=ButtonStyle.red, label="Close"),
+                            Button(style=ButtonStyle.grey, label="Cancel"),
+                        ]
+                    ],
+                )
 
                 res = await self.client.wait_for(
                     "button_click",
-                    check=lambda inter: inter.user == payload.member and inter.message.channel == channel
+                    check=lambda inter: inter.user == payload.member
+                    and inter.message.channel == channel,
                 )
 
                 await res.respond(
@@ -158,11 +190,11 @@ class Ticket(commands.Cog):
                     await channel.delete()
                     # self.messages[str(reaction.message.guild.id)].remove(str(reaction.message.id))
                     self.active_tickets[str(payload.guild_id)].pop(str(payload.user_id))
-                    doc_ref = self.db.collection(u'tickets').document('ticket-ref')
+                    doc_ref = self.db.collection("tickets").document("ticket-ref")
                     data = {
-                         'active_tickets': self.active_tickets,
-                         'messages': self.messages,
-                         'count': self.count
+                        "active_tickets": self.active_tickets,
+                        "messages": self.messages,
+                        "count": self.count,
                     }
                     doc_ref.set(data)
                     break

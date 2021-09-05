@@ -86,7 +86,10 @@ class Connect4(commands.Cog):
                 while True:
                     try:
                         message = await self.client.wait_for(
-                            "message", timeout=30, check=lambda m: m.author == player1 and m.channel == game_channel
+                            "message",
+                            timeout=30,
+                            check=lambda m: m.author == player1
+                            and m.channel == game_channel,
                         )
                         try:
                             selected = int(message.content) - 1
@@ -196,10 +199,13 @@ class Connect4(commands.Cog):
                     f"{player2.mention}'s turn! Type a number from 1 to 7, the column you want to place a marker on!"
                 )
                 while True:
-                    
+
                     try:
                         message = await self.client.wait_for(
-                            "message", timeout=30, check=lambda m: m.author == player2 and m.channel == game_channel
+                            "message",
+                            timeout=30,
+                            check=lambda m: m.author == player2
+                            and m.channel == game_channel,
                         )
                         try:
                             selected = int(message.content) - 1
@@ -241,7 +247,7 @@ class Connect4(commands.Cog):
                                         )
                                         await message.reply(embed=embed)
                                         return
-                            
+
                             for i in range(4):
                                 for j in range(3):
                                     if (
@@ -334,7 +340,6 @@ class Connect4(commands.Cog):
                     except asyncio.TimeoutError:
                         await message.reply("Time out")
                         return
-                    
 
 
 def setup(client):

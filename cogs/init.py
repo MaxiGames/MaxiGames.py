@@ -31,9 +31,9 @@ class Init(commands.Cog):
             colour=self.client.primary_colour,
         )
         # if isinstance(ctx, discord.Message):
-            # await ctx.channel.send(embed=embed)
+        # await ctx.channel.send(embed=embed)
         # else:
-            # await ctx.send(embed=embed)
+        # await ctx.send(embed=embed)
 
     async def serverinit(self, ctx):
         self.doc_ref = self.db.collection(u"servers").document(
@@ -51,12 +51,10 @@ class Init(commands.Cog):
                     u"users": {str(ctx.author.id): self.usr},
                     u"all": {},
                     u"starboard_threshold": 1,
-                    u"counting_channels": {
-                    },
+                    u"counting_channels": {},
                     u"name": str(ctx.guild.name),
                     u"prefix": [self.client.primary_prefix],
-                    u'autoresponses': {}
-                    
+                    u"autoresponses": {},
                 }
             )
 
