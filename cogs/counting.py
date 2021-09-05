@@ -193,7 +193,7 @@ class Counting(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, msg):
-        if msg.guild == None:
+        if msg.guild == None or msg.author.bot:
             return
         data = self.db.collection("servers").document(str(msg.guild.id)).get().to_dict()
         if data == None:
