@@ -85,7 +85,6 @@ def fcmerge(result, base, extend, extargs):
     Again, see example.py for more details.
     """
     exposed = {**base("_exposed"), **extend(base, *extargs)("_exposed")}
-    print(exposed)
 
     exec(
         f"""
