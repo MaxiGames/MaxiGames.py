@@ -3,7 +3,7 @@ This is for function-classes.
 They are declared like this:
     def MyFClass(arg1, arg2):
         ...define procedures...
-        return gendispatch(locals())
+        return gendispatch(MyFClass, locals())
 
 Note that these should NOT have any extraneous local variables;
 all top-level local variables should be functions meant to be called,
@@ -14,13 +14,13 @@ def gendispatch(parent, parentlocals, *, no_gen_getters=False):
     """
     Generate the dispatch function.
     This is for use in a class-function (something inspired by chapter 2 of SICP)
-    Given a bunch of procedure-name-constants in uppercase (globally of course)
-      and a bunch of corresponding subprocedures (locally in parent)
-    generate the dispatch() routine which is to be returned.
+    Given a bunch of subprocedures (locally in parent), generate the dispatch()
+    routine which is to be returned.
+
     Note: This should be used like so:
         return gendispatch(<parent function object>, locals())
 
-    The parent function's locals have to be passed because of technical constraints.
+    The parent function and its locals have to be passed because of technical constraints.
 
     Due to how inheritance is implemented, you must not name a local (procedure or not)
     "_exposed" or "_getargs".
