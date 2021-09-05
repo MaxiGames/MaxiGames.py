@@ -45,3 +45,4 @@ typing-extensions==3.10.0.0
 uritemplate==3.0.1
 urllib3==1.26.6
 yarl==1.6.3
+interruptingcow==0.8
