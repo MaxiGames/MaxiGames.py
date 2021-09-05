@@ -141,7 +141,7 @@ class Suggestions(commands.Cog):
         alias=["approveBugReport", "rbr", "br", "replyBug", "denyBugReport"],
         usage=("<suggestion message id> <approve/deny (bool)> <message>"),
     )
-    async def replySuggestion(self, ctx, messageID:int, approve:str, *messageToUser):
+    async def replyBugReport(self, ctx, messageID:int, approve:str, *messageToUser):
         messageToUser = " ".join(messageToUser[:])
 
         channel = self.client.get_channel(869960880631218196)
