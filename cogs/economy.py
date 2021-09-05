@@ -10,6 +10,7 @@ import asyncio
 from discord_slash import cog_ext
 from utils.paginator import Paginator
 
+
 class Economy(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -17,11 +18,14 @@ class Economy(commands.Cog):
         self.init = self.client.get_cog("Init")
         self.hidden = False
 
-
-
     # Curb gambling addiction
     @check.is_banned()
-    @commands.command(name="coinflip", help="provide 2 arguments, the choice of your coin: head/tail, and the amount you want to bet", aliases= ["cf"], usage="<choice> <amount>")
+    @commands.command(
+        name="coinflip",
+        help="provide 2 arguments, the choice of your coin: head/tail, and the amount you want to bet",
+        aliases=["cf"],
+        usage="<choice> <amount>",
+    )
     @cooldown(1, 8, BucketType.user)
     async def _coinflip(self, ctx, choice: str, amount: int = 1):
         self.init = self.client.get_cog("Init")
@@ -248,12 +252,14 @@ class Economy(commands.Cog):
             # await ctx.send("Now you can start running currency commands :D")
 
     @check.is_banned()
-    @commands.command(name="bal",
+    @commands.command(
+        name="bal",
         help="Allows you to check your current balance",
         usage="",
-        aliases=["balance", "b"],)
+        aliases=["balance", "b"],
+    )
     @cooldown(1, 5, BucketType.user)
-    async def bal(self, ctx, user:discord.User = None):
+    async def bal(self, ctx, user: discord.User = None):
         actualUser = ctx.author
         if user != None:
             actualUser = user
@@ -277,7 +283,8 @@ class Economy(commands.Cog):
                 name="Balance", value=f'{doc.to_dict()["money"]}', inline=True
             )
             embed.set_footer(
-                text="Requested by: {}".format(str(ctx.author.display_name)), icon_url= ctx.author.avatar_url
+                text="Requested by: {}".format(str(ctx.author.display_name)),
+                icon_url=ctx.author.avatar_url,
             )
             await ctx.reply(
                 embed=embed, allowed_mentions=discord.AllowedMentions.none()
@@ -296,7 +303,12 @@ class Economy(commands.Cog):
     async def _leaderboard(self, ctx):
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
-        msg = await ctx.send(embed=discord.Embed(title="Loading...", description="Hang in tight! We will be done in a jiffy!"))
+        msg = await ctx.send(
+            embed=discord.Embed(
+                title="Loading...",
+                description="Hang in tight! We will be done in a jiffy!",
+            )
+        )
 
         doc_ref = self.db.collection("servers").document("{}".format(str(ctx.guild.id)))
         doc = doc_ref.get()
@@ -320,7 +332,7 @@ class Economy(commands.Cog):
             user = await self.client.fetch_user(int(i[0]))
             description.append(f"{user.mention}: **{i[1]} money**")
             count += 1
-        
+
         pages = []
         count = 1
         count1 = 0
@@ -342,10 +354,9 @@ class Economy(commands.Cog):
 
         page_num = 0
         await msg.edit(
-            embed=pages[page_num],
-            allowed_mentions=discord.AllowedMentions.none()
+            embed=pages[page_num], allowed_mentions=discord.AllowedMentions.none()
         )
-        
+
         page = Paginator(self.client, ctx, msg, pages, timeout=60)
         await page.start()
 
@@ -381,11 +392,10 @@ class Economy(commands.Cog):
             await ctx.reply(
                 embed=embed, allowed_mentions=discord.AllowedMentions.none()
             )
-    
+
     @cog_ext.cog_slash(name="hourly", description="Claim your hourly money here! :D")
     async def _hourly_cog(self, ctx):
         await self.hourly(ctx)
-
 
     @commands.command(
         name="daily",
@@ -395,11 +405,14 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 86400, BucketType.user)
     async def daily(self, ctx):
-        #await self.init.checkserver(ctx)
+        # await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
         booster = 1
-        if "voteReward" in doc.to_dict() and time.time() - doc.to_dict()["voteReward"] < 86400:
+        if (
+            "voteReward" in doc.to_dict()
+            and time.time() - doc.to_dict()["voteReward"] < 86400
+        ):
             booster = 1.1
 
         if doc.exists:
@@ -419,7 +432,11 @@ class Economy(commands.Cog):
             )
             embed.add_field(name="New Balance", value=f'{dict1["money"]}', inline=True)
             if booster == 1.1:
-                embed.add_field(name="Vote Booster On!", value="You have claimed daily within 24 hours of voting for the bot! You got a 10% buff to the daily reward.", inline=False)
+                embed.add_field(
+                    name="Vote Booster On!",
+                    value="You have claimed daily within 24 hours of voting for the bot! You got a 10% buff to the daily reward.",
+                    inline=False,
+                )
             await ctx.reply(
                 embed=embed, allowed_mentions=discord.AllowedMentions.none()
             )
@@ -455,7 +472,6 @@ class Economy(commands.Cog):
             )
             await ctx.send(embed=embed)
 
-
     @check.is_banned()
     @commands.command(
         name="snakeeyes",
@@ -471,7 +487,10 @@ class Economy(commands.Cog):
         doc = doc_ref.get()
 
         booster = 1
-        if "voteReward" in doc.to_dict() and time.time() - doc.to_dict()["voteReward"] < 86400:
+        if (
+            "voteReward" in doc.to_dict()
+            and time.time() - doc.to_dict()["voteReward"] < 86400
+        ):
             booster = 1.1
 
         if doc.exists:
@@ -528,7 +547,7 @@ class Economy(commands.Cog):
                 await message.edit(embed=embed)
 
             elif (dice1 == 1 and dice2 != 1) or (dict1 != 1 and dice2 == 1):
-                earnt = math.floor(amount*2)
+                earnt = math.floor(amount * 2)
                 dict1["money"] += earnt * booster
                 doc_ref.set(dict1)
                 nowmoney = dict1["money"]
@@ -555,19 +574,25 @@ class Economy(commands.Cog):
                 )
                 await message.edit(embed=embed)
             if booster == 1.1:
-                await ctx.reply(embed=discord.Embed(title="Vote booster was applied for the snake-eyes result!" , description="It will not be applied if you have lost :)", colour=self.client.primary_colour))
+                await ctx.reply(
+                    embed=discord.Embed(
+                        title="Vote booster was applied for the snake-eyes result!",
+                        description="It will not be applied if you have lost :)",
+                        colour=self.client.primary_colour,
+                    )
+                )
         else:
             await self.init.init(ctx)
-    
+
     @commands.command(
         name="search",
         help="Look for stuff! Who knows what you might get.",
         usage="",
-        aliases=["scout","find"]
+        aliases=["scout", "find"],
     )
-    @cooldown(1,60,BucketType.user)
-    async def search(self,ctx):
-        num = random.randint(1,1000)
+    @cooldown(1, 60, BucketType.user)
+    async def search(self, ctx):
+        num = random.randint(1, 1000)
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
@@ -579,91 +604,128 @@ class Economy(commands.Cog):
                 embed = discord.Embed(
                     title="You were so depressed at not being able to find anything that you died.",
                     description="You lost all your money!",
-                    color=0xff0000
+                    color=0xFF0000,
                 )
                 await ctx.reply(embed=embed)
             elif num < 190:
                 dict1["money"] += 5
-                embed=discord.Embed(
+                embed = discord.Embed(
                     title="You found a 5 dollar note on the floor!",
                     description="Money +5",
-                    color=self.client.primary_colour
+                    color=self.client.primary_colour,
                 )
                 await ctx.reply(embed=embed)
             elif num < 360:
                 dict1["money"] += 10
-                embed=discord.Embed(
+                embed = discord.Embed(
                     title="You found a crumpled ten dollar bill on the floor!",
                     description="Money +10",
-                    color=self.client.primary_colour
+                    color=self.client.primary_colour,
                 )
                 await ctx.reply(embed=embed)
             elif num < 390:
                 dict1["money"] += 69
-                embed=discord.Embed(
+                embed = discord.Embed(
                     title="You found a HUGE pile of coins on the floor, totaling to 69 dollars!",
                     description="Money +69",
-                    color=self.client.primary_colour
+                    color=self.client.primary_colour,
                 )
                 await ctx.reply(embed=embed)
             elif num < 465:
                 moneynow = dict1["money"]
-                to_remove = math.floor(moneynow/3)
+                to_remove = math.floor(moneynow / 3)
                 dict1["money"] -= to_remove
-                embed=discord.Embed(
+                embed = discord.Embed(
                     title="A policeman caught you rummaging through the dumps and fined you a third of your money!",
                     description="Money -" + str(to_remove),
-                    color=0xff0000
+                    color=0xFF0000,
                 )
                 await ctx.reply(embed=embed)
             else:
-                embed=discord.Embed(
+                embed = discord.Embed(
                     title="Welp. You didn't find anything, but at least you didn't die :D",
                     description="Money ±0",
-                    color=0xffff00
+                    color=0xFFFF00,
                 )
                 await ctx.reply(embed=embed)
         doc_ref.set(dict1)
+
     @commands.command(
         name="lottery",
         help="Buy as many lottery tickets as you want :D\nEach cost 10 dollars and you can win up to 900000 dollars.",
         usage="[num1 num2 num3 num4 num5 num6] (6 distinct numbers between 1 and 35)",
-        aliases=["raffle","lotto"]
+        aliases=["raffle", "lotto"],
     )
-    @cooldown(1,60,BucketType.user)
-    async def lottery(self,ctx,*msgg:int):
+    @cooldown(1, 60, BucketType.user)
+    async def lottery(self, ctx, *msgg: int):
         msg = list(msgg)
         if len(msg) != 6:
-            embed=discord.Embed(
-                title="You didn't enter 6 arguments!",
-                description="",
-                color=0xff0000
+            embed = discord.Embed(
+                title="You didn't enter 6 arguments!", description="", color=0xFF0000
             )
             await ctx.reply(embed=embed)
             return
         for i in msg:
             if int(i) > 35 or int(i) < 1:
-                embed=discord.Embed(
+                embed = discord.Embed(
                     title="Invalid option for lottery!",
-                    description="Your guess " + str(i) + " was invalid\nYou need to input 6 space-separated integers between 1 and 35 :D",
-                    color=0xff0000
+                    description="Your guess "
+                    + str(i)
+                    + " was invalid\nYou need to input 6 space-separated integers between 1 and 35 :D",
+                    color=0xFF0000,
                 )
                 await ctx.reply(embed=embed)
                 return
         for i in range(6):
-            for j in range(i+1,6):
+            for j in range(i + 1, 6):
                 if msg[i] == msg[j]:
-                    embed=discord.Embed(
+                    embed = discord.Embed(
                         title="You can't use the same number twice!",
                         description="",
-                        color=0xff0000
+                        color=0xFF0000,
                     )
                     await ctx.reply(embed=embed)
                     return
-                    
-        correct=[]
+
+        correct = []
         count = 0
-        curr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]
+        curr = [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+        ]
         for i in range(6):
             elem = random.choice(curr)
             correct.append(elem)
@@ -674,7 +736,7 @@ class Economy(commands.Cog):
             for j in range(6):
                 if msg[i] == correct[j]:
                     count += 1
-        win = [0,2,60,600,2000,10000,90000]
+        win = [0, 2, 60, 600, 2000, 10000, 90000]
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
@@ -685,38 +747,59 @@ class Economy(commands.Cog):
         if doc.exists:
             dict1 = doc.to_dict()
             if dict1["money"] < 10:
-                embed=discord.Embed(
+                embed = discord.Embed(
                     title="You don't have enough money! You need 10 money.",
                     description="",
-                    color=0xff0000
+                    color=0xFF0000,
                 )
                 await ctx.reply(embed=embed)
-            
+
             if count == 0:
                 dict1["money"] -= 10
                 moneynow = dict1["money"]
-                embed=discord.Embed(
-                    title="You didn't get any numbers correct! You lost your bet and now have " + str(moneynow) + " money.",
-                    description="Your guess was: " + " ".join(msg) + "\nThe correct guess was: " + " ".join(correct),
-                    color=0xff0000
+                embed = discord.Embed(
+                    title="You didn't get any numbers correct! You lost your bet and now have "
+                    + str(moneynow)
+                    + " money.",
+                    description="Your guess was: "
+                    + " ".join(msg)
+                    + "\nThe correct guess was: "
+                    + " ".join(correct),
+                    color=0xFF0000,
                 )
                 await ctx.reply(embed=embed)
             elif count == 1:
                 dict1["money"] += 15
                 moneynow = dict1["money"]
-                embed=discord.Embed(
-                    title="You got 1 number correct! You won 1.5x (15 coins)! You now have " + str(moneynow) + " money.",
-                    description="Your guess was: " + " ".join(msg) + "\nThe correct guess was: " + " ".join(correct),
-                    color=0xffff00
+                embed = discord.Embed(
+                    title="You got 1 number correct! You won 1.5x (15 coins)! You now have "
+                    + str(moneynow)
+                    + " money.",
+                    description="Your guess was: "
+                    + " ".join(msg)
+                    + "\nThe correct guess was: "
+                    + " ".join(correct),
+                    color=0xFFFF00,
                 )
                 await ctx.reply(embed=embed)
             else:
-                dict1["money"] += win[count]*10
+                dict1["money"] += win[count] * 10
                 moneynow = dict1["money"]
-                embed=discord.Embed(
-                    title="You got " + str(count) + " numbers correct! You won " + str(win[count]) + "x (" + str(win[count]) + "0 money)! You now have " + str(moneynow) + " money.",
-                    description="Your guess was: " + " ".join(msg) + "\nThe correct guess was: " + " ".join(correct),
-                    color=self.client.primary_colour
+                embed = discord.Embed(
+                    title="You got "
+                    + str(count)
+                    + " numbers correct! You won "
+                    + str(win[count])
+                    + "x ("
+                    + str(win[count])
+                    + "0 money)! You now have "
+                    + str(moneynow)
+                    + " money.",
+                    description="Your guess was: "
+                    + " ".join(msg)
+                    + "\nThe correct guess was: "
+                    + " ".join(correct),
+                    color=self.client.primary_colour,
                 )
                 await ctx.reply(embed=embed)
         doc_ref.set(dict1)
@@ -725,23 +808,31 @@ class Economy(commands.Cog):
         name="share",
         help="Sharing is caring! Share some money to your friends now!",
         usage="<amount>",
-        aliases=["give", "pay", "offer"]
+        aliases=["give", "pay", "offer"],
     )
-    @cooldown(1,5,BucketType.user)
-    async def share(self,ctx,user:discord.User,amount:int):
+    @cooldown(1, 5, BucketType.user)
+    async def share(self, ctx, user: discord.User, amount: int):
         if discord.User == None:
-            embed=discord.Embed(
-                title="Invalid user!",
-                description="",
-                color=0xff1100
-            )
+            embed = discord.Embed(title="Invalid user!", description="", color=0xFF1100)
             await ctx.reply(embed=embed)
             return
         if amount <= 0:
-            await ctx.reply(embed = discord.Embed(title="Error", description="You can't share negative money!"), colour=0xff1100)
+            await ctx.reply(
+                embed=discord.Embed(
+                    title="Error", description="You can't share negative money!"
+                ),
+                colour=0xFF1100,
+            )
             return
 
-        msg = await ctx.reply(embed=discord.Embed(title="Sharing...", description="Your kind deed will be delivered to " + str(user) + "! Hang in tight!"))
+        msg = await ctx.reply(
+            embed=discord.Embed(
+                title="Sharing...",
+                description="Your kind deed will be delivered to "
+                + str(user)
+                + "! Hang in tight!",
+            )
+        )
 
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
@@ -749,12 +840,18 @@ class Economy(commands.Cog):
         doc = doc_ref.get().to_dict()
 
         if "money" not in doc or doc["money"] < amount:
-            await msg.edit(embed = discord.Embed(title="Error", description="You don't have enough money to share it with your friends :("), colour=0xff1100)
+            await msg.edit(
+                embed=discord.Embed(
+                    title="Error",
+                    description="You don't have enough money to share it with your friends :(",
+                ),
+                colour=0xFF1100,
+            )
             return
 
         doc_ref_2 = self.db.collection("users").document("{}".format(str(user.id)))
         doc_2 = doc_ref_2.get().to_dict()
-        
+
         # share success
         if "money" not in doc_2:
             doc_2["money"] = amount
@@ -764,7 +861,18 @@ class Economy(commands.Cog):
         doc["money"] -= amount
         doc_ref.set(doc)
 
-        await msg.edit(embed = discord.Embed(title="Success", description="You gave " + str(amount) + " coins to " + user.mention + "!", color=self.client.primary_colour))
+        await msg.edit(
+            embed=discord.Embed(
+                title="Success",
+                description="You gave "
+                + str(amount)
+                + " coins to "
+                + user.mention
+                + "!",
+                color=self.client.primary_colour,
+            )
+        )
+
 
 def setup(client):
     client.add_cog(Economy(client))

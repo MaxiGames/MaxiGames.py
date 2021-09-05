@@ -11,6 +11,7 @@ from utils.paginator import Paginator
 from utils import check
 from firebase_admin import firestore
 
+
 class General(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -27,38 +28,37 @@ class General(commands.Cog):
         self.client = client
         self.db = firestore.client()
         self.init = self.client.get_cog("Init")
-    
+
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        doc_ref = self.db.collection(u'servers').document(str(guild.id))
+        doc_ref = self.db.collection("servers").document(str(guild.id))
         data = {
-            u"users": {},
-            u"all": {},
-            u"starboard_threshold": 1,
-            u"counting_channels": {},
-            u"name": str(guild.name),
-            u"prefix": [self.client.primary_prefix],
-            u'autoresponses': {}
+            "users": {},
+            "all": {},
+            "starboard_threshold": 1,
+            "counting_channels": {},
+            "name": str(guild.name),
+            "prefix": [self.client.primary_prefix],
+            "autoresponses": {},
         }
         doc_ref.set(data)
         await self.client.change_presence(
-        status=discord.Status.online,
-        activity=discord.Game(
-            name="m!help on " + str(len(self.client.guilds)) + " servers", type=0
-        ),
-    )
-    
+            status=discord.Status.online,
+            activity=discord.Game(
+                name="m!help on " + str(len(self.client.guilds)) + " servers", type=0
+            ),
+        )
+
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
-        doc_ref = self.db.collection(u'servers').document(str(guild.id))
+        doc_ref = self.db.collection("servers").document(str(guild.id))
         doc_ref.delete()
         await self.client.change_presence(
-        status=discord.Status.online,
-        activity=discord.Game(
-            name="m!help on " + str(len(self.client.guilds)) + " servers", type=0
-        ),
-    )
-        
+            status=discord.Status.online,
+            activity=discord.Game(
+                name="m!help on " + str(len(self.client.guilds)) + " servers", type=0
+            ),
+        )
 
     @commands.command()
     @cooldown(1, 60, BucketType.user)
@@ -87,17 +87,19 @@ class General(commands.Cog):
             inline=True,
         )
         await ctx.send(embed=embed)
+
     @commands.command()
     @cooldown(1, 100, BucketType.user)
     async def seconds(self, ctx):
         await ctx.send(
             str(round(time.time())) + " seconds have passed since the epoch!"
         )
+
     @commands.command(
         name="ns",
         description="Makes an intriguing triangle made of ^ symbols.",
-        usage = "",
-        aliases = ["triangle","notstonks"]
+        usage="",
+        aliases=["triangle", "notstonks"],
     )
     @cooldown(1, 15, BucketType.user)
     async def ns(self, ctx, num: int):
@@ -116,10 +118,11 @@ class General(commands.Cog):
 
                 n += 1
             await ctx.send(answer)
+
     @commands.command(
         name="invite",
         description="Gives you a link for you to invite the bot to your server!",
-        usage=""
+        usage="",
     )
     @cooldown(1, 20, BucketType.user)
     async def invite(self, ctx):
@@ -129,10 +132,11 @@ class General(commands.Cog):
             color=self.client.primary_colour,
         )
         await ctx.send(embed=embed)
+
     @commands.command(
         name="official",
         description="Gives you a discord invite link to the bot's official server!",
-        usage = ""
+        usage="",
     )
     @cooldown(1, 20, BucketType.user)
     async def official(self, ctx):
@@ -144,9 +148,7 @@ class General(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(
-        name="whoami",
-        description="Gives a bit of information about you",
-        usage=""
+        name="whoami", description="Gives a bit of information about you", usage=""
     )
     @cooldown(1, 60, BucketType.user)
     async def whoami(self, ctx):
@@ -178,13 +180,13 @@ class General(commands.Cog):
     @cooldown(1, 15, BucketType.user)
     async def hallolong(self, ctx, num: int):
         if num > 1996:
-            await ctx.send(f'Too long!')
+            await ctx.send(f"Too long!")
         await ctx.send(f'Hall{"o"*num}')
 
     @commands.command(
         name="servercount",
         description="Shows how many servers the bot is in :D",
-        usage = ""
+        usage="",
     )
     @cooldown(1, 60, BucketType.user)
     async def servercount(self, ctx):
@@ -194,7 +196,6 @@ class General(commands.Cog):
             color=0xBB2277,
         )
         await ctx.send(embed=embed)
-
 
     @commands.command(
         name="randnum",
@@ -207,9 +208,7 @@ class General(commands.Cog):
         await ctx.reply("Your number was " + str(answer))
 
     @commands.command(
-        name = "empty",
-        help = "Gives you an empty unicode character.",
-        usage = ""
+        name="empty", help="Gives you an empty unicode character.", usage=""
     )
     @cooldown(1, 5, BucketType.user)
     async def empty(self, ctx):
@@ -224,23 +223,29 @@ class General(commands.Cog):
     async def fibo(self, ctx, num: int):
         if num <= 0:
             embed = discord.Embed(
-                title="Bruh. Don't be stupid.", 
-                description="", 
-                color = 0xff0000
+                title="Bruh. Don't be stupid.", description="", color=0xFF0000
             )
             await ctx.reply(embed=embed)
         elif num == 1:
             embed = discord.Embed(
                 title="The 1st fibonacci number is 1!",
                 description="",
-                color=discord.Color.from_rgb(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
+                color=discord.Color.from_rgb(
+                    random.randint(0, 255),
+                    random.randint(0, 255),
+                    random.randint(0, 255),
+                ),
             )
             await ctx.reply(embed=embed)
         elif num == 2:
             embed = discord.Embed(
                 title="The 2nd fibonacci number is 1!",
                 description="",
-                color=discord.Color.from_rgb(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
+                color=discord.Color.from_rgb(
+                    random.randint(0, 255),
+                    random.randint(0, 255),
+                    random.randint(0, 255),
+                ),
             )
             await ctx.reply(embed=embed)
         elif num <= 1000:
@@ -460,7 +465,7 @@ class General(commands.Cog):
             color=self.client.primary_colour,
         )
         await ctx.reply(embed=embed)
-    
+
     @commands.command(
         name="choose",
         help="Chooses a random choice from the set of words given",
@@ -475,7 +480,7 @@ class General(commands.Cog):
             color=self.client.primary_colour,
         )
         await ctx.reply(embed=embed)
-    
+
     @commands.command(
         name="kawaii",
         help="Makes what you say look/sound cuter (replaces some letter combinations with others)",
@@ -485,7 +490,7 @@ class General(commands.Cog):
     async def kawaii(self, ctx, *msg: str):
         words = " ".join(msg)
         upper_or_lower = []
-        
+
         final = ""
         previous_char = ""
         for i in words:
@@ -503,15 +508,15 @@ class General(commands.Cog):
                 final += i
                 previous_char = i
         new = final
-        first_time = 1 
+        first_time = 1
         while new != final or first_time == 1:
             first_time = 0
             final = new
-            new = final.replace("zz","z").replace("ss","s")
+            new = final.replace("zz", "z").replace("ss", "s")
         final = new
         final = (
-            final.replace("sh","s")
-            .replace("zh","z")
+            final.replace("sh", "s")
+            .replace("zh", "z")
             .replace("s", "sh")
             .replace("z", "zh")
             .replace("rr", "ww")
@@ -523,7 +528,7 @@ class General(commands.Cog):
             final = final[:-1] + "ie"
 
         await ctx.reply(final)
-    
+
     @commands.command(
         name="getsettings",
         help="Views current MaxiGames settings in this server",
@@ -541,54 +546,72 @@ class General(commands.Cog):
 
         m = ""
         for k, v in data.items():
-            m += (f"\n**{k}**:\n {v}\n")
+            m += f"\n**{k}**:\n {v}\n"
 
         await ctx.send(m)
 
     @commands.command(
         name="randcol",
-        help = "Gives you an embed with a random color :D",
-        usage = "",
-        aliases=["randomcol","randomcolor","randomcolour","randcolour","randcolor"]
+        help="Gives you an embed with a random color :D",
+        usage="",
+        aliases=["randomcol", "randomcolor", "randomcolour", "randcolour", "randcolor"],
     )
-    @cooldown(1,15,BucketType.user)
-    async def randcol(self,ctx):
-        embed = discord.Embed(title="Random Color!",description="",color=discord.Colour.random())
+    @cooldown(1, 15, BucketType.user)
+    async def randcol(self, ctx):
+        embed = discord.Embed(
+            title="Random Color!", description="", color=discord.Colour.random()
+        )
         await ctx.reply(embed=embed)
-    @cooldown(1,10,BucketType.user)
+
+    @cooldown(1, 10, BucketType.user)
     @commands.command(
         name="ship",
         help="How well do two things (names, objects, discord tags etc.) fit together based on complements, similarity and length difference",
         usage="[name1] [name2]",
-        aliases=["matchmake","matchmaking","match"]
+        aliases=["matchmake", "matchmaking", "match"],
     )
-    async def ship(self,ctx,fne:str,sne:str):
-        
-        fn=""
-        sn=""
+    async def ship(self, ctx, fne: str, sne: str):
+
+        fn = ""
+        sn = ""
         alpha = "abcdefghijklmnopqrstuvwxyz0123456789"
         for i in fne:
             if i not in "abcdefghijklmnopqrstuvwxyz0123456789":
-                i = alpha[ord(i)%36]
-                
+                i = alpha[ord(i) % 36]
+
             fn += i
         for i in sne:
             if i not in "abcdefghijklmnopqrstuvwxyz0123456789":
-                i = alpha[ord(i)%36]
-                
+                i = alpha[ord(i) % 36]
+
             sn += i
         total_mismatch = 0
-        length_to_do = min(len(fn),len(sn))
+        length_to_do = min(len(fn), len(sn))
         for i in range(length_to_do):
             alpha_index = alpha.index(fn[i])
-            distance = min(abs(alpha.index(sn[i])-alpha_index),abs(35-alpha.index(sn[i])-alpha_index))
+            distance = min(
+                abs(alpha.index(sn[i]) - alpha_index),
+                abs(35 - alpha.index(sn[i]) - alpha_index),
+            )
             total_mismatch += distance
-        percentage_match = round((35*length_to_do - total_mismatch)/(35*length_to_do)*100*min(len(fn),len(sn))/max(len(fn),len(sn)))
-        
-        embed=discord.Embed(
+        percentage_match = round(
+            (35 * length_to_do - total_mismatch)
+            / (35 * length_to_do)
+            * 100
+            * min(len(fn), len(sn))
+            / max(len(fn), len(sn))
+        )
+
+        embed = discord.Embed(
             title="Ship results",
-            description="Ship between " + str(fne) + " and " + str(sne) + ":\n**" + str(percentage_match) + "%**!",
-            color=self.client.primary_colour
+            description="Ship between "
+            + str(fne)
+            + " and "
+            + str(sne)
+            + ":\n**"
+            + str(percentage_match)
+            + "%**!",
+            color=self.client.primary_colour,
         )
         await ctx.reply(embed=embed)
 
@@ -596,13 +619,12 @@ class General(commands.Cog):
         name="vote",
         help="Voting link to vote the bot",
         usage="",
-        aliases=["v","upvote"]
+        aliases=["v", "upvote"],
     )
     @cooldown(1, 10, BucketType.user)
     async def vote(self, ctx):
-        await ctx.send(
-            "**Vote**\n"
-            "https://top.gg/bot/863419048041381920/vote"
-        )
+        await ctx.send("**Vote**\n" "https://top.gg/bot/863419048041381920/vote")
+
+
 def setup(client):
     client.add_cog(General(client))

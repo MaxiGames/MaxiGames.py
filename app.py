@@ -20,18 +20,24 @@ if len(sys.argv) > 1 and sys.argv[1] == "r":
 else:
     print("Running Beta version of bot.")
 
+
 def get_prefix(client, message):
     return client.prefixes[str(message.guild.id)]
+
 
 with open("config.json", "r") as file:
     data = json.load(file)
     intents = discord.Intents.default()
     intents.members = True
     intents.guilds = True
-    client = Client(command_prefix=(get_prefix), intents=intents, case_insensitive = True)
+    client = Client(command_prefix=(get_prefix), intents=intents, case_insensitive=True)
     client.prefixes = {}
 
-cred = credentials.Certificate("serviceAccountKey2.json") if beta else credentials.Certificate("serviceAccountKey.json") 
+cred = (
+    credentials.Certificate("serviceAccountKey2.json")
+    if beta
+    else credentials.Certificate("serviceAccountKey.json")
+)
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
@@ -55,6 +61,7 @@ async def on_ready():
         ),
     )
     print("We have logged in as {0.user}".format(client))
+
 
 with open("config.json", "r") as file:
     data = json.load(file)

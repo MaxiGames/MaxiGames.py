@@ -5,6 +5,7 @@ import threading
 from utils import check
 from discord.ext.commands import cooldown, BucketType
 
+
 class Prefix(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -18,10 +19,12 @@ class Prefix(commands.Cog):
         # Create a callback on_snapshot function to capture changes
         def on_snapshot(col_snapshot, changes, read_time):
             for change in changes:
-                self.client.prefixes[str(change.document.id)] = change.document.to_dict()["prefix"]
+                self.client.prefixes[
+                    str(change.document.id)
+                ] = change.document.to_dict()["prefix"]
             callback_done.set()
 
-        col_query = self.db.collection(u'servers')
+        col_query = self.db.collection("servers")
 
         # Watch the collection query
         query_watch = col_query.on_snapshot(on_snapshot)
@@ -30,8 +33,6 @@ class Prefix(commands.Cog):
     async def on_guild_join(self, guild):
         self.client.prefixes[str(guild.id)] = [self.client.primary_prefix]
 
-
-
     @commands.group(invoke_without_command=True)
     async def prefix(self, ctx):
         """Prefix commands"""
@@ -39,16 +40,16 @@ class Prefix(commands.Cog):
         for i in range(len(self.client.prefixes)):
             description += f"{i+1}. {self.client.prefixes[i]}\n"
         description += "```"
-        
+
         embed = discord.Embed(
-            title = f"Prefixes in server `{ctx.guild.name}`",
-            description = description,
-            colour = self.client.primary_colour
+            title=f"Prefixes in server `{ctx.guild.name}`",
+            description=description,
+            colour=self.client.primary_colour,
         )
         if len(self.client.prefixes) > 1:
-            embed.set_footer(text = f"{len(self.client.prefixes)} prefixes")
+            embed.set_footer(text=f"{len(self.client.prefixes)} prefixes")
         else:
-            embed.set_footer(text = "1 prefix")
+            embed.set_footer(text="1 prefix")
         await ctx.reply(embed=embed)
 
     @check.is_admin()
@@ -64,7 +65,7 @@ class Prefix(commands.Cog):
             embed=discord.Embed(
                 title="New prefix added",
                 description=f"{prefix} is now a MaxiGames prefix.",
-                colour = self.client.primary_colour
+                colour=self.client.primary_colour,
             )
         )
 
@@ -80,17 +81,19 @@ class Prefix(commands.Cog):
                 embed=discord.Embed(
                     title="Prefix not found",
                     description=f"Please make sure that the prefix to be removed is to be correct. Check valid prefixes using {ctx.prefix}prefix",
-                    colour = self.client.primary_colour
+                    colour=self.client.primary_colour,
                 )
             )
             return
-        
+
         if len(data["prefix"]) == 1:
-            await ctx.reply("Are you sure that you want to remove the last and only prefix?")
+            await ctx.reply(
+                "Are you sure that you want to remove the last and only prefix?"
+            )
         data["prefix"].remove(prefix)
         self.db.collection("servers").document(str(ctx.guild.id)).update(data)
         await ctx.reply(f"Prefix {prefix} removed :D")
-    
+
     @check.is_admin()
     @prefix.command()
     @cooldown(1, 15, BucketType.user)
@@ -100,7 +103,13 @@ class Prefix(commands.Cog):
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
         data["prefix"] = [self.client.primary_prefix]
         self.db.collection("servers").document(str(ctx.guild.id)).update(data)
-        await ctx.reply(embed=discord.Embed(title="Prefixes reset.", description="The bot prefix for this server has been reset.", colour=self.client.primary_colour))
+        await ctx.reply(
+            embed=discord.Embed(
+                title="Prefixes reset.",
+                description="The bot prefix for this server has been reset.",
+                colour=self.client.primary_colour,
+            )
+        )
 
     @check.is_admin()
     @prefix.command()
@@ -114,12 +123,11 @@ class Prefix(commands.Cog):
         await ctx.reply(
             embed=discord.Embed(
                 title="Prefixes set :D",
-                description = f"Prefixes set to {', '.join(prefixes)}",
-                colour = self.client.primary_colour
+                description=f"Prefixes set to {', '.join(prefixes)}",
+                colour=self.client.primary_colour,
             )
         )
 
-    
 
 def setup(client):
     client.add_cog(Prefix(client))

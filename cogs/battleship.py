@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 import random
 
+
 class Battleship(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -10,9 +11,9 @@ class Battleship(commands.Cog):
 
     def generateShips(self):
         ships = []
-        
+
         return ships
-    
+
     # @check.is_banned()
     # @commands.command(
     #     name="battleship",
@@ -44,8 +45,6 @@ class Battleship(commands.Cog):
     #     except asyncio.TimeoutError:
     #         await ctx.reply("No one else joined, please try again later!")
     #         return
-
-
 
 
 def setup(client):

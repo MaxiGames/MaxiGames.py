@@ -42,14 +42,20 @@ class Errors(commands.Cog):
                 colour=self.client.primary_colour,
             )
             if seconds < 60:
-                embed.description = f"This command is on cooldown. Try again in {seconds} seconds."
+                embed.description = (
+                    f"This command is on cooldown. Try again in {seconds} seconds."
+                )
             elif seconds >= 60:
                 minutes = seconds // 60
-                embed.description = f"This command is on cooldown. Try again in {minutes} minutes."
+                embed.description = (
+                    f"This command is on cooldown. Try again in {minutes} minutes."
+                )
             elif seconds >= 3600:
                 hours = seconds // 3600
-                embed.description = f"This command is on cooldown. Try again in {hours} hours."
-            
+                embed.description = (
+                    f"This command is on cooldown. Try again in {hours} hours."
+                )
+
             embed.set_author(
                 name=ctx.author.display_name, icon_url=ctx.author.avatar_url
             )
@@ -65,17 +71,18 @@ class Errors(commands.Cog):
                 name=ctx.author.display_name, icon_url=ctx.author.avatar_url
             )
             await ctx.channel.send(embed=embed)
-        
+
         elif isinstance(error, commands.MissingRequiredArgument):
             embed = discord.Embed(
                 title="Missing required argument",
                 description="You are missing required arguments. Please check your command syntax through `m!help <command>`.",
-                colour=self.client.error_colour
+                colour=self.client.error_colour,
             )
 
-            embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+            embed.set_author(
+                name=ctx.author.display_name, icon_url=ctx.author.avatar_url
+            )
             await ctx.reply(embed=embed)
-
 
         else:
             raise error

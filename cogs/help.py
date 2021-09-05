@@ -3,12 +3,12 @@ from discord.ext.commands import Cog, HelpCommand
 from utils.paginator import Paginator
 from discord_components import ButtonStyle, Button
 
+
 class CustomHelpCommand(HelpCommand):
     def __init__(self):
-        super().__init__(command_attrs={
-            'description': 'Shows this help message.',
-            'hidden': True
-        })
+        super().__init__(
+            command_attrs={"description": "Shows this help message.", "hidden": True}
+        )
 
     async def send_bot_help(self, mapping):
         # for i in mapping:
@@ -40,9 +40,9 @@ class CustomHelpCommand(HelpCommand):
             if cog.hidden:
                 continue
             cog_commands = mapping[cog]
-            if len(cog_commands)==0:
+            if len(cog_commands) == 0:
                 continue
-            count  = 0
+            count = 0
 
             cmds = "```\n"
             for cmd in cog_commands:
@@ -62,7 +62,7 @@ class CustomHelpCommand(HelpCommand):
                 page.add_field(name=cog.qualified_name, value=cmds)
                 page.set_thumbnail(url=self.cog.client.user.avatar_url)
                 pages.append(page)
-                
+
                 # reset page
                 page = discord.Embed(
                     title="Commands",
@@ -109,11 +109,11 @@ class CustomHelpCommand(HelpCommand):
                 ),
             ]
         ]
-        page = Paginator(self.cog.client, self.context, msg, pages, buttons=buttons, timeout=60)
+        page = Paginator(
+            self.cog.client, self.context, msg, pages, buttons=buttons, timeout=60
+        )
         await page.start()
         return await super().send_bot_help(mapping)
-    
-
 
     async def send_command_help(self, command):
         if command.hidden or (command.cog is not None and command.cog.hidden):
@@ -125,19 +125,22 @@ class CustomHelpCommand(HelpCommand):
         )
         if command.usage is not None:
             usage = "\n".join(
-                [self.context.prefix + command.name + " " + x.strip() for x in command.usage.split("\n")]
+                [
+                    self.context.prefix + command.name + " " + x.strip()
+                    for x in command.usage.split("\n")
+                ]
             )
             embed.add_field(name="Usage", value=f"```{usage}```", inline=False)
         if len(command.aliases) > 1:
-            embed.add_field(
-                name="Aliases", value=f"`{'`, `'.join(command.aliases)}`"
-            )
+            embed.add_field(name="Aliases", value=f"`{'`, `'.join(command.aliases)}`")
         elif len(command.aliases) > 0:
             embed.add_field(name="Alias", value=f"`{command.aliases[0]}`")
-        embed.set_author(name=self.cog.client.user.name, icon_url=self.cog.client.user.avatar_url)
+        embed.set_author(
+            name=self.cog.client.user.name, icon_url=self.cog.client.user.avatar_url
+        )
         await self.context.send(embed=embed)
         return
-    
+
     async def send_cog_help(self, cog):
         if cog.hidden:
             return
@@ -153,42 +156,54 @@ class CustomHelpCommand(HelpCommand):
             self.send_command_help(group)
         # commands.insert(0, group)
         pages = []
-        commands = [commands[i:i + 5] for i in range(0, len(commands), 5)]
+        commands = [commands[i : i + 5] for i in range(0, len(commands), 5)]
         for command_s in commands:
             page = discord.Embed(
-                title=f'{group.name} {group.usage} ({len(list(group.commands))} commands)',
+                title=f"{group.name} {group.usage} ({len(list(group.commands))} commands)",
                 description=group.help,
-                colour=self.cog.client.primary_colour
+                colour=self.cog.client.primary_colour,
             )
-            page.set_author(name=self.cog.client.user.name, icon_url=self.cog.client.user.avatar_url)
+            page.set_author(
+                name=self.cog.client.user.name, icon_url=self.cog.client.user.avatar_url
+            )
             for command in command_s:
                 if command.usage is None:
-                    page.add_field(name=f'{command.name}', value=command.help, inline=False)
+                    page.add_field(
+                        name=f"{command.name}", value=command.help, inline=False
+                    )
                 else:
-                    page.add_field(name=f'{command.name} {command.usage}', value=command.help, inline=False)
+                    page.add_field(
+                        name=f"{command.name} {command.usage}",
+                        value=command.help,
+                        inline=False,
+                    )
             pages.append(page)
         msg = await self.context.send(
             embed=pages[0],
         )
         page = Paginator(self.cog.client, self.context, msg, pages, timeout=60)
         await page.start()
-    
+
     async def send_error_message(self, error):
         embed = discord.Embed(
             title="Command not Found",
-            description=f'{error} Please check that your spelling and capitalisation is correct :D',
-            colour = self.cog.client.primary_colour,
+            description=f"{error} Please check that your spelling and capitalisation is correct :D",
+            colour=self.cog.client.primary_colour,
         )
-        embed.set_author(name=self.cog.client.user.name, icon_url=self.cog.client.user.avatar_url)
+        embed.set_author(
+            name=self.cog.client.user.name, icon_url=self.cog.client.user.avatar_url
+        )
         await self.context.send(embed=embed)
 
-class Help (Cog):
+
+class Help(Cog):
     def __init__(self, client):
         self.client = client
         self.old_help_command = client.help_command
         client.help_command = CustomHelpCommand()
         client.help_command.cog = self
         self.hidden = True
+
 
 def setup(client):
     client.add_cog(Help(client))

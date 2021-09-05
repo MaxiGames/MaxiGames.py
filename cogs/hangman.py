@@ -25,6 +25,7 @@ class Hangman(commands.Cog):
         self.hidden = False
         self.db = firestore.client()
         self.init = self.client.get_cog("Init")
+
     @commands.command()
     @cooldown(1, 5, BucketType.user)
     async def hangmanList(self, ctx):
@@ -74,8 +75,12 @@ class Hangman(commands.Cog):
         )
         page = Paginator(self.client, ctx, msg, pages, timeout=120)
         await page.start()
-    
-    @commands.command(name="hangman", description="Play hangman, the classic word-guessing game! Rewards money if you win.", usage="hangman")
+
+    @commands.command(
+        name="hangman",
+        description="Play hangman, the classic word-guessing game! Rewards money if you win.",
+        usage="hangman",
+    )
     @cooldown(1, 30, BucketType.user)
     async def hangman(self, ctx):
         #! Hangman Firebase Initalisation
@@ -106,9 +111,7 @@ class Hangman(commands.Cog):
         chosenTopic = ""
         while True:
             try:
-                message = await self.client.wait_for(
-                    "message", timeout=60, check=check
-                )
+                message = await self.client.wait_for("message", timeout=60, check=check)
                 if (
                     message.content == "m!hangmanList"
                     or message.content == "!hangmanList"
@@ -181,7 +184,6 @@ class Hangman(commands.Cog):
             title="Your hangman game: ", description=answer, color=0xFFFF00
         )
 
-
         lives = max(5, math.floor(len(wordChoice) * 2 / 3))
         word_guessed = 0
         await ctx.reply(embed=embed)
@@ -230,7 +232,7 @@ class Hangman(commands.Cog):
 
                 else:
                     if messageanswer == wordChoice:
-                        add = math.floor((len(wordChoice) * 3.5) + (5*lives))
+                        add = math.floor((len(wordChoice) * 3.5) + (5 * lives))
                         data["money"] += add
 
                         if "hangmanWins" not in data:
@@ -270,12 +272,12 @@ class Hangman(commands.Cog):
             embed = discord.Embed(
                 title="You lost!",
                 description=f"The word was **{wordChoice}**, {deduct} money was subtracted off your account :(. You currently have {data['money']} money",
-                color=0xff0000
+                color=0xFF0000,
             )
             await message.reply(embed=embed)
             doc_ref.set(data)
         elif word_guessed == 0:
-            add = math.floor((len(wordChoice) * 3.5) + (5*lives))
+            add = math.floor((len(wordChoice) * 3.5) + (5 * lives))
             data["money"] += add
 
             if "hangmanWins" not in data:
@@ -289,8 +291,12 @@ class Hangman(commands.Cog):
             )
             await message.reply(embed=embed)
             doc_ref.set(data)
-            
-    @commands.command(title="hangmanLB", help="The leaderboard for hangman", aliases=["hangmanleaderboard"])
+
+    @commands.command(
+        title="hangmanLB",
+        help="The leaderboard for hangman",
+        aliases=["hangmanleaderboard"],
+    )
     @cooldown(1, 15, BucketType.user)
     async def hangmanLB(self, ctx):
         await leaderboard_generate(self, ctx, "hangman")
@@ -298,5 +304,3 @@ class Hangman(commands.Cog):
 
 def setup(client):
     client.add_cog(Hangman(client))
-
-

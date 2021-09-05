@@ -5,6 +5,7 @@ from firebase_admin import firestore
 from utils import check
 from discord.ext.commands import cooldown, BucketType
 
+
 class Starboard(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -17,7 +18,7 @@ class Starboard(commands.Cog):
         name="starboardThresh",
         help="Starts a starboard",
         usage="<number of stars required>",
-        aliases=["starThresh", "starCount", "starboardCount", "starboardLimit"]
+        aliases=["starThresh", "starCount", "starboardCount", "starboardLimit"],
     )
     @cooldown(1, 15, BucketType.user)
     async def starboard_threshold(self, ctx, thresh: int = None):
@@ -43,7 +44,7 @@ class Starboard(commands.Cog):
         name="starboard",
         help="Sets the starboard to the current channel or the specified one",
         usage="<channel>",
-        alias=["star", "starboardSet"]
+        alias=["star", "starboardSet"],
     )
     @cooldown(1, 15, BucketType.user)
     async def starboard(self, ctx, channel: discord.TextChannel = None):
@@ -76,7 +77,11 @@ class Starboard(commands.Cog):
         channel = self.client.get_channel(int(data["starboard"]["channel"]))
         await self.init.checkserver(reaction.message)
 
-        if channel is None or reaction.count < data["starboard_threshold"] or reaction.emoji != "⭐":
+        if (
+            channel is None
+            or reaction.count < data["starboard_threshold"]
+            or reaction.emoji != "⭐"
+        ):
             return
 
         e = (
@@ -119,12 +124,14 @@ class Starboard(commands.Cog):
         channel = self.client.get_channel(int(data["starboard"]["channel"]))
         await self.init.checkserver(reaction.message)
 
-        if channel is None or reaction.count + 1 < data["starboard_threshold"] or reaction.emoji != "⭐":
+        if (
+            channel is None
+            or reaction.count + 1 < data["starboard_threshold"]
+            or reaction.emoji != "⭐"
+        ):
             return
 
-        msg = await channel.fetch_message(
-            data["starboard"][str(reaction.message.id)]
-        )
+        msg = await channel.fetch_message(data["starboard"][str(reaction.message.id)])
 
         if reaction.count < data["starboard_threshold"]:
             await msg.delete()  # just delete it; it is now below the threshold

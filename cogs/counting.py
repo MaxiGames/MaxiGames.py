@@ -64,7 +64,9 @@ class Counting(commands.Cog):
 
         if str(ctx.guild.id) in data["counting_channels"]:  # do not merge with and!
             if str(channel) not in data["counting_channels"][str(ctx.guild.id)]:
-                data["counting_channels"][str(ctx.guild.id)][str(channel)] = copy.deepcopy(init_channel_count)
+                data["counting_channels"][str(ctx.guild.id)][
+                    str(channel)
+                ] = copy.deepcopy(init_channel_count)
                 data["counting_channels"][str(ctx.guild.id)]["counterUR"] = {}
                 await ctx.reply(embed=discord.Embed(title="Success! Channel Added!"))
             else:
@@ -225,20 +227,33 @@ class Counting(commands.Cog):
             return  # no number
         num = int(numinter)
 
-        ccount = data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"]
+        ccount = data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+            "count"
+        ]
         if (
             num == ccount + 1
-            and data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] != msg.author.id
+            and data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+                "previous_author"
+            ]
+            != msg.author.id
         ):
             await msg.add_reaction("✅")
-            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"] = num
-            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] = msg.author.id
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+                "count"
+            ] = num
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+                "previous_author"
+            ] = msg.author.id
             try:
                 # update user's counter userrank
-                data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] += 1
+                data["counting_channels"][str(msg.guild.id)]["counterUR"][
+                    str(msg.author.id)
+                ] += 1
             except KeyError:
                 # initialise user's counter userrank
-                data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] = 1
+                data["counting_channels"][str(msg.guild.id)]["counterUR"][
+                    str(msg.author.id)
+                ] = 1
         else:
             await msg.add_reaction("❌")
             if num != ccount + 1:
@@ -260,14 +275,27 @@ class Counting(commands.Cog):
 
             try:
                 # update user's counter userrank
-                if data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] > 0:
-                    data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] -= 1
+                if (
+                    data["counting_channels"][str(msg.guild.id)]["counterUR"][
+                        str(msg.author.id)
+                    ]
+                    > 0
+                ):
+                    data["counting_channels"][str(msg.guild.id)]["counterUR"][
+                        str(msg.author.id)
+                    ] -= 1
             except KeyError:
                 # initialise user's counter userrank
-                data["counting_channels"][str(msg.guild.id)]["counterUR"][str(msg.author.id)] = 0
+                data["counting_channels"][str(msg.guild.id)]["counterUR"][
+                    str(msg.author.id)
+                ] = 0
 
-            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["count"] = 0
-            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)]["previous_author"] = None
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+                "count"
+            ] = 0
+            data["counting_channels"][str(msg.guild.id)][str(msg.channel.id)][
+                "previous_author"
+            ] = None
 
         self.db.collection("servers").document(str(msg.guild.id)).set(data)
         return

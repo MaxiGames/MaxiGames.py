@@ -17,18 +17,19 @@ from discord_components import Button, ButtonStyle
 
 alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+
 class Games(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.init = self.client.get_cog("Init")
         self.db = firestore.client()
         self.hidden = False
-    
+
     @commands.command(
         name="trivia",
         help="Answer a trivia question using reactions! Provide a number from 1 to 3 specifying the difficulty of the trivia question you want. Note that this is taken from https://opentdb.com/",
         usage="<difficulty>",
-        alias=["funfact", "fact"]
+        alias=["funfact", "fact"],
     )
     @cooldown(1, 15, BucketType.user)
     async def trivia(self, ctx, difficulty=100000000000):
@@ -162,7 +163,12 @@ class Games(commands.Cog):
                     await ctx.reply(embed=embed)
                 doc_ref.set(dict1)
 
-    @commands.command(name="trivialb", description="retrieves the trivia leaderboard", aliases=["trivialeaderboard","tlb"], usage="")
+    @commands.command(
+        name="trivialb",
+        description="retrieves the trivia leaderboard",
+        aliases=["trivialeaderboard", "tlb"],
+        usage="",
+    )
     @cooldown(1, 10, BucketType.user)
     async def trivia_leaderboard(self, ctx):
         await leaderboard_generate(self, ctx, "trivia")
@@ -224,7 +230,7 @@ class Games(commands.Cog):
             if dict1 == None:
                 dict1 = {}
             if msgcontent == theanswer:
-                added = random.randint(1, 3*bonus)
+                added = random.randint(1, 3 * bonus)
                 embed = discord.Embed(
                     title="Your answer " + theanswer + " was correct!",
                     description=f"You are veery beeg brain! You earned {added} money",
@@ -253,10 +259,10 @@ class Games(commands.Cog):
             await ctx.reply(embed=embed)
 
     @commands.command(
-        name="scramble", 
-        help="Try to unscramble a series of 5 words and earn coins when you unscramble them! (You may also lose coins if you don't unscramble) Do be warned, it isn't easy...", 
+        name="scramble",
+        help="Try to unscramble a series of 5 words and earn coins when you unscramble them! (You may also lose coins if you don't unscramble) Do be warned, it isn't easy...",
         usage="",
-        aliases=["unscramble"]
+        aliases=["unscramble"],
     )
     @cooldown(1, 300, BucketType.user)
     async def scramble(self, ctx):
@@ -294,7 +300,7 @@ class Games(commands.Cog):
         if doc.exists == False:
             return
         dict1 = doc.to_dict()
-        
+
         while True:
             try:
                 messageanswer = await self.client.wait_for(
@@ -331,7 +337,7 @@ class Games(commands.Cog):
                     await messageanswer.reply(embed=embed)
 
             except asyncio.TimeoutError:
-                lost = random.randint(1, 1+len(correctWords))
+                lost = random.randint(1, 1 + len(correctWords))
                 dict1["money"] -= lost
                 embed = discord.Embed(
                     title="Time has run out...",
@@ -342,8 +348,7 @@ class Games(commands.Cog):
                 break
         doc_ref.set(dict1)
 
-    
-    
+
 def setup(client):
     client.add_cog(Games(client))
 
