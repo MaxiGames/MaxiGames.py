@@ -216,7 +216,7 @@ class Economy(commands.Cog):
         usage="",
         aliases=["m"],
     )
-    @cooldown(1, 3, BucketType.user)
+    @cooldown(1, 30, BucketType.user)
     async def _money(self, ctx):
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
@@ -224,7 +224,7 @@ class Economy(commands.Cog):
         doc = doc_ref.get()
         if doc.exists:
             dict1 = doc.to_dict()
-            dict1["money"] = dict1["money"] + 1
+            dict1["money"] = dict1["money"] + random.randint(1, 30)
             doc_ref.set(dict1)
             embed = discord.Embed(
                 title="Money added",
