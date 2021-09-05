@@ -3,6 +3,7 @@ from firebase_admin import firestore
 
 import discord
 from discord.ext import commands
+
 # from cogs.init import Init
 
 import threading
@@ -22,10 +23,12 @@ def on_snapshot(col_snapshot, changes, read_time):
             banned = change.document.to_dict()
     callback_done.set()
 
-col_query = db.collection(u'admin')
+
+col_query = db.collection(u"admin")
 
 # Watch the collection query
 query_watch = col_query.on_snapshot(on_snapshot)
+
 
 def is_staff():
     async def predicate(ctx):

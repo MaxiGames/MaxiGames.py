@@ -12,9 +12,9 @@ class Battleship(commands.Cog):
 
     def generateShips(self):
         ships = []
-        
+
         return ships
-    
+
     # @check.is_banned()
     # @commands.command(
     #     name="battleship",
@@ -48,8 +48,5 @@ class Battleship(commands.Cog):
     #         return
 
 
-
-
 def setup(client):
     client.add_cog(Battleship(client))
-

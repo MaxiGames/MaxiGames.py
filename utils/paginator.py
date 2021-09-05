@@ -51,17 +51,23 @@ class Paginator:
             raise TypeError("Paginator client must be a discord.Client or commands.Bot")
 
     async def start(self):
-        if len(self.pages) <=1:
+        if len(self.pages) <= 1:
             add_on_buttons = [
                 Button(style=ButtonStyle.green, label=self.first_symbol, disabled=True),
-                Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
-                Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
+                Button(
+                    style=ButtonStyle.green, label=self.previous_symbol, disabled=True
+                ),
+                Button(
+                    style=ButtonStyle.gray,
+                    label=f"Page {self.page_num+1}/{len(self.pages)}",
+                    disabled=True,
+                ),
                 Button(style=ButtonStyle.green, label=self.next_symbol, disabled=True),
                 Button(
                     style=ButtonStyle.green,
                     label=self.last_symbol,
                     disabled=True,
-                )
+                ),
             ]
             component = copy.copy(self.buttons)
             component.append(add_on_buttons)
@@ -73,9 +79,13 @@ class Paginator:
         add_on_buttons: List[Button] = [
             Button(style=ButtonStyle.green, label=self.first_symbol, disabled=True),
             Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
-            Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
+            Button(
+                style=ButtonStyle.gray,
+                label=f"Page {self.page_num+1}/{len(self.pages)}",
+                disabled=True,
+            ),
             Button(style=ButtonStyle.green, label=self.next_symbol),
-            Button(style=ButtonStyle.green, label=self.last_symbol)
+            Button(style=ButtonStyle.green, label=self.last_symbol),
         ]
         component = copy.copy(self.buttons)
         component.append(add_on_buttons)
@@ -109,10 +119,18 @@ class Paginator:
                             label=self.first_symbol,
                             disabled=True,
                         ),
-                        Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
-                        Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
+                        Button(
+                            style=ButtonStyle.green,
+                            label=self.previous_symbol,
+                            disabled=True,
+                        ),
+                        Button(
+                            style=ButtonStyle.gray,
+                            label=f"Page {self.page_num+1}/{len(self.pages)}",
+                            disabled=True,
+                        ),
                         Button(style=ButtonStyle.green, label=self.next_symbol),
-                        Button(style=ButtonStyle.green, label=self.last_symbol)
+                        Button(style=ButtonStyle.green, label=self.last_symbol),
                     ]
 
                     component = copy.copy(self.buttons)
@@ -134,10 +152,18 @@ class Paginator:
                                 label=self.first_symbol,
                                 disabled=True,
                             ),
-                            Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
-                        Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
+                            Button(
+                                style=ButtonStyle.green,
+                                label=self.previous_symbol,
+                                disabled=True,
+                            ),
+                            Button(
+                                style=ButtonStyle.gray,
+                                label=f"Page {self.page_num+1}/{len(self.pages)}",
+                                disabled=True,
+                            ),
                             Button(style=ButtonStyle.green, label=self.next_symbol),
-                            Button(style=ButtonStyle.green, label=self.last_symbol)
+                            Button(style=ButtonStyle.green, label=self.last_symbol),
                         ]
 
                         component = copy.copy(self.buttons)
@@ -153,9 +179,13 @@ class Paginator:
                         add_on_buttons = [
                             Button(style=ButtonStyle.green, label=self.first_symbol),
                             Button(style=ButtonStyle.green, label=self.previous_symbol),
-                        Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
+                            Button(
+                                style=ButtonStyle.gray,
+                                label=f"Page {self.page_num+1}/{len(self.pages)}",
+                                disabled=True,
+                            ),
                             Button(style=ButtonStyle.green, label=self.next_symbol),
-                            Button(style=ButtonStyle.green, label=self.last_symbol)
+                            Button(style=ButtonStyle.green, label=self.last_symbol),
                         ]
                         component = copy.copy(self.buttons)
                         component.append(add_on_buttons)
@@ -173,13 +203,21 @@ class Paginator:
                         add_on_buttons = [
                             Button(style=ButtonStyle.green, label=self.first_symbol),
                             Button(style=ButtonStyle.green, label=self.previous_symbol),
-                            Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
-                            Button(style=ButtonStyle.green, label=self.next_symbol, disabled=True),
+                            Button(
+                                style=ButtonStyle.gray,
+                                label=f"Page {self.page_num+1}/{len(self.pages)}",
+                                disabled=True,
+                            ),
+                            Button(
+                                style=ButtonStyle.green,
+                                label=self.next_symbol,
+                                disabled=True,
+                            ),
                             Button(
                                 style=ButtonStyle.green,
                                 label=self.last_symbol,
                                 disabled=True,
-                            )
+                            ),
                         ]
                         component = copy.copy(self.buttons)
                         component.append(add_on_buttons)
@@ -195,9 +233,13 @@ class Paginator:
                         add_on_buttons = [
                             Button(style=ButtonStyle.green, label=self.first_symbol),
                             Button(style=ButtonStyle.green, label=self.previous_symbol),
-                            Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
+                            Button(
+                                style=ButtonStyle.gray,
+                                label=f"Page {self.page_num+1}/{len(self.pages)}",
+                                disabled=True,
+                            ),
                             Button(style=ButtonStyle.green, label=self.next_symbol),
-                            Button(style=ButtonStyle.green, label=self.last_symbol)
+                            Button(style=ButtonStyle.green, label=self.last_symbol),
                         ]
                         component = copy.copy(self.buttons)
                         component.append(add_on_buttons)
@@ -213,13 +255,21 @@ class Paginator:
                     add_on_buttons = [
                         Button(style=ButtonStyle.green, label=self.first_symbol),
                         Button(style=ButtonStyle.green, label=self.previous_symbol),
-                        Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
-                        Button(style=ButtonStyle.green, label=self.next_symbol, disabled=True),
+                        Button(
+                            style=ButtonStyle.gray,
+                            label=f"Page {self.page_num+1}/{len(self.pages)}",
+                            disabled=True,
+                        ),
+                        Button(
+                            style=ButtonStyle.green,
+                            label=self.next_symbol,
+                            disabled=True,
+                        ),
                         Button(
                             style=ButtonStyle.green,
                             label=self.last_symbol,
                             disabled=True,
-                        )
+                        ),
                     ]
                     component = copy.copy(self.buttons)
                     component.append(add_on_buttons)
@@ -233,15 +283,27 @@ class Paginator:
 
             except asyncio.TimeoutError:
                 add_on_buttons = [
-                    Button(style=ButtonStyle.green, label=self.first_symbol, disabled=True),
-                    Button(style=ButtonStyle.green, label=self.previous_symbol, disabled=True),
-                    Button(style=ButtonStyle.gray, label=f"Page {self.page_num+1}/{len(self.pages)}", disabled=True),
-                    Button(style=ButtonStyle.green, label=self.next_symbol, disabled=True),
+                    Button(
+                        style=ButtonStyle.green, label=self.first_symbol, disabled=True
+                    ),
+                    Button(
+                        style=ButtonStyle.green,
+                        label=self.previous_symbol,
+                        disabled=True,
+                    ),
+                    Button(
+                        style=ButtonStyle.gray,
+                        label=f"Page {self.page_num+1}/{len(self.pages)}",
+                        disabled=True,
+                    ),
+                    Button(
+                        style=ButtonStyle.green, label=self.next_symbol, disabled=True
+                    ),
                     Button(
                         style=ButtonStyle.green,
                         label=self.last_symbol,
                         disabled=True,
-                    )
+                    ),
                 ]
                 component = copy.copy(self.buttons)
                 component.append(add_on_buttons)
