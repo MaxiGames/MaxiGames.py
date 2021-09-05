@@ -1,4 +1,5 @@
 from altclass import *
+
 def Pair(a, b):
     # Getters and setters will be generated locally
     return gendispatch(Pair, locals())  # MUST be present for /all/ function-classes
@@ -16,7 +17,7 @@ This is roughly equivalent to the following:
 print(Pair(1, 2)("_a")())  # call the getter for a
 print(Pair(1, 2)("_b")())
 
-
+##########
 
 def Coord_ext(_base, c):
     def gen_unique_id():
