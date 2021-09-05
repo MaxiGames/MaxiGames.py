@@ -1,23 +1,42 @@
 """
 This is for function-classes.
-They are declared like this:
+
+They are defined like this::
+
     def MyFClass(arg1, arg2):
-        ...define procedures...
+        def addargs(arg3):
+            return arg1 + arg2 + arg3
+        ...define more procedures...
         return gendispatch(MyFClass, locals())
 
-Note that these should NOT have any extraneous local variables;
+Note that these fclasses should not have any extraneous local variables;
 all top-level local variables should be functions meant to be called,
 or arguments passed.
+
+An fclass is intantiated like so::
+
+    mything = MyFClass(1, 2)
+
+Getters are automatically generated. They are of the form "_<arg>".
+
+All functions are called like this::
+
+    mything("<fn_name>")(<args>)
+
+For example::
+
+    mything("addargs")(3)  # returns 1+2+3 = 6
+    mything("arg1_")()  # returns arg1 which is 1
 """
 
 def gendispatch(parent, parentlocals, *, no_gen_getters=False):
     """
     Generate the dispatch function.
     This is for use in a class-function (something inspired by chapter 2 of SICP)
-    Given a bunch of subprocedures (locally in parent), generate the dispatch()
-    routine which is to be returned.
+    It generates the dispatch() routine which is to be returned.
 
-    Note: This should be used like so:
+    Note: This should be used like so::
+
         return gendispatch(<parent function object>, locals())
 
     The parent function and its locals have to be passed because of technical constraints.
@@ -29,7 +48,7 @@ def gendispatch(parent, parentlocals, *, no_gen_getters=False):
     Getters are automatically generated: they are named "_<var>". If such a function
     has already been defined, it is not overwritten.
 
-    See example.py for more details.
+    See examples.py for more details.
     """
     def dispatch(n):
         s = (
@@ -82,7 +101,7 @@ def fcmerge(result, base, extend, extargs):
     The first argument of "extend" /must/ be for the base.
     However its name does not matter.
 
-    Again, see example.py for more details.
+    Again, see examples.py for more details.
     """
     exposed = {**base("_exposed"), **extend(base, *extargs)("_exposed")}
 

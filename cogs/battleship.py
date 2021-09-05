@@ -4,7 +4,7 @@ from discord.ext import commands
 from copy import deepcopy
 
 from utils import check
-from utils.classesish import gendispatch
+from utils.altclass import gendispatch
 
 # Game logic
 # Data... and code
