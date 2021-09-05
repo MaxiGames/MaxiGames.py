@@ -1,10 +1,11 @@
 import asyncio
+import discord
 from discord.ext import commands
 from copy import deepcopy
 
 from utils import check
 from utils.classesish import gendispatch
-""" 
+
 # Game logic
 # Data... and code
 def Pos(x, y):
@@ -22,8 +23,10 @@ def Grid(xsz, ysz, data):  # creates a grid
     # gfill's dimensions will not be checked; make sure they are correct!
 
     def putship(shplen, shppos, orient):
+        """
         empty cells must be set to None
         does nothing if there's overlap
+        """
         d = deepcopy(data)
         if orient == SHPOHOR:
             for i in range(shppos("_x")(), shppos("_x")() + shplen):
@@ -59,8 +62,6 @@ def Grid(xsz, ysz, data):  # creates a grid
 
     return gendispatch(Grid, locals())
 
-"""
-
 class Battleship(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -91,13 +92,15 @@ class Battleship(commands.Cog):
             reaction, user2 = await self.client.wait_for(
                 "reaction_add", timeout=45, check=check
             )
-            await ctx.reply(embed=discord.Embed(title = 
-                f"2 players have joined, battleship game starting... <@{user1.id}>, <@{user2.id}>.", 
-                description = "This game will be carried out in your DMs to prevent cheating!",
-                color = self.client.primary_colour
-            ).add_field(name="Player 1", value=f"{user1.mention}", inline=False))
-            .add_filed(name="Player 2", value=f"{user2.mention}", inline=False))
-            .add_field(name="Battleship sizes", value="1, 2, 3, 4, 5"))
+            await ctx.reply(
+                embed=discord.Embed(
+                    title=f"2 players have joined, battleship game starting... <@{user1.id}>, <@{user2.id}>.", 
+                    description="This game will be carried out in your DMs to prevent cheating!",
+                    color=self.client.primary_colour
+                ).add_field(name="Player 1", value=f"{user1.mention}", inline=False)
+                .add_field(name="Player 2", value=f"{user2.mention}", inline=False)
+                .add_field(name="Battleship sizes", value="1, 2, 3, 4, 5")
+            )
 
             #! Players have joined, initalising board
             board = []
@@ -109,7 +112,7 @@ class Battleship(commands.Cog):
             battleshipSizes = [1, 2, 3, 4, 5]
             ships = []
             for i in battleshipSizes:
-
+                pass
 
         except asyncio.TimeoutError:
             await ctx.reply("No one else joined, please try again later!")
