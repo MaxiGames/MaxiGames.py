@@ -95,7 +95,7 @@ class Suggestions(commands.Cog):
 
         # send results
         channel2 = self.client.get_channel(882646341799542824)
-        await message.delete()
+
 
         #! clarify
         embed=discord.Embed(
@@ -145,13 +145,14 @@ class Suggestions(commands.Cog):
             given = random.randint(1, 100)
             dict1["money"] += given
             doc_ref.set(dict1)
-            await user.send(embed = discord.Embed(title="As a thank you for your contributions to maxigames, we have given you " + given + " money! Enjoy!", colour = self.client.primary_colour))
-            await channel2.send(embed = discord.Embed(title="As a thank you for their contributions to maxigames, we have given them " + given + " money!", colour = self.client.primary_colour))
+            await user.send(embed = discord.Embed(title=f"As a thank you for your contributions to maxigames, we have given you {given} money! Enjoy!", colour = self.client.primary_colour))
+            await channel2.send(embed = discord.Embed(title=f"As a thank you for their contributions to maxigames, we have given them {given} money!", colour = self.client.primary_colour))
         else:
             await channel2.send(embed = embed3)
             await user.send(embed=embed3)
 
         await ctx.message.delete()
+        await message.delete()
 
     @check.is_banned()
     @commands.command(
@@ -227,7 +228,7 @@ class Suggestions(commands.Cog):
         
         # send results
         channel2 = self.client.get_channel(882981586818195476)
-        await message.delete()
+        
         
         #! clarify
         embed=discord.Embed(
@@ -279,13 +280,14 @@ class Suggestions(commands.Cog):
             given = random.randint(1, 500)
             dict1["money"] += given
             doc_ref.set(dict1)
-            await user.send(embed = discord.Embed(title="As a thank you for your contributions to maxigames, we have given you " + given + " money! Enjoy!", colour = self.client.primary_colour))
-            await channel2.send(embed = discord.Embed(title="As a thank you for their contributions to maxigames, we have given them " + given + " money!", colour = self.client.primary_colour))
+            await user.send(embed = discord.Embed(title=f"As a thank you for your contributions to maxigames, we have given you {given} money! Enjoy!", colour = self.client.primary_colour))
+            await channel2.send(embed = discord.Embed(title=f"As a thank you for their contributions to maxigames, we have given them {given} money!", colour = self.client.primary_colour))
         else:
             await channel2.send(embed = embed3)
             await user.send(embed=embed3)
 
         await ctx.message.delete()
+        await message.delete()
 
 
 def setup(client):
