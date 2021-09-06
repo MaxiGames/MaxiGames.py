@@ -11,6 +11,16 @@ class Init(commands.Cog):
         self.client = client
         self.db = firestore.client()
         self.hidden = True
+        
+        #! Make sure all user's money is an int
+        dict1 = self.db.collection(u"users").stream()
+        
+        for doc in dict1:
+            usr = doc.to_dict()
+            if usr["money"] != int(usr["money"]):
+                usr["money"] == int(usr["money"])
+                print("HALLO :)")
+                self.db.collection(u"users").document(u"{}".format(str(doc.id))).set(usr)
 
     async def init(self, ctx):
         self.doc_ref = self.db.collection(u"users").document(
@@ -55,6 +65,7 @@ class Init(commands.Cog):
                     u"name": str(ctx.guild.name),
                     u"prefix": [self.client.primary_prefix],
                     u"autoresponses": {},
+                    u"giveaways":{}
                 }
             )
 
