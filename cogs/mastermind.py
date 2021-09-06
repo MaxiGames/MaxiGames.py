@@ -70,15 +70,24 @@ class Mastermind(commands.Cog):
             value="Guess using 4 space-separated integers from 1 to 8!",
             inline=True,
         )
-        await ctx.reply(embed=embed)
+        await ctx.reply(embed=embed, user_mention=False)
 
         def check(ctx):
             return ctx.author.id == player and this_channel == ctx.channel.id
 
         guess = ctx
         guesses = 0
+        invalidTries = 0
         while True:
-
+            if invalidTries == 4:
+                await ctx.reply(
+                    "You have almost reached the maximum number of invalid tries."
+                )
+            elif invalidTries == 5:
+                await ctx.reply(
+                    "You have reached the maximum number of invalid tries. The game has been aborted (This is to prevent spam)."
+                )
+                return
             if guesses > 11:
                 embed = discord.Embed(
                     title="You used up all your guesses :(",
@@ -117,6 +126,7 @@ class Mastermind(commands.Cog):
                                 )
                                 await guess.reply(embed=embed)
                                 ok = 0
+                                invalidTries += 1
                                 break
                         if ok == 0:
                             continue
@@ -128,6 +138,7 @@ class Mastermind(commands.Cog):
                             color=0xFF0000,
                         )
                         await guess.reply(embed=embed)
+                        invalidTries += 1
                         continue
 
                 else:
@@ -137,6 +148,7 @@ class Mastermind(commands.Cog):
                         color=0xFF0000,
                     )
                     await guess.reply(embed=embed)
+                    invalidTries += 1
                     continue
                 if transfer:
                     guesses += 1
