@@ -17,10 +17,9 @@ class Init(commands.Cog):
         
         for doc in dict1:
             usr = doc.to_dict()
-            if usr["money"] != int(usr["money"]):
+            if "money" in usr and usr["money"] != math.trunc(usr["money"]):
                 usr["money"] = math.trunc(usr["money"])
-                print(usr["money"])
-                print(doc.id)
+                print(f"fixing {doc.id}'s money!")
                 self.db.collection(u"users").document(u"{}".format(str(doc.id))).set(usr)
 
     async def init(self, ctx):
