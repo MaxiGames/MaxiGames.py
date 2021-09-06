@@ -10,6 +10,7 @@ class Giveaway(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.db = firestore.client()
+        self.hidden = True
     
     @commands.group(invoke_without_command=True)
     async def giveaway(self, ctx): 

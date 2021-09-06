@@ -548,7 +548,7 @@ class Economy(commands.Cog):
 
             elif (dice1 == 1 and dice2 != 1) or (dict1 != 1 and dice2 == 1):
                 earnt = math.floor(amount * 2)
-                dict1["money"] += earnt * booster
+                dict1["money"] += int(earnt * booster)
                 doc_ref.set(dict1)
                 nowmoney = dict1["money"]
                 embed = discord.Embed(
@@ -562,7 +562,7 @@ class Economy(commands.Cog):
 
             else:
                 earnt = math.floor(10 * amount)
-                dict1["money"] += earnt * booster
+                dict1["money"] += int(earnt * booster)
                 nowmoney = dict1["money"]
                 doc_ref.set(dict1)
                 embed = discord.Embed(
