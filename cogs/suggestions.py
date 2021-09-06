@@ -1,3 +1,4 @@
+import random
 import discord
 from discord import message
 from discord.ext import commands
@@ -95,57 +96,60 @@ class Suggestions(commands.Cog):
         # send results
         channel2 = self.client.get_channel(882646341799542824)
         await message.delete()
+
+        #! clarify
+        embed=discord.Embed(
+            title=f"Suggestion needs clarification.",
+            description=f"Suggestion: {suggestion}",
+            colour=0x0000FF,
+        )
+        embed.add_field(name="Admin's message:", value=messageToUser, inline=False) 
+        embed.set_footer(text=user.display_name, icon_url=user.avatar_url)
+        for c in message.attachments:
+            embed.set_image(url=c)
+        
+        #! approve
+        embed2=discord.Embed(
+            title=f"Suggestion has been approved.",
+            description=f"Suggestion: {suggestion}",
+            colour=0x00FF00,
+        )
+        embed2.add_field(name="Admin's message:", value=messageToUser, inline=False)
+        embed2.set_footer(text=user.display_name, icon_url=user.avatar_url)
+        for c in message.attachments:
+            embed2.set_image(url=c)
+
+        #! deny
+        embed3=discord.Embed(
+            title=f"Suggestion has been denied.",
+            description=f"Suggestion: {suggestion}",
+            colour=0xFF0000,
+        )
+        embed3.add_field(name="Admin's message:", value=messageToUser, inline=False)
+        embed3.set_footer(text=user.display_name, icon_url=user.avatar_url)
+        for c in message.attachments:
+            embed3.set_image(url=c)
+
+        for c in message.attachments:
+            embed2.set_image(url=c)
+        
         if approve == "None":
-            await channel2.send(
-                embed=discord.Embed(
-                    title=f"Suggestion needs clarification.",
-                    description=f"Suggestion: {suggestion}",
-                    colour=0x0000FF,
-                )
-                .add_field(name="Admin's message:", value=messageToUser, inline=False)
-                .set_footer(text=user.display_name, icon_url=user.avatar_url)
-            )
-            await user.send(
-                embed=discord.Embed(
-                    title=f"Your suggestion needs clarification.",
-                    description=f"Suggestion: {suggestion}",
-                    colour=0x0000FF,
-                ).add_field(name="Admin's message:", value=messageToUser, inline=False)
-            )
+            await channel2.send(embed = embed)
+            await user.send(embed = embed)
+
         elif approve == "True":
-            await channel2.send(
-                embed=discord.Embed(
-                    title=f"Suggestion has been approved.",
-                    description=f"Suggestion: {suggestion}",
-                    colour=0x00FF00,
-                )
-                .add_field(name="Admin's message:", value=messageToUser, inline=False)
-                .set_footer(text=user.display_name, icon_url=user.avatar_url)
-            )
-            await user.send(
-                embed=discord.Embed(
-                    title=f"Your suggestion has been approved.",
-                    description=f"Suggestion: {suggestion}",
-                    colour=0x00FF00,
-                ).add_field(name="Admin's message:", value=messageToUser, inline=False)
-            )
+            await channel2.send(embed = embed2)
+            await user.send(embed = embed2)
+            doc_ref = self.db.collection("users").document("{}".format(str(user.id)))
+            dict1 = doc_ref.get().to_dict()
+            given = random.randint(1, 100)
+            dict1["money"] += given
+            doc_ref.set(dict1)
+            await user.send(embed = discord.Embed(title="As a thank you for your contributions to maxigames, we have given you " + given + " money! Enjoy!", colour = self.client.primary_colour))
+            await channel2.send(embed = discord.Embed(title="As a thank you for their contributions to maxigames, we have given them " + given + " money!", colour = self.client.primary_colour))
         else:
-            await channel2.send(
-                embed=discord.Embed(
-                    title=f"Suggestion has been denied.",
-                    description=f"Suggestion: {suggestion}",
-                    colour=0xFF0000,
-                )
-                .add_field(name="Admin's message:", value=messageToUser, inline=False)
-                .set_footer(text=user.display_name, icon_url=user.avatar_url)
-            )
-            await user.send(
-                embed=discord.Embed(
-                    title=f"Your suggestion has been denied.",
-                    description=f"Suggestion: {suggestion}",
-                    colour=0xFF0000,
-                ).add_field(name="Admin's message:", value=messageToUser, inline=False)
-            )
+            await channel2.send(embed = embed3)
+            await user.send(embed=embed3)
 
         await ctx.message.delete()
 
@@ -220,61 +224,66 @@ class Suggestions(commands.Cog):
 
         if user == None:
             await ctx.reply("Invalid User")
-
+        
         # send results
         channel2 = self.client.get_channel(882981586818195476)
         await message.delete()
+        
+        #! clarify
+        embed=discord.Embed(
+            title=f"Bug Report needs clarification.",
+            description=f"Bug: {suggestion}",
+            colour=0x0000FF,
+        )
+        embed.add_field(name="Admin's message:", value=messageToUser, inline=False) 
+        embed.set_footer(text=user.display_name, icon_url=user.avatar_url)
+        for c in message.attachments:
+            embed.set_image(url=c)
+        
+        #! approve
+        embed2=discord.Embed(
+            title=f"Bug Report has been approved.",
+            description=f"Bug: {suggestion}",
+            colour=0x00FF00,
+        )
+        embed2.add_field(name="Admin's message:", value=messageToUser, inline=False)
+        embed2.set_footer(text=user.display_name, icon_url=user.avatar_url)
+        for c in message.attachments:
+            embed2.set_image(url=c)
+
+        #! deny
+        embed3=discord.Embed(
+            title=f"Bug Report has been denied.",
+            description=f"Bug: {suggestion}",
+            colour=0xFF0000,
+        )
+        embed3.add_field(name="Admin's message:", value=messageToUser, inline=False)
+        embed3.set_footer(text=user.display_name, icon_url=user.avatar_url)
+
+        for c in message.attachments:
+            embed3.set_image(url=c)
+
+        for c in message.attachments:
+            embed2.set_image(url=c)
+        
         if approve == "None":
-            await channel2.send(
-                embed=discord.Embed(
-                    title=f"Bug Report needs clarification.",
-                    description=f"Suggestion: {suggestion}",
-                    colour=0x0000FF,
-                )
-                .add_field(name="Admin's message:", value=messageToUser, inline=False)
-                .set_footer(text=user.display_name, icon_url=user.avatar_url)
-            )
-            await user.send(
-                embed=discord.Embed(
-                    title=f"Your Bug Report needs clarification.",
-                    description=f"Suggestion: {suggestion}",
-                    colour=0x0000FF,
-                ).add_field(name="Admin's message:", value=messageToUser, inline=False)
-            )
+            await channel2.send(embed = embed)
+            await user.send(embed = embed)
+
         elif approve == "True":
-            await channel2.send(
-                embed=discord.Embed(
-                    title=f"Bug Report has been approved.",
-                    description=f"Suggestion: {suggestion}",
-                    colour=0x00FF00,
-                )
-                .add_field(name="Admin's message:", value=messageToUser, inline=False)
-                .set_footer(text=user.display_name, icon_url=user.avatar_url)
-            )
-            await user.send(
-                embed=discord.Embed(
-                    title=f"Your Bug Report has been approved.",
-                    description=f"Suggestion: {suggestion}",
-                    colour=0x00FF00,
-                ).add_field(name="Admin's message:", value=messageToUser, inline=False)
-            )
+            await channel2.send(embed = embed2)
+            await user.send(embed = embed2)
+            
+            doc_ref = self.db.collection("users").document("{}".format(str(user.id)))
+            dict1 = doc_ref.get().to_dict()
+            given = random.randint(1, 100)
+            dict1["money"] += given
+            doc_ref.set(dict1)
+            await user.send(embed = discord.Embed(title="As a thank you for your contributions to maxigames, we have given you " + given + " money! Enjoy!", colour = self.client.primary_colour))
+            await channel2.send(embed = discord.Embed(title="As a thank you for their contributions to maxigames, we have given them " + given + " money!", colour = self.client.primary_colour))
         else:
-            await channel2.send(
-                embed=discord.Embed(
-                    title=f"Bug Report has been denied.",
-                    description=f"Suggestion: {suggestion}",
-                    colour=0xFF0000,
-                )
-                .add_field(name="Admin's message:", value=messageToUser, inline=False)
-                .set_footer(text=user.display_name, icon_url=user.avatar_url)
-            )
-            await user.send(
-                embed=discord.Embed(
-                    title=f"Your Bug Report has been denied.",
-                    description=f"Suggestion: {suggestion}",
-                    colour=0xFF0000,
-                ).add_field(name="Admin's message:", value=messageToUser, inline=False)
-            )
+            await channel2.send(embed = embed3)
+            await user.send(embed=embed3)
 
         await ctx.message.delete()
 
