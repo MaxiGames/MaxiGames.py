@@ -4,7 +4,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 import os
-
+import math
 
 class Init(commands.Cog):
     def __init__(self, client):
@@ -18,8 +18,9 @@ class Init(commands.Cog):
         for doc in dict1:
             usr = doc.to_dict()
             if usr["money"] != int(usr["money"]):
-                usr["money"] == int(usr["money"])
-                print("HALLO :)")
+                usr["money"] = math.trunc(usr["money"])
+                print(usr["money"])
+                print(doc.id)
                 self.db.collection(u"users").document(u"{}".format(str(doc.id))).set(usr)
 
     async def init(self, ctx):
