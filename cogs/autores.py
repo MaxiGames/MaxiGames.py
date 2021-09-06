@@ -36,6 +36,8 @@ class Autoresponse(commands.Cog):
     async def on_message(self, msg):
         if msg.author.bot:
             return
+        if msg.guild == None:
+            return
         if msg.author == self.client.user:
             return
         content = ""

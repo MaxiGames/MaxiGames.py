@@ -55,6 +55,7 @@ class Init(commands.Cog):
                     u"name": str(ctx.guild.name),
                     u"prefix": [self.client.primary_prefix],
                     u"autoresponses": {},
+                    u"giveaways":{}
                 }
             )
 
