@@ -1,3 +1,4 @@
+import random
 import discord
 from discord import message
 from discord.ext import commands
@@ -139,6 +140,13 @@ class Suggestions(commands.Cog):
         elif approve == "True":
             await channel2.send(embed = embed2)
             await user.send(embed = embed2)
+            doc_ref = self.db.collection("users").document("{}".format(str(user.id)))
+            dict1 = doc_ref.get().to_dict()
+            given = random.randint(1, 100)
+            dict1["money"] += given
+            doc_ref.set(dict1)
+            await user.send(embed = discord.Embed(title="As a thank you for your contributions to maxigames, we have given you " + given + " money! Enjoy!", colour = self.client.primary_colour))
+            await channel2.send(embed = discord.Embed(title="As a thank you for their contributions to maxigames, we have given them " + given + " money!", colour = self.client.primary_colour))
         else:
             await channel2.send(embed = embed3)
             await user.send(embed=embed3)
@@ -265,6 +273,14 @@ class Suggestions(commands.Cog):
         elif approve == "True":
             await channel2.send(embed = embed2)
             await user.send(embed = embed2)
+            
+            doc_ref = self.db.collection("users").document("{}".format(str(user.id)))
+            dict1 = doc_ref.get().to_dict()
+            given = random.randint(1, 100)
+            dict1["money"] += given
+            doc_ref.set(dict1)
+            await user.send(embed = discord.Embed(title="As a thank you for your contributions to maxigames, we have given you " + given + " money! Enjoy!", colour = self.client.primary_colour))
+            await channel2.send(embed = discord.Embed(title="As a thank you for their contributions to maxigames, we have given them " + given + " money!", colour = self.client.primary_colour))
         else:
             await channel2.send(embed = embed3)
             await user.send(embed=embed3)
