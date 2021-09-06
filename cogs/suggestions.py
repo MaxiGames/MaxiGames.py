@@ -276,7 +276,7 @@ class Suggestions(commands.Cog):
             
             doc_ref = self.db.collection("users").document("{}".format(str(user.id)))
             dict1 = doc_ref.get().to_dict()
-            given = random.randint(1, 100)
+            given = random.randint(1, 500)
             dict1["money"] += given
             doc_ref.set(dict1)
             await user.send(embed = discord.Embed(title="As a thank you for your contributions to maxigames, we have given you " + given + " money! Enjoy!", colour = self.client.primary_colour))
