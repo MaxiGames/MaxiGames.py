@@ -83,7 +83,7 @@ class VoteRewards(commands.Cog):
             await ctx.send(embed=discord.Embed(title="You have no notifications!"))
             return
 
-        #! PAGES
+        # ! PAGES
         pages = []
         defaultPage = discord.Embed(
             title="Notifications!",

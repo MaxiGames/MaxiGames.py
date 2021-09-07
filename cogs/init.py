@@ -12,7 +12,7 @@ class Init(commands.Cog):
         self.db = firestore.client()
         self.hidden = True
         
-        #! Make sure all user's money is an int
+        # ! Make sure all user's money is an int
         dict1 = self.db.collection(u"users").stream()
         
         for doc in dict1:
@@ -32,6 +32,9 @@ class Init(commands.Cog):
                 u"countingsaves": 0,
                 u"name": str(ctx.author.name),
                 u"seboosted": False,
+                u"mining": 0,
+                u"extraction": 0,
+                u"overclock": 0
             }
         )
         await self.serverinit(ctx)

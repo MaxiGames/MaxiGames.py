@@ -24,6 +24,7 @@ else:
 def get_prefix(client, message):
     if message.guild == None:
         return ""
+    print(client.prefixes)
     return client.prefixes[str(message.guild.id)]
 
 
