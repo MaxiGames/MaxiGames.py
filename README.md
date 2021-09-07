@@ -19,8 +19,15 @@ Your one and only discord bot that includes all forms of mini games you will eve
 [![Bots for Discord](https://discords.com/bots/api/bot/863419048041381920/widget)](https://discords.com/bots/bots/863419048041381920)
 
 ---
-## Done with:
+
+## Made with:
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase) ![Heroku](https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white)
+
+---
+
+## License
+This bot is licensed under the GNU General Public License, version 3.
+Exact details are listed in LICENSE.md
 
 ---
 
