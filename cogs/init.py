@@ -4,13 +4,23 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 import os
-
+import math
 
 class Init(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.db = firestore.client()
         self.hidden = True
+        
+        #! Make sure all user's money is an int
+        dict1 = self.db.collection(u"users").stream()
+        
+        for doc in dict1:
+            usr = doc.to_dict()
+            if "money" in usr and usr["money"] != math.trunc(usr["money"]):
+                usr["money"] = math.trunc(usr["money"])
+                print(f"fixing {doc.id}'s money!")
+                self.db.collection(u"users").document(u"{}".format(str(doc.id))).set(usr)
 
     async def init(self, ctx):
         self.doc_ref = self.db.collection(u"users").document(

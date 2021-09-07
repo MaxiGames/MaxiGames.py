@@ -11,7 +11,7 @@ class Todo(commands.Cog):
         self.client = client
         self.db = firestore.client()
         self.init = self.client.get_cog("Init")
-        self.hidden = True
+        self.hidden = False
 
     @check.is_staff()
     @commands.command(

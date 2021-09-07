@@ -102,7 +102,7 @@ class Battleship(commands.Cog):
     
     def validateMessage(self, msg, ship):
         if len(msg) != 5:
-            return "Length of message must be 2, [first coordinate][second coordinate]"
+            return "Your move must be of the form [first coordinate]-[second coordinate]"
         elif not msg[0] in list("abcdefgh"):
             return "First letter must be from a to h, reprisenting the vertical axis of the first coordinate."
         elif not msg[1] in list("12345678"):
@@ -240,6 +240,6 @@ class Battleship(commands.Cog):
             await ctx.reply("No one else joined, please try again later!")
             return
 
-
+        return ships
 def setup(client):
     client.add_cog(Battleship(client))
