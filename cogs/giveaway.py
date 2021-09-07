@@ -27,8 +27,11 @@ class Giveaway(commands.Cog):
         time = time + (days * 86400)
         embed=discord.Embed(
             title="New Giveaway!!!",
-            description="React with "
+            description="React with 🎉 to join the giveaway :D",
+            colour = self.client.primary_colour
         )
+        embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+        await ctx.send(embed=embed)
 
         await asyncio.sleep(time)
 
