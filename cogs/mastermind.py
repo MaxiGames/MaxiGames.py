@@ -81,11 +81,11 @@ class Mastermind(commands.Cog):
         while True:
             if invalidTries == 4:
                 await ctx.reply(
-                    "You have almost reached the maximum number of invalid tries."
+                    embed=discord.Embed(title="You have almost reached the maximum number of invalid tries.")
                 )
             elif invalidTries == 5:
                 await ctx.reply(
-                    "You have reached the maximum number of invalid tries. The game has been aborted (This is to prevent spam)."
+                    embed = discord.Embed(title="You have reached the maximum number of invalid tries. The game has been aborted (This is to prevent spam).")
                 )
                 return
             if guesses > 11:
