@@ -210,6 +210,7 @@ class Economy(commands.Cog):
                 await ctx.reply(
                     embed=embed, allowed_mentions=discord.AllowedMentions.none()
                 )
+                doc_ref.set(dict1)
         else:
             await check.init(ctx)
 
