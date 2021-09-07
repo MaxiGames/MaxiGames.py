@@ -28,7 +28,7 @@ This project is licensed under the GNU AGPLv3 License - see the LICENSE.md file 
 ---
 
 ## License
-This bot is licensed under the GNU General Public License, version 3.
+This bot is licensed under the GNU Affero General Public License, version 3.
 Exact details are listed in LICENSE.md
 
 ---
