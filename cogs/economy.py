@@ -808,7 +808,7 @@ class Economy(commands.Cog):
     @commands.command(
         name="share",
         help="Sharing is caring! Share some money to your friends now!",
-        usage="<amount>",
+        usage="<user> <amount>",
         aliases=["give", "pay", "offer"],
     )
     @cooldown(1, 5, BucketType.user)
