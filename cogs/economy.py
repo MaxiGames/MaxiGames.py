@@ -28,6 +28,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 8, BucketType.user)
     async def _coinflip(self, ctx, choice: str, amount: int = 1):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
@@ -110,6 +111,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 8, BucketType.user)
     async def _gamble(self, ctx, amount: int = 5):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
@@ -223,6 +225,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 30, BucketType.user)
     async def _money(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
@@ -261,6 +264,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 5, BucketType.user)
     async def bal(self, ctx, user: discord.User = None):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         actualUser = ctx.author
         if user != None:
             actualUser = user
@@ -302,6 +306,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 10, BucketType.user)
     async def _leaderboard(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         msg = await ctx.send(
@@ -369,6 +374,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 3600, BucketType.user)
     async def hourly(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
@@ -406,6 +412,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 86400, BucketType.user)
     async def daily(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         # await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get()
@@ -447,6 +454,7 @@ class Economy(commands.Cog):
         hidden=True,
     )
     async def _setmoney(self, ctx, amount: int, name: discord.Member = None):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         if name == None:
             uid = str(ctx.author.id)
         else:
@@ -482,6 +490,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 5, BucketType.user)
     async def se(self, ctx, amount: int):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
@@ -593,6 +602,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 60, BucketType.user)
     async def search(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         num = random.randint(1, 1000)
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
@@ -659,6 +669,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 60, BucketType.user)
     async def lottery(self, ctx, *msgg: int):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         msg = list(msgg)
         if len(msg) != 6:
             embed = discord.Embed(
@@ -813,6 +824,7 @@ class Economy(commands.Cog):
     )
     @cooldown(1, 5, BucketType.user)
     async def share(self, ctx, user: discord.User, amount: int):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         if discord.User == None:
             embed = discord.Embed(title="Invalid user!", description="", color=0xFF1100)
             await ctx.reply(embed=embed)

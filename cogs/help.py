@@ -15,9 +15,9 @@ class CustomHelpCommand(HelpCommand):
         pages = []
         page = discord.Embed(
             title="Help",
-            description="""Hallo! Thank you for using Maxigames, a fun, random, cheerful and gambling-addiction-curbing bot developed as part of an initiative to curb gambling addiction and fill everyones' lives with bad puns, minigames and happiness!!!
+            description="""Hallo! Thank you for using Maxigames, a fun, random, cheerful and gambling-addiction-curbing bot developed as part of an initiative to curb gambling addiction and fill everyones' lives with bad puns, minigames and happiness!!! 
 
-            Feel free to invite this bot to your own server from the link below, or even join our support server, if you have any questions or suggestions :D""",
+            Feel free to invite this bot to your own server from the link below, or even join our support server, if you have any questions or suggestions :D **NOTE**, MESSAGE COMMANDS ARE DEPRECATED AND MIGHT BE REMOVED SOON. ALL DATA AND COMMANDS WILL BE TRANSFERRED TO SLASH COMMANDS""",
             colour=self.cog.client.primary_colour,
         )
         page.set_author(
@@ -147,6 +147,7 @@ class CustomHelpCommand(HelpCommand):
         return
 
     async def send_group_help(self, group):
+        
         if group.hidden:
             return
         if group.cog.hidden:
@@ -185,6 +186,7 @@ class CustomHelpCommand(HelpCommand):
         await page.start()
 
     async def send_error_message(self, error):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         embed = discord.Embed(
             title="Command not Found",
             description=f"{error} Please check that your spelling and capitalisation is correct :D",

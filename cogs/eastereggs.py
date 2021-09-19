@@ -10,6 +10,7 @@ class EasterEggs(commands.Cog):
 
     @commands.command(hidden=True, aliases=["whoareu"], help="Easter eggs?")
     async def whoru(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         embed = discord.Embed(
             title="Hey! Looks like you found this easter egg!",
             description="Nice.",
@@ -27,6 +28,7 @@ class EasterEggs(commands.Cog):
 
     @commands.command(hidden=True, aliases=["gamblingisbad"], help="Easter eggs?")
     async def gamblingbad(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         embed = discord.Embed(
             title="Gambling is bad :D",
             description="You will lose money if you play MaxiGames gambling games :D",

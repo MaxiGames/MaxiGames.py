@@ -135,6 +135,7 @@ class Battleship(commands.Cog):
         aliases=["battle", "bs", "battleships"],
     )
     async def battleship(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         message = await ctx.reply(
             "React on this message to start a battleship game, another person is needed for this game to start!"
         )

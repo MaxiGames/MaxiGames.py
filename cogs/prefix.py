@@ -35,6 +35,7 @@ class Prefix(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     async def prefix(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         """Prefix commands"""
         description = "```"
         for i in range(len(self.client.prefixes)):
@@ -56,6 +57,7 @@ class Prefix(commands.Cog):
     @prefix.command()
     @cooldown(1, 15, BucketType.user)
     async def add(self, ctx, prefix: str):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
@@ -73,6 +75,7 @@ class Prefix(commands.Cog):
     @prefix.command()
     @cooldown(1, 15, BucketType.user)
     async def remove(self, ctx, prefix: str):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
@@ -98,6 +101,7 @@ class Prefix(commands.Cog):
     @prefix.command()
     @cooldown(1, 15, BucketType.user)
     async def reset(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
@@ -115,6 +119,7 @@ class Prefix(commands.Cog):
     @prefix.command()
     @cooldown(1, 15, BucketType.user)
     async def set(self, ctx, *prefixes):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()

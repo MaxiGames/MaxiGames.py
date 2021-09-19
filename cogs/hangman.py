@@ -29,6 +29,7 @@ class Hangman(commands.Cog):
     @commands.command()
     @cooldown(1, 5, BucketType.user)
     async def hangmanList(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         dir = os.getcwd() + "/DataBase/words.txt"
         words = open(dir, "r")
         myList = []
@@ -83,6 +84,7 @@ class Hangman(commands.Cog):
     )
     @cooldown(1, 30, BucketType.user)
     async def hangman(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         #! Hangman Firebase Initalisation
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
@@ -299,6 +301,7 @@ class Hangman(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def hangmanLB(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         await leaderboard_generate(self, ctx, "hangman")
 
 

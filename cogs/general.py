@@ -63,11 +63,13 @@ class General(commands.Cog):
     @commands.command()
     @cooldown(1, 60, BucketType.user)
     async def hallo(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         await ctx.send("Hallo!")
 
     @commands.command()
     @cooldown(1, 60, BucketType.user)
     async def current(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         result = time.localtime(time.time())
         embed = discord.Embed(
             title="Current Date and Time",
@@ -91,6 +93,7 @@ class General(commands.Cog):
     @commands.command()
     @cooldown(1, 100, BucketType.user)
     async def seconds(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         await ctx.send(
             str(round(time.time())) + " seconds have passed since the epoch!"
         )
@@ -103,6 +106,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def ns(self, ctx, num: int):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         if num < 1 or num > 50:
             await ctx.send("That is not a valid value for this command!:thinking:")
         else:
@@ -126,6 +130,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 20, BucketType.user)
     async def invite(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         embed = discord.Embed(
             title="Invite Link to invite the bot",
             description="https://discord.com/api/oauth2/authorize?client_id=863419048041381920&permissions=261188091120&scope=bot%20applications.commands",
@@ -140,6 +145,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 20, BucketType.user)
     async def official(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         embed = discord.Embed(
             title="Join our official server today!",
             description="https://discord.gg/nGWhxNG2sf",
@@ -152,6 +158,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 60, BucketType.user)
     async def whoami(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         embed = discord.Embed(
             title="You are " + str(ctx.author) + " :D",
             description="What a pog name!!!",
@@ -179,6 +186,7 @@ class General(commands.Cog):
     @commands.command()
     @cooldown(1, 15, BucketType.user)
     async def hallolong(self, ctx, num: int):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         if num > 1996:
             await ctx.send(f"Too long!")
         await ctx.send(f'Hall{"o"*num}')
@@ -190,6 +198,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 60, BucketType.user)
     async def servercount(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         embed = discord.Embed(
             title="I'm in " + str(len(self.client.guilds)) + " servers",
             description="Invite the bot to your server today using the link from s!invite!",
@@ -204,6 +213,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 5, BucketType.user)
     async def randnum(self, ctx, start: int, end: int):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         answer = random.randint(start, end)
         await ctx.reply("Your number was " + str(answer))
 
@@ -212,6 +222,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 5, BucketType.user)
     async def empty(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         await ctx.reply("‎")
 
     @commands.command(
@@ -221,6 +232,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 5, BucketType.user)
     async def fibo(self, ctx, num: int):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         if num <= 0:
             embed = discord.Embed(
                 title="Bruh. Don't be stupid.", description="", color=0xFF0000
@@ -276,6 +288,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 10, BucketType.user)
     async def bigdice(self, ctx, sides: int, num: int):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         curr = ""
         if sides <= 0:
             embed = discord.Embed(
@@ -325,6 +338,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 10, BucketType.user)
     async def dice(self, ctx, num: int):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         curr = ""
         if num <= 0:
             embed = discord.Embed(
@@ -354,6 +368,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 5, BucketType.user)
     async def numprop(self, ctx, num: int):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
 
         if num > 1000000000000:
             embed = discord.Embed(
@@ -455,6 +470,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 30, BucketType.user)
     async def lmgtfy(self, ctx, *quer: str):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         curr_url = "https://lmgtfy.app/?q="
         query = " ".join(quer)
         query = query.replace(" ", "+")
@@ -473,6 +489,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 5, BucketType.user)
     async def choose(self, ctx, *choices: str):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         chosen = random.choice(choices)
         embed = discord.Embed(
             title=chosen + " was chosen!",
@@ -488,6 +505,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 10, BucketType.user)
     async def kawaii(self, ctx, *msg: str):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         words = " ".join(msg)
         upper_or_lower = []
 
@@ -558,6 +576,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def randcol(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         embed = discord.Embed(
             title="Random Color!", description="", color=discord.Colour.random()
         )
@@ -571,7 +590,7 @@ class General(commands.Cog):
         aliases=["matchmake", "matchmaking", "match"],
     )
     async def ship(self, ctx, fne: str, sne: str):
-
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         fn = ""
         sn = ""
         alpha = "abcdefghijklmnopqrstuvwxyz0123456789"
@@ -623,6 +642,7 @@ class General(commands.Cog):
     )
     @cooldown(1, 10, BucketType.user)
     async def vote(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         await ctx.send("**Vote**\n" "https://top.gg/bot/863419048041381920/vote")
 
 

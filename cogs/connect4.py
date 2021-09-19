@@ -21,6 +21,7 @@ class Connect4(commands.Cog):
     )
     @cooldown(1, 75, BucketType.user)
     async def connect4(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         player1 = ctx.author
         game_channel = ctx.channel
         message = await ctx.reply(

@@ -25,6 +25,7 @@ class Mastermind(commands.Cog):
     )
     @cooldown(1, 30, BucketType.user)
     async def mastermind(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         player = ctx.author.id
         player_name = ctx.author

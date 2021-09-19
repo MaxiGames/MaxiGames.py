@@ -34,6 +34,7 @@ class Autoresponse(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, msg):
+        await msg.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         if msg.author.bot:
             return
         if msg.guild == None:
@@ -55,6 +56,7 @@ class Autoresponse(commands.Cog):
     @check.is_admin()
     @commands.group(name="autoresponse", invoke_without_command=True, aliases=["ar"])
     async def auto_response(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         responses = self.autoresponse[str(ctx.guild.id)]
         description = ""
         if len(responses) == 0:
@@ -75,6 +77,7 @@ class Autoresponse(commands.Cog):
     @check.is_admin()
     @auto_response.command(name="add", aliases=["edit"])
     async def add_subcommand(self, ctx, trigger: str, *, response: str):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
@@ -98,6 +101,7 @@ class Autoresponse(commands.Cog):
     @check.is_admin()
     @auto_response.command(name="remove")
     async def remove_subcommand(self, ctx, trigger: str):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))

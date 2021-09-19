@@ -22,6 +22,7 @@ class Inventory(commands.Cog):
         aliases=["addToShop", "addItem", "newItem"],
     )
     async def _add_to_shop(self, ctx, price: int, *name):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.item = " ".join(name[:])
         self.doc_ref = self.db.collection("servers").document(
             "{}".format(str(ctx.guild.id))
@@ -58,6 +59,7 @@ class Inventory(commands.Cog):
         help="removes an item fromm the shop",
     )
     async def removeshop(self, ctx, *msg):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         item = " ".join(msg[:])
         self.doc_ref = self.db.collection("servers").document(
             "{}".format(str(ctx.guild.id))
@@ -99,6 +101,7 @@ class Inventory(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def _shop(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.doc_ref = self.db.collection("servers").document(
             "{}".format(str(ctx.guild.id))
         )
@@ -129,6 +132,7 @@ class Inventory(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def _inv(self, ctx, user: discord.Member = None):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         if user is None:
             user = ctx.author
         doc_ref = self.db.collection("servers").document("{}".format(str(ctx.guild.id)))
@@ -165,6 +169,7 @@ class Inventory(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def buy(self, ctx, *hi):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         item = " ".join(hi[:])
         uid = str(ctx.author.id)
         doc_ref = self.db.collection("servers").document("{}".format(str(ctx.guild.id)))

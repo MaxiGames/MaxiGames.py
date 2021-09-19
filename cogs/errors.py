@@ -10,6 +10,7 @@ class Errors(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error, bypass=False):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         if isinstance(error, commands.CommandNotFound):
             pass
         elif isinstance(error, commands.NotOwner):
@@ -36,6 +37,7 @@ class Errors(commands.Cog):
 
         elif isinstance(error, commands.CommandOnCooldown):
             seconds = round(error.retry_after)
+
             embed = discord.Embed(
                 title="Command on Cooldown",
                 description=f"This command is on cooldown. Try again in {error.retry_after:,.1f} seconds.",

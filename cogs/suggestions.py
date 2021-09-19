@@ -30,6 +30,7 @@ class Suggestions(commands.Cog):
     )
     @cooldown(1, 60, BucketType.user)
     async def suggest(self, ctx, *msg):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         suggestion = " ".join(msg[:])
         channel = self.client.get_channel(865821669730156544)
         embed = discord.Embed(
@@ -162,6 +163,7 @@ class Suggestions(commands.Cog):
         aliases=["report", "br", "bug", "reportBug"],
     )
     async def report(self, ctx, *msg):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         suggestion = " ".join(msg[:])
         channel = self.client.get_channel(869960880631218196)
 

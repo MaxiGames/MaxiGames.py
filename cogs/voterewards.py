@@ -72,6 +72,7 @@ class VoteRewards(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def notifs(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get().to_dict()
         if "notifications" not in doc:
@@ -153,6 +154,7 @@ class VoteRewards(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def clearNotif(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get().to_dict()
         if "notifications" in doc:
@@ -168,6 +170,7 @@ class VoteRewards(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def remindVote(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         doc_ref = self.db.collection("users").document("{}".format(str(ctx.author.id)))
         doc = doc_ref.get().to_dict()
         if "remindVote" in doc and doc["remindVote"] == True:

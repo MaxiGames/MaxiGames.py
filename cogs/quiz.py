@@ -33,6 +33,7 @@ class Games(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def trivia(self, ctx, difficulty=100000000000):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         word = "hard"
         moneyToAdd = 0
@@ -171,6 +172,7 @@ class Games(commands.Cog):
     )
     @cooldown(1, 10, BucketType.user)
     async def trivia_leaderboard(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         await leaderboard_generate(self, ctx, "trivia")
 
     @commands.command(
@@ -180,6 +182,7 @@ class Games(commands.Cog):
     )
     @cooldown(1, 15, BucketType.user)
     async def math(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         first = random.randint(1, 100)
         second = random.randint(1, 100)
         operandation = random.randint(1, 100)
@@ -266,6 +269,7 @@ class Games(commands.Cog):
     )
     @cooldown(1, 300, BucketType.user)
     async def scramble(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         wordCount = 5
         chosenWords = []
         correctWords = []

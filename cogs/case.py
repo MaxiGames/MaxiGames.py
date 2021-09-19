@@ -14,6 +14,7 @@ class Case(commands.Cog):
         usage="<string>",
     )
     async def cc(self, ctx, *message):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         count = 0
         newMessage = []
         for i in message:
@@ -37,6 +38,7 @@ class Case(commands.Cog):
         usage="<string>",
     )
     async def pc(self, ctx, *message):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         count = 0
         newMessage = []
         for i in message:
@@ -55,6 +57,7 @@ class Case(commands.Cog):
         usage="<string>",
     )
     async def snake(self, ctx, *message):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         await ctx.reply(
             embed=discord.Embed(
                 title="SnakeCase", description=f"{'_'.join(message)}", color=0x00FF00
@@ -68,6 +71,7 @@ class Case(commands.Cog):
         usage="<string>",
     )
     async def upper(self, ctx, *message):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         count = 0
         newMessage = []
         for i in message:
@@ -86,6 +90,7 @@ class Case(commands.Cog):
         usage="<string>",
     )
     async def lower(self, ctx, *message):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         count = 0
         newMessage = []
         for i in message:
@@ -104,6 +109,7 @@ class Case(commands.Cog):
         usage="<string>",
     )
     async def lisp(self, ctx, *message):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         await ctx.reply(
             embed=discord.Embed(
                 title="LispCase", description=f"{'-'.join(message)}", color=0x00FF00

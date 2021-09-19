@@ -23,6 +23,7 @@ class Counting(commands.Cog):
         aliases=["countCa", "countingChannel"],
     )
     async def counting_channel_add(self, ctx, channelarg: str = None):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         # sets the key "counting_channel"
         if channelarg == None:
             channelarg = str(ctx.channel.id)
@@ -103,6 +104,7 @@ class Counting(commands.Cog):
         ],
     )
     async def counting_channel_rm(self, ctx, channel: str = None):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         if channel == None:
             channel = str(ctx.channel.id)
         # sets the key "counting_channel"
@@ -141,6 +143,7 @@ class Counting(commands.Cog):
         aliases=["countslb", "slb", "serverLeaderboard", "countingSlb"],
     )
     async def counting_server_leaderboard(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         data = self.db.collection("servers").document(str(ctx.guild.id)).get().to_dict()
         dict1 = data["counting_channels"][str(ctx.guild.id)]["counterUR"].items()
         # sorts leaderboard
@@ -195,6 +198,7 @@ class Counting(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, msg):
+        await msg.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         if msg.guild == None or msg.author.bot:
             return
         data = self.db.collection("servers").document(str(msg.guild.id)).get().to_dict()

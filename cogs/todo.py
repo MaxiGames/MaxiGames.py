@@ -22,6 +22,7 @@ class Todo(commands.Cog):
     )
     @cooldown(1, 3, BucketType.user)
     async def todoAdd(self, ctx, *msg):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         task = " ".join(msg)
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
@@ -44,6 +45,7 @@ class Todo(commands.Cog):
     )
     @cooldown(1, 3, BucketType.user)
     async def todo(self, ctx):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
@@ -70,6 +72,7 @@ class Todo(commands.Cog):
     )
     @cooldown(1, 3, BucketType.user)
     async def todoRem(self, ctx, number):
+        await ctx.send(embed=discord.Embed(title="Message commands are deprecated." ,description="All message commands have been deprecated. They will be removed soon. Please use the Slash commands instead. To find out more, join the server at https://discord.gg/uPW9sVCV. We are going with discord's guidelines and switching all commands and data to slash commands before 2022.", colour=0x00ff00))
         self.init = self.client.get_cog("Init")
         await self.init.checkserver(ctx)
         doc_ref = self.db.collection("servers").document(str(ctx.guild.id))
